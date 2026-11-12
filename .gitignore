@@ -1,0 +1,24 @@
+# Environment variables and secrets
+.env
+.env.*
+.env.local
+.env.prod
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+*.env.*
+
+# Vercel project metadata
+.vercel
+
+# Node & dependencies
+node_modules/
+.npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# System & OS files
+.DS_Store
+Thumbs.db

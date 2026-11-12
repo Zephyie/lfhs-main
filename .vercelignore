@@ -1,0 +1,7 @@
+# Keep local secrets and Vercel project metadata out of deployment uploads.
+.env*
+.vercel
+
+# Planning documents are not served by the application.
+LFHS ACADEMIC HUB PLAN
+LFHS_Academic_Hub_Master_Vision_and_Roadmap.pdf
