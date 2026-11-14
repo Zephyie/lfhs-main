@@ -39,7 +39,7 @@ jobs:
         env:
           SCOPE: ${{ inputs.scope }}
         run: |
-          if ! printf '%s' "$SCOPE" | grep -Eq '^[A-Za-z0-9 ,._-]*$'; then echo "Scope contains unexpected characters"; exit 1; fi
+          if [ -n "$SCOPE" ] && ! printf '%s\n' "$SCOPE" | grep -Eq '^[A-Za-z0-9 ,._-]*$'; then echo "Scope contains unexpected characters"; exit 1; fi
 
       - name: Build library
         shell: bash
