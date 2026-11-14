@@ -1,20 +1,196 @@
 {
  "v": 1,
- "built": "2026-11-14T02:29:01.941Z",
+ "built": "2026-11-14T07:30:05.703Z",
  "shards": {
+  "10-art.json": {
+   "cls": "10",
+   "subj": "art",
+   "built": "2026-11-14T07:28:34.488Z",
+   "resources": 2,
+   "chunks": 367,
+   "chars": 224723
+  },
   "10-biology.json": {
    "cls": "10",
    "subj": "biology",
-   "built": "2026-11-14T02:29:01.938Z",
-   "resources": 3,
-   "chunks": 635,
-   "chars": 191492
+   "built": "2026-11-14T07:30:04.012Z",
+   "resources": 18,
+   "chunks": 1094,
+   "chars": 439380
+  },
+  "10-career.json": {
+   "cls": "10",
+   "subj": "career",
+   "built": "2026-11-14T07:28:35.203Z",
+   "resources": 1,
+   "chunks": 143,
+   "chars": 87205
+  },
+  "10-chemistry.json": {
+   "cls": "10",
+   "subj": "chemistry",
+   "built": "2026-11-14T07:30:04.158Z",
+   "resources": 18,
+   "chunks": 912,
+   "chars": 364455
+  },
+  "10-english.json": {
+   "cls": "10",
+   "subj": "english",
+   "built": "2026-11-14T07:30:01.848Z",
+   "resources": 31,
+   "chunks": 1604,
+   "chars": 946905
+  },
+  "10-ict.json": {
+   "cls": "10",
+   "subj": "ict",
+   "built": "2026-11-14T07:29:38.356Z",
+   "resources": 4,
+   "chunks": 490,
+   "chars": 303238
+  },
+  "10-maths.json": {
+   "cls": "10",
+   "subj": "maths",
+   "built": "2026-11-14T07:30:05.021Z",
+   "resources": 22,
+   "chunks": 689,
+   "chars": 298272
+  },
+  "10-physics.json": {
+   "cls": "10",
+   "subj": "physics",
+   "built": "2026-11-14T07:30:05.249Z",
+   "resources": 22,
+   "chunks": 988,
+   "chars": 474533
+  },
+  "10-ss.json": {
+   "cls": "10",
+   "subj": "ss",
+   "built": "2026-11-14T07:30:05.663Z",
+   "resources": 29,
+   "chunks": 2789,
+   "chars": 1445884
+  },
+  "8-art.json": {
+   "cls": "8",
+   "subj": "art",
+   "built": "2026-11-14T07:27:42.677Z",
+   "resources": 10,
+   "chunks": 592,
+   "chars": 326623
+  },
+  "8-english.json": {
+   "cls": "8",
+   "subj": "english",
+   "built": "2026-11-14T07:30:04.557Z",
+   "resources": 14,
+   "chunks": 484,
+   "chars": 272191
+  },
+  "8-ict.json": {
+   "cls": "8",
+   "subj": "ict",
+   "built": "2026-11-14T07:27:08.996Z",
+   "resources": 2,
+   "chunks": 313,
+   "chars": 190023
+  },
+  "8-maths.json": {
+   "cls": "8",
+   "subj": "maths",
+   "built": "2026-11-14T07:27:50.134Z",
+   "resources": 14,
+   "chunks": 250,
+   "chars": 134406
+  },
+  "8-science.json": {
+   "cls": "8",
+   "subj": "science",
+   "built": "2026-11-14T07:27:50.410Z",
+   "resources": 21,
+   "chunks": 392,
+   "chars": 215965
+  },
+  "8-ss.json": {
+   "cls": "8",
+   "subj": "ss",
+   "built": "2026-11-14T07:27:54.122Z",
+   "resources": 26,
+   "chunks": 879,
+   "chars": 554621
+  },
+  "9-art.json": {
+   "cls": "9",
+   "subj": "art",
+   "built": "2026-11-14T07:28:25.166Z",
+   "resources": 12,
+   "chunks": 440,
+   "chars": 242405
+  },
+  "9-biology.json": {
+   "cls": "9",
+   "subj": "biology",
+   "built": "2026-11-14T07:28:27.529Z",
+   "resources": 20,
+   "chunks": 533,
+   "chars": 303742
+  },
+  "9-chemistry.json": {
+   "cls": "9",
+   "subj": "chemistry",
+   "built": "2026-11-14T07:28:28.447Z",
+   "resources": 17,
+   "chunks": 361,
+   "chars": 194821
+  },
+  "9-english.json": {
+   "cls": "9",
+   "subj": "english",
+   "built": "2026-11-14T07:30:04.558Z",
+   "resources": 19,
+   "chunks": 609,
+   "chars": 326160
+  },
+  "9-ict.json": {
+   "cls": "9",
+   "subj": "ict",
+   "built": "2026-11-14T07:28:00.013Z",
+   "resources": 2,
+   "chunks": 331,
+   "chars": 195680
+  },
+  "9-maths.json": {
+   "cls": "9",
+   "subj": "maths",
+   "built": "2026-11-14T07:28:29.404Z",
+   "resources": 16,
+   "chunks": 286,
+   "chars": 159387
+  },
+  "9-physics.json": {
+   "cls": "9",
+   "subj": "physics",
+   "built": "2026-11-14T07:28:27.738Z",
+   "resources": 17,
+   "chunks": 484,
+   "chars": 263153
+  },
+  "9-ss.json": {
+   "cls": "9",
+   "subj": "ss",
+   "built": "2026-11-14T07:28:29.709Z",
+   "resources": 26,
+   "chunks": 1110,
+   "chars": 667483
   }
  },
  "totals": {
-  "shards": 1,
-  "resources": 3,
-  "chunks": 635,
-  "chars": 191492
+  "shards": 23,
+  "resources": 363,
+  "chunks": 16140,
+  "chars": 8631255
  }
 }
