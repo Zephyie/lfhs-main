@@ -5,3 +5,12 @@
 # Planning documents are not served by the application.
 LFHS ACADEMIC HUB PLAN
 LFHS_Academic_Hub_Master_Vision_and_Roadmap.pdf
+
+# v22: dev-only files are not deployed
+tests
+scripts
+supabase
+KNOWLEDGE_ENGINE.md
+out
+
+.github

@@ -1,0 +1,75 @@
+# Builds the AI library (api/_kb/*.json) from the PDFs listed in data/pdfs.js and commits it to the repo.
+# Run it from the GitHub "Actions" tab -> "Build AI library" -> "Run workflow". Vercel then redeploys automatically.
+name: Build AI library
+
+on:
+  workflow_dispatch:
+    inputs:
+      scope:
+        description: 'Leave EMPTY for all PDFs. Or filter, e.g.  --cls 10   or   --cls 9 --subj physics   or   --ids LFHS-001,LFHS-002'
+        required: false
+        default: ''
+      force:
+        description: 'Re-process PDFs even if they look unchanged'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-library
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install poppler (PDF text extraction)
+        run: sudo apt-get update && sudo apt-get install -y poppler-utils
+
+      - name: Check the scope input
+        env:
+          SCOPE: ${{ inputs.scope }}
+        run: |
+          if ! printf '%s' "$SCOPE" | grep -Eq '^[A-Za-z0-9 ,._-]*$'; then echo "Scope contains unexpected characters"; exit 1; fi
+
+      - name: Build library
+        shell: bash
+        env:
+          SCOPE: ${{ inputs.scope }}
+          FORCE: ${{ inputs.force }}
+        run: |
+          FLAGS="$SCOPE"
+          if [ "$FORCE" = "true" ]; then FLAGS="$FLAGS --force"; fi
+          echo "Running: node scripts/ingest.mjs $FLAGS"
+          node scripts/ingest.mjs $FLAGS | tee build-log.txt
+
+      - name: Check the result
+        run: node scripts/verify.mjs --library-only
+
+      - name: Commit library
+        run: |
+          git config user.name "lfhs-library-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add api/_kb
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Update AI library"
+            git pull --rebase origin "${GITHUB_REF_NAME}" || true
+            git push
+          fi
+
+      - name: Keep the build log
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: build-log.txt

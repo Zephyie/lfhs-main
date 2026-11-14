@@ -1,0 +1,5 @@
+{"v":1,"cls":"10","subj":"physics","built":"2026-01-01T00:00:00.000Z","res":{"SYN-PHY10":{"bytes":1,"sha":"synthetic","pages":50,"chunks":0,"skipped":0}},"titles":["Electric Current","Light"],"c":[
+["SYN-PHY10", 12, 1, 0, "p", 0, 0, "Ohm's law states that the current flowing through a conductor is directly proportional to the potential difference across its ends, provided the temperature remains constant. The ratio of potential difference to current is the resistance of the conductor, measured in ohm."],
+["SYN-PHY10", 13, 1, 0, "p", 0, 0, "Electric power is the rate at which electrical energy is consumed. Power equals potential difference multiplied by current. The commercial unit of electrical energy is the kilowatt hour."],
+["SYN-PHY10", 40, 2, 1, "p", 0, 0, "A concave mirror forms a real inverted image when the object is placed beyond the centre of curvature. The mirror formula relates object distance image distance and focal length."]
+]}

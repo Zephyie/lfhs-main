@@ -1,16 +1,32 @@
 {
   "functions": {
-    "api/chat.js": { "maxDuration": 30 },
-    "api/account.js": { "maxDuration": 15 },
-    "api/content.js": { "maxDuration": 15 }
+    "api/chat.js": {
+      "maxDuration": 30,
+      "includeFiles": "api/_kb/**"
+    },
+    "api/account.js": {
+      "maxDuration": 15
+    },
+    "api/content.js": {
+      "maxDuration": 15
+    }
   },
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "X-Frame-Options", "value": "SAMEORIGIN" }
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        }
       ]
     }
   ]

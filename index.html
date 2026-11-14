@@ -1063,6 +1063,40 @@ body.is-offline .offline-banner { display: block; }
  .pdf-stage{padding:10px 6px 24px;gap:10px}
 }
 
+
+/* v22 AI tab */
+.chat-container{position:relative}
+.chat-input-area .ai-tools-btn{background:var(--surface-2);color:var(--text-main);border:1px solid var(--border);padding:0;width:44px;min-width:44px;flex:0 0 44px;border-radius:999px;font-size:1rem}
+.chat-input-area .ai-tools-btn:hover:not(:disabled){background:var(--surface-2);color:var(--primary);border-color:var(--primary)}
+.ai-tools{position:absolute;left:.6rem;bottom:calc(env(safe-area-inset-bottom,0px) + 64px);z-index:6;background:var(--card-bg);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-md);padding:.4rem;display:flex;flex-direction:column;min-width:230px;max-width:calc(100% - 1.2rem)}
+.ai-tools[hidden]{display:none}
+.ai-tools button.ai-tool{text-align:left;background:none;border:0;padding:.65rem .7rem;border-radius:10px;font-size:.9rem;color:var(--text-main);display:flex;gap:.7rem;align-items:center;cursor:pointer;min-height:44px}
+.ai-tools button.ai-tool:hover{background:var(--surface-2)}
+.ai-tools button.ai-tool i{width:1.1rem;text-align:center;color:var(--primary)}
+.ai-tools-lang{display:flex;align-items:center;gap:.7rem;padding:.55rem .7rem;border-top:1px solid var(--border);margin-top:.25rem;font-size:.82rem;color:var(--text-muted)}
+.ai-tools-lang select{flex:1;min-height:38px}
+.ai-badge{font-size:.74rem;margin-top:.55rem;padding:.35rem .6rem;border-radius:8px;display:block}
+.ai-badge.gen{background:rgba(230,150,20,.18);color:var(--text-main)}
+.ai-badge.warn{background:rgba(220,60,60,.12);color:var(--text-main)}
+.chat-bubble sup.cite{font-size:.62rem;font-weight:700;color:var(--primary);margin:0 1px}
+.ai-src{margin-top:.55rem;font-size:.82rem}.ai-src summary{cursor:pointer;font-weight:600;min-height:32px;display:flex;align-items:center;gap:.4rem}.ai-src ul{margin:.3rem 0 0;padding-left:1.1rem}
+.ai-srclink{background:none;border:0;padding:.35rem 0;color:var(--primary);text-align:left;text-decoration:underline;cursor:pointer;font:inherit}
+.ai-acts{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.6rem}
+.ai-acts button{font-size:.78rem;min-height:34px;padding:0 .75rem;border-radius:999px;border:1px solid var(--border);background:var(--surface-2);color:var(--text-main);cursor:pointer}
+.ai-acts button:hover{border-color:var(--primary);color:var(--primary)}
+.ai-saved-item{border-top:1px solid var(--border);padding:.5rem 0;font-size:.82rem}
+@media (max-width:700px){
+  .chat-container{height:calc(100vh - 200px);height:calc(100dvh - 200px);min-height:420px}
+  .chat-container .chat-header{padding:.55rem .75rem}
+  .chat-container .chat-messages{padding:.75rem;gap:.7rem}
+  .chat-container .chat-bubble{max-width:94%}
+  .chat-container .chat-quick{flex-wrap:nowrap;overflow-x:auto;padding:.4rem .6rem 0;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .chat-container .chat-quick::-webkit-scrollbar{display:none}
+  .chat-container .chat-quick .qchip{flex:0 0 auto;white-space:nowrap;max-width:78vw;overflow:hidden;text-overflow:ellipsis}
+  .chat-container .chat-input-area{padding:.5rem .6rem;gap:6px}
+  .chat-container .chat-input-area #sendBtn{padding:0;width:44px;min-width:44px;flex:0 0 44px}
+  .chat-container .chat-input-area .chat-voice-btn{flex:0 0 40px;min-width:40px;padding:0}
+}
 </style>
 <style id="lfhsHeroStyle">#lfhsHero{position:fixed;inset:0;z-index:1000;display:none;background:#000;overflow:hidden}#lfhsHero.show{display:block}#lfhsHero.leaving{opacity:0;transition:opacity .6s ease;pointer-events:none}@media print{#lfhsHero{display:none!important}}#lfhsHero .lh-root{
   --dim: rgba(255,255,255,.64); --faint: rgba(255,255,255,.42);
@@ -1569,9 +1603,16 @@ body.ab-open .ab-exit{display:inline-flex}
         </div>
         <div class="chat-messages" id="chatMessages" role="log" aria-live="polite" aria-label="Chat messages"></div>
         <div class="chat-quick" id="chatQuick" aria-label="Suggested questions"></div>
+        <div class="ai-tools" id="aiTools" hidden>
+          <button type="button" class="ai-tool" data-aiact="revision"><i class="fa-solid fa-list-check" aria-hidden="true"></i> Revision sheet</button>
+          <button type="button" class="ai-tool" data-aiact="important"><i class="fa-solid fa-circle-question" aria-hidden="true"></i> Past questions</button>
+          <button type="button" class="ai-tool" data-aiact="explain"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> Explain a passage</button>
+          <button type="button" class="ai-tool" data-aiact="saved"><i class="fa-regular fa-bookmark" aria-hidden="true"></i> Saved answers</button>
+          <label class="ai-tools-lang">Voice language <select id="voiceLang" class="chat-voice-lang" aria-label="Voice recognition language" title="Choose the language to recognize"><option value="en-IN">English</option><option value="ml-IN">മലയാളം</option></select></label>
+        </div>
         <div class="chat-input-area">
-          <input type="text" id="userInput" aria-label="Type your question" placeholder="Ask a question..." onkeydown="handleKeyPress(event)">
-          <select id="voiceLang" class="chat-voice-lang" aria-label="Voice recognition language" title="Choose the language to recognize"><option value="en-IN">English</option><option value="ml-IN">മലയാളം</option></select>
+          <button id="aiToolsBtn" class="ai-tools-btn" type="button" aria-label="Study tools" aria-expanded="false" aria-controls="aiTools"><i class="fa-solid fa-plus" aria-hidden="true"></i></button>
+          <input type="text" id="userInput" aria-label="Type your question" placeholder="Ask your question..." onkeydown="handleKeyPress(event)">
           <button id="voiceBtn" class="chat-voice-btn" type="button" aria-label="Start voice input" title="Speak your question"><i class="fa-solid fa-microphone" aria-hidden="true"></i></button>
           <button id="sendBtn" type="button" onclick="sendMessage()" aria-label="Send message"><i class="fa-solid fa-paper-plane" aria-hidden="true"></i></button>
         </div>
@@ -1686,7 +1727,7 @@ body.ab-open .ab-exit{display:inline-flex}
       <a href="https://www.aplusblog.in/" target="_blank" rel="noopener noreferrer">A+ Blog</a>
       <a href="#about">About Us</a>
       <a href="#creators">Creators</a>
-      <span style="opacity:.6;font-size:.75rem">v21</span>
+      <span style="opacity:.6;font-size:.75rem">v22</span>
     </div>
   </div>
 </footer>
@@ -4234,18 +4275,18 @@ function toastWithAction(msg,label,action){
   toastTimer=setTimeout(function(){toastEl.classList.remove('show','has-action')},7000);
 }
 
-var WELCOME_MESSAGE='Namaskaram! I am your LFHS Academic Assistant. Ask me any question from SCERT syllabus, PictoBlox coding, or Career Guidance!';
+var WELCOME_MESSAGE='Namaskaram! I am your LFHS Academic Assistant. Ask me about your lessons and I will look through your class textbooks and papers, and show you the pages I used.';
 var chatHistory=[];var isSending=false;
 function askAiAbout(promptText){location.hash='#ai';$('userInput').value=promptText;setTimeout(sendMessage,0)}
 var aiQuickIndex=0,aiQuickTimer=null;
 function renderAiQuick(){
   var box=$('chatQuick');if(!box)return;
-  if(!AI_QUICK.length){box.innerHTML='';return}
-  var count=Math.min(3,AI_QUICK.length),items=[];
-  for(var i=0;i<count;i++)items.push(AI_QUICK[(aiQuickIndex+i)%AI_QUICK.length]);
+  var QL=aiQuickList();if(!QL.length){box.innerHTML='';return}
+  var count=Math.min(4,QL.length),items=[];
+  for(var i=0;i<count;i++)items.push(QL[(aiQuickIndex+i)%QL.length]);
   box.innerHTML=items.map(function(q){return '<button class="qchip" type="button" data-ask="'+esc(q)+'" title="Use suggestion">'+esc(q)+'</button>'}).join('');
 }
-function startAiQuickRotation(){if(aiQuickTimer)clearInterval(aiQuickTimer);aiQuickTimer=setInterval(function(){if(!document.hidden&&!isSending&&document.querySelector('.chat-container:not(.ai-full)')){aiQuickIndex=(aiQuickIndex+Math.min(3,AI_QUICK.length))%AI_QUICK.length;renderAiQuick()}},4200)}
+function startAiQuickRotation(){if(aiQuickTimer)clearInterval(aiQuickTimer);aiQuickTimer=setInterval(function(){if(!document.hidden&&!isSending&&document.querySelector('.chat-container:not(.ai-full)')){var QL=aiQuickList();aiQuickIndex=(aiQuickIndex+Math.min(4,QL.length))%QL.length;renderAiQuick()}},4200)}
 function inlineFormat(str){
   return str.replace(/`([^`]+)`/g,'<code>$1</code>')
     .replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')
@@ -4290,46 +4331,109 @@ function appendBubble(className,content,asHtml){
   chatMessages.appendChild(bubble);chatMessages.scrollTop=chatMessages.scrollHeight;return bubble;
 }
 function clearChat(){chatHistory=[];$('chatMessages').innerHTML='';$('chatStatus').textContent='Groq';appendBubble('bot',WELCOME_MESSAGE,false)}
-function sendMessage(){
+var AI_ANS=[];
+function aiCtx(extra){var c={cls:state.dashClass,action:'chat'};for(var k in extra)c[k]=extra[k];return c}
+function aiQuickList(){
+  var out=[],seen={};
+  try{(window.LFHS_PDFS||[]).forEach(function(p){
+    if(String(p.cls).split('-').indexOf(state.dashClass)===-1)return;
+    var m=/\bCh\.?\s*\d+\s*[:.\-]\s*(.{4,40})$/i.exec(p.title||'');if(!m)return;
+    var t=m[1].replace(/\s+/g,' ').replace(/\s*[\u2014\u2013-]\s*(question bank|notes?|worksheets?|revision|summary|mcq|previous).*$/i,'').trim();if(t.length<4)return;if(seen[t.toLowerCase()])return;seen[t.toLowerCase()]=1;out.push(t)});}catch(e){}
+  var mix=[];out.sort(function(a,b){return a<b?-1:1});
+  var step=Math.max(1,Math.floor(out.length/8));
+  for(var i=0;i<out.length&&mix.length<8;i+=step)mix.push((mix.length%2?'Explain ':'Summarize ')+out[i]);
+  return mix.concat(AI_QUICK);
+}
+function setAiTools(open){
+  var m=$('aiTools'),b=$('aiToolsBtn');if(!m||!b)return;
+  m.hidden=!open;b.setAttribute('aria-expanded',open?'true':'false');
+  b.innerHTML=open?'<i class="fa-solid fa-xmark" aria-hidden="true"></i>':'<i class="fa-solid fa-plus" aria-hidden="true"></i>';
+}
+function kbCall(ctx,messages){
+  var ctl=window.AbortController?new AbortController():null;var timer=ctl?setTimeout(function(){ctl.abort()},27000):0;
+  return fetch('/api/chat?provider=auto',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:messages||[{role:'user',text:ctx.topic||'topic'}],ctx:ctx}),signal:ctl?ctl.signal:undefined})
+    .then(function(res){return res.json().catch(function(){return {}}).then(function(d){return {ok:res.ok,status:res.status,data:d}})})
+    .catch(function(){return {ok:false,status:0,data:{}}})
+    .then(function(r){clearTimeout(timer);if(r.ok||(r.data&&r.data.noEvidence))return r.data;var e=new Error((r.data&&r.data.error)||('http '+r.status));e.status=r.status;e.data=r.data;throw e});
+}
+function srcName(s){var r=BYID[s.id];return (r?r.title:s.id)+' p.'+Number(s.page)}
+function srcHtml(sources){
+  if(!sources||!sources.length)return '';
+  var cited=sources.filter(function(s){return s.cited}),list=cited.length?cited:sources,seen={},items=[];
+  list.forEach(function(s){var r=BYID[s.id];if(!r)return;var k=s.id+':'+s.page;if(seen[k])return;seen[k]=1;
+    items.push('<li><button type="button" class="ai-srclink" data-open-src="'+esc(s.id)+'" data-page="'+Number(s.page)+'">'+esc(r.title)+' &middot; p.'+Number(s.page)+(s.chapter?' &middot; '+esc(s.chapter):'')+'</button></li>')});
+  return items.length?'<details class="ai-src"><summary><i class="fa-solid fa-book-open" aria-hidden="true"></i> Sources ('+items.length+')</summary><ul>'+items.join('')+'</ul></details>':'';
+}
+function sendMessage(opts){
+  opts=(opts&&typeof opts==='object'&&!opts.target&&!opts.type)?opts:{};
   var input=$('userInput');var sendBtn=$('sendBtn');
-  var text=input.value.trim();if(!text||isSending)return;
+  var action=opts.action||'chat';
+  var text=(opts.text||input.value).trim();if(!text||isSending)return;
+  var topic=opts.topic||text;
+  setAiTools(false);
   isSending=true;sendBtn.disabled=true;
-  appendBubble('user',text,false);input.value='';chatHistory.push({role:'user',text:text});
-  var typingBubble=appendBubble('bot','<i class="fa-solid fa-circle-notch fa-spin" aria-hidden="true"></i> <em>Consulting AI Assistant...</em>',true);
-  var payload=JSON.stringify({messages:chatHistory});
+  appendBubble('user',text,false);if(!opts.text)input.value='';
+  if(action==='chat')chatHistory.push({role:'user',text:text});
+  var typingBubble=appendBubble('bot','<i class="fa-solid fa-circle-notch fa-spin" aria-hidden="true"></i> <em>Thinking...</em>',true);
+  var ctx=aiCtx(action==='chat'?{}:{action:action,topic:topic,passage:opts.passage||''});
   function setModel(name){$('chatStatus').textContent=name}
-  function ask(){
-    var ctl=window.AbortController?new AbortController():null;
-    var timer=ctl?setTimeout(function(){ctl.abort()},27000):0;
-    return fetch('/api/chat?provider=auto',{method:'POST',headers:{'Content-Type':'application/json'},body:payload,signal:ctl?ctl.signal:undefined})
-      .then(function(response){return response.json().catch(function(){return {}}).then(function(data){return {ok:response.ok,status:response.status,data:data}})})
-      .catch(function(){return {ok:false,status:0,data:{}}})
-      .then(function(r){clearTimeout(timer);return r});
-  }
   var LABEL={gemini:'Gemini',groq:'Groq',openrouter:'OpenRouter'};
-  function showReply(reply,provider){
-    typingBubble.remove();chatHistory.push({role:'model',text:reply});
-    setModel(LABEL[provider]||'AI');
-    appendBubble('bot',renderMarkdown(reply)+'<div class="ai-by">Answered by '+(LABEL[provider]||'AI')+'</div>',true);
+  function dropHistory(){if(action==='chat')chatHistory.pop()}
+  function showReply(d){
+    typingBubble.remove();
+    if(action==='chat')chatHistory.push({role:'model',text:d.reply});
+    setModel(d.provider?(LABEL[d.provider]||'AI'):(d.noAi?'Your papers':'AI'));
+    var idx=AI_ANS.push({q:text,a:d.reply,s:(d.sources||[]).map(function(x){return {id:x.id,page:x.page}})})-1;
+    var body=renderMarkdown(d.reply);
+    if(d.grounded)body=body.replace(/\[(\d{1,2})\]/g,'<sup class="cite">$1</sup>');
+    var badge='';
+    if(d.supplementary)badge='<div class="ai-badge gen"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> General answer, not from your textbooks. It may go beyond your syllabus.</div>';
+    else if(d.unverified)badge='<div class="ai-badge warn">I could not tie this to a page. Please check your textbook.</div>';
+    var more=d.grounded&&action==='chat'?'<button type="button" data-aifollow="revision" data-q="'+esc(text)+'">Revision sheet</button>':'';
+    var acts='<div class="ai-acts"><button type="button" data-aicopy="'+idx+'" aria-label="Copy answer" title="Copy"><i class="fa-regular fa-copy" aria-hidden="true"></i></button><button type="button" data-aisave="'+idx+'" aria-label="Save answer" title="Save"><i class="fa-regular fa-bookmark" aria-hidden="true"></i></button>'+
+      (action==='chat'?'<button type="button" data-aifollow="chat" data-q="Explain that again in simpler words">Simpler</button>':'')+more+'</div>';
+    appendBubble('bot',body+srcHtml(d.sources)+badge+acts,true);
   }
-  function why(x){if(!x)return '';return ((x.data&&x.data.provider)||'AI')+': '+(x.status?('error '+((x.data&&x.data.upstream)||x.status)):'no response')+(x.data&&x.data.detail?' ('+esc(x.data.detail)+')':'')}
-  function showError(r,first){
-    typingBubble.remove();chatHistory.pop();
-    if(r.status===0){
-      setModel('Offline');
-      appendBubble('bot error','<i class="fa-solid fa-plug-circle-xmark" aria-hidden="true"></i> <strong>The AI helper is offline right now.</strong><br>You can still find what you need: <a href="'+nhash(state.dashClass,'-','all')+'">browse Class '+state.dashClass+' resources</a> or use the search bar at the top.',true);
-    } else {
-      setModel('Unavailable');
-      var dbg=[why(first),why(r)].filter(Boolean).join(' &middot; ');
-      appendBubble('bot error','<i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> The AI assistant could not answer right now. Please try again.<div class="ai-by">'+dbg+'</div>',true);
-    }
+  function showNoEvidence(d){
+    typingBubble.remove();dropHistory();setModel('No match');
+    appendBubble('bot',esc(d.reply||'I could not find enough information in your materials.'),true);
+  }
+  function showError(e){
+    typingBubble.remove();dropHistory();
+    var st=e&&e.status,d=e&&e.data;
+    if(st===0){setModel('Offline');appendBubble('bot error','<i class="fa-solid fa-plug-circle-xmark" aria-hidden="true"></i> <strong>The AI helper is offline right now.</strong><br>You can still <a href="'+nhash(state.dashClass,'-','all')+'">browse Class '+state.dashClass+' resources</a> or use the search bar.',true);return}
+    setModel('Unavailable');
+    appendBubble('bot error','<i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> '+esc((d&&d.error)||'The AI assistant could not answer right now. Please try again.')+' Your resource library and PDFs still work.',true);
   }
   setModel('AI assistant');
-  ask().then(function(r){
-    if(r.ok&&r.data&&r.data.reply)showReply(r.data.reply,r.data.provider);
-    else showError(r,null);
-  }).catch(function(){showError({status:0},null)}).then(function(){isSending=false;sendBtn.disabled=false;input.focus()});
+  kbCall(ctx,action==='chat'?chatHistory:[{role:'user',text:topic}]).then(function(d){
+    if(d&&d.noEvidence)showNoEvidence(d);else if(d&&d.reply)showReply(d);else showError({status:502,data:{}});
+  }).catch(showError).then(function(){isSending=false;sendBtn.disabled=false;input.focus()});
 }
+function aiSavedList(){var v=store.get('lfhs.aiSaved',[]);return Array.isArray(v)?v:[]}
+function showSavedAnswers(){
+  var l=aiSavedList();
+  if(!l.length){appendBubble('bot','No saved answers yet. Tap the bookmark under an answer to keep it on this device.',false);return}
+  appendBubble('bot','<strong>Saved answers</strong>'+l.slice().reverse().map(function(x){return '<div class="ai-saved-item"><strong>'+esc(x.q)+'</strong><br>'+esc(String(x.a).slice(0,220))+(String(x.a).length>220?'...':'')+'<div class="ai-acts"><button type="button" data-aisaved-del="'+x.t+'">Delete</button></div></div>'}).join(''),true);
+}
+document.addEventListener('click',function(e){
+  var tools=$('aiTools');
+  if(tools&&!tools.hidden&&!e.target.closest('#aiTools,#aiToolsBtn'))setAiTools(false);
+  var t=e.target.closest('#aiToolsBtn,[data-aiact],[data-open-src],[data-aicopy],[data-aisave],[data-aifollow],[data-aisaved-del]');if(!t)return;
+  if(t.id==='aiToolsBtn'){setAiTools(tools.hidden);return}
+  if(t.dataset.openSrc){openPdfViewer(t.dataset.openSrc,Number(t.dataset.page)||1);return}
+  if(t.dataset.aicopy!==undefined){var a=AI_ANS[Number(t.dataset.aicopy)];if(!a)return;var txt=a.a+(a.s.length?'\n\nSources:\n'+a.s.map(srcName).join('\n'):'');
+    (navigator.clipboard&&navigator.clipboard.writeText?navigator.clipboard.writeText(txt):Promise.reject()).then(function(){toast('Answer copied')}).catch(function(){toast('Could not copy on this device')});return}
+  if(t.dataset.aisave!==undefined){var s=AI_ANS[Number(t.dataset.aisave)];if(!s)return;var l=aiSavedList();l.push({q:s.q,a:s.a,s:s.s,t:Date.now()});store.set('lfhs.aiSaved',l.slice(-30));toast('Answer saved on this device');return}
+  if(t.dataset.aisavedDel){store.set('lfhs.aiSaved',aiSavedList().filter(function(x){return String(x.t)!==t.dataset.aisavedDel}));toast('Deleted');return}
+  if(t.dataset.aifollow){var q=t.dataset.q||'';if(t.dataset.aifollow==='chat'){sendMessage({text:q})}else sendMessage({action:t.dataset.aifollow,text:'Revision sheet: '+q.slice(0,80),topic:q});return}
+  var act=t.dataset.aiact;setAiTools(false);if(act==='saved'){showSavedAnswers();return}
+  var typed=($('userInput').value||'').trim();
+  if(act==='explain'){var p=window.prompt('Paste the textbook passage you want explained:');if(!p||!p.trim())return;sendMessage({action:'explain',text:'Explain this passage: '+p.trim().slice(0,100),topic:p.trim().slice(0,160),passage:p.trim()});return}
+  if(!typed){toast('Type a chapter or topic first, like "Electricity"');$('userInput').focus();return}
+  if(act==='revision')sendMessage({action:'revision',text:'Revision sheet: '+typed,topic:typed});
+  else if(act==='important')sendMessage({action:'important',text:'Past questions on: '+typed,topic:typed});
+});
 var AI_API=false;
 function fsEl(){return document.fullscreenElement||document.webkitFullscreenElement||null}
 function paintAiFull(on){
@@ -5377,12 +5481,14 @@ function startQuiz(){
   var btn=$('quizStart');btn.disabled=true;
   $('quizOut').innerHTML='<p class="section-note" style="margin-bottom:12px">Writing your questions...</p>'+quizSkel();
   var prompt='Create exactly '+count+' multiple-choice questions for Class '+cls+' students in Kerala (SCERT syllabus). Subject: '+subj+'. Topic: '+topic+'. Keep the full response compact: each question under 18 words, each option under 8 words, each explanation under 20 words. Include exactly 4 options and one correct answer per question. Reply with ONLY valid JSON, no markdown or text outside it, in this shape: {"questions":[{"q":"...","options":["...","...","...","..."],"answer":0,"explain":"..."}]} where answer is the index (0 to 3) of the correct option.';
-  quizAsk(prompt).then(function(reply){
+  kbCall({cls:cls,subj:subj,subjLabel:subj,action:'quiz',topic:topic,count:count,qtype:'mcq'}).then(function(d){
     if(runId!==QZ.runId||FC.active)return;
-    var qs=parseQuiz(reply);
-    if(qs.length!==count)throw new Error('incomplete');
+    if(d.noEvidence||!d.items||!d.items.length){$('quizOut').innerHTML='<div class="empty"><i class="fa-solid fa-book-open"></i><p>'+esc(d.reply||'Not enough material found for this topic.')+'</p></div>';return}
+    var src=d.sources||[];
+    var qs=d.items.map(function(x){var ex=x.explain||'';if(x.src&&x.src.length){var s0=src[x.src[0]-1];if(s0)ex=(ex?ex+' ':'')+'[Source: '+srcName(s0)+']'}return {q:x.q,options:x.options,answer:x.answer,explain:ex}});
     QZ.quiz={cls:cls,subj:subj,topic:topic,items:qs};
     renderQuiz();
+    if(d.shortfall)toast('Only '+d.returned+' reliable question'+(d.returned===1?'':'s')+' found in your materials');
   }).catch(function(){
     if(runId===QZ.runId&&!FC.active)$('quizOut').innerHTML='<div class="empty"><i class="fa-solid fa-triangle-exclamation"></i><p>The quiz could not be made right now. Try again, or use a shorter topic.</p></div>';
   }).then(function(){if(runId===QZ.runId){QZ.busy=false;btn.disabled=false}});
@@ -5397,10 +5503,12 @@ function startFlashcards(){
   $('flashcardWrap').hidden=false;
   $('flashcardWrap').innerHTML='<p class="section-note" style="max-width:580px;margin:1.4rem auto">Creating your flashcards...</p>'+quizSkel();
   var prompt='Create exactly '+count+' active-recall flashcards for Class '+cls+' students in Kerala (SCERT syllabus). Subject: '+subj+'. Topic: '+topic+'. Make each question focused and each answer clear, accurate, and concise (prefer under 70 words). Avoid multiple-choice questions. Reply with ONLY valid JSON, no markdown or text outside it, in this shape: {"cards":[{"q":"...","a":"..."}]}.';
-  quizAsk(prompt).then(function(reply){
+  kbCall({cls:cls,subj:subj,subjLabel:subj,action:'flashcards',topic:topic,count:count}).then(function(d){
     if(runId!==QZ.runId||!FC.active)return;
-    var cards=parseFlashcards(reply);
-    if(cards.length!==count)throw new Error('incomplete');
+    if(d.noEvidence||!d.items||!d.items.length){$('flashcardWrap').innerHTML='<div class="empty"><i class="fa-solid fa-book-open"></i><p>'+esc(d.reply||'Not enough material found for this topic.')+'</p></div>';return}
+    var srcF=d.sources||[];
+    var cards=d.items.map(function(x){var s0=x.src&&x.src.length?srcF[x.src[0]-1]:null;return {q:x.q,a:x.a+(s0?' ['+srcName(s0)+']':'')}});
+    if(d.shortfall)toast('Only '+d.returned+' reliable card'+(d.returned===1?'':'s')+' found in your materials');
     FLASHCARDS=storeGeneratedFlashcards(cards,cls,subj,topic);
     FC.idx=0;FC.flipped=false;FC.mastered=0;FC.review=0;FC.cls=cls;FC.subj=subj;FC.topic=topic;FC.sessionType='generated';
     renderStudyShortcuts();
@@ -6520,7 +6628,7 @@ function pdfLoadActive(){
       if(!safe){pdfRenderError(r,'Invalid PDF URL.');return}
       frame.onload=function(){if(mySeq===PDFR.seq&&loading)loading.hidden=true};
       PDFR.nativeTimer=setTimeout(function(){if(mySeq===PDFR.seq&&loading)loading.hidden=true},1800);
-      frame.src=safe+'#toolbar=1&navpanes=0&view=FitH';
+      frame.src=safe+'#toolbar=1&navpanes=0&view=FitH'+(PDFR.startPage?'&page='+PDFR.startPage:'');PDFR.startPage=0;
     }
     return;
   }
@@ -6552,7 +6660,7 @@ function pdfLoadActive(){
       if(mySeq!==PDFR.seq){try{doc.destroy()}catch(e){}return}
       PDFR.doc=doc;
       PDFR.total=doc.numPages||r.pages||1;
-      PDFR.page=1;
+      PDFR.page=Math.max(1,Math.min(PDFR.startPage||1,PDFR.total));PDFR.startPage=0;
       PDFR.zoomMode='fit';
       PDFR.scale=1;
       if(loading)loading.hidden=true;
@@ -6564,7 +6672,7 @@ function pdfLoadActive(){
   });
 }
 
-function openPdfViewer(id){
+function openPdfViewer(id,page){
   var r=BYID[id];
   if(!r){toast('PDF resource not found.');return}
   var cleanUrl=safeUrl(r.url);
@@ -6575,6 +6683,7 @@ function openPdfViewer(id){
     if($('dashRecent'))$('dashRecent').innerHTML=recent.length?recent.map(miniRow).join(''):'<div class="task-empty">Nothing opened yet. Open a resource and it will show up here.</div>';
   }
   PDFR.id=r.id;
+  PDFR.startPage=Math.max(0,Math.floor(Number(page)||0));
   PDFR.lastFocused=document.activeElement;
   var canNative=!isTouchReaderDevice()&&navigator.pdfViewerEnabled!==false&&window.innerWidth>900;
   PDFR.engine=(canNative&&r.bytes&&r.bytes>20*1024*1024)?'native':'pdfjs';
