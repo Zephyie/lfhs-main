@@ -1097,6 +1097,36 @@ body.is-offline .offline-banner { display: block; }
   .chat-container .chat-input-area #sendBtn{padding:0;width:44px;min-width:44px;flex:0 0 44px}
   .chat-container .chat-input-area .chat-voice-btn{flex:0 0 40px;min-width:40px;padding:0}
 }
+
+/* v23: account stats, class account, creator panel polish, general-answer tag */
+.acc-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:.55rem;margin:.25rem 0 1rem}
+.acc-stat{background:var(--surface-2);border:1px solid var(--border);border-radius:14px;padding:.7rem .6rem;text-align:center;display:flex;flex-direction:column;gap:.15rem;min-width:0}
+.acc-stat b{font-size:1.1rem;color:var(--text-heading);line-height:1.25;overflow-wrap:anywhere}
+.acc-stat span{font-size:.74rem;color:var(--text-muted)}
+.acc-stat.wide{grid-column:1/-1}
+.acc-modal label.acc-classopt{display:flex;flex-direction:row;gap:.7rem;align-items:flex-start;margin:.2rem 0 .9rem;padding:.75rem .85rem;border:1px dashed var(--border);border-radius:12px;background:var(--surface-2);cursor:pointer;text-align:left}
+.acc-modal label.acc-classopt input{margin:.15rem 0 0;width:1.15rem;height:1.15rem;min-height:0;flex:0 0 auto;padding:0}
+.acc-modal label.acc-classopt span{display:block;flex:1;min-width:0}
+.acc-modal label.acc-classopt strong{display:block;font-size:.92rem;color:var(--text-heading)}
+.acc-modal label.acc-classopt small{display:block;font-weight:400;color:var(--text-muted);font-size:.76rem;line-height:1.35;margin-top:.15rem}
+.acc-locknote{display:flex;gap:.6rem;align-items:flex-start;padding:.7rem .8rem;border-radius:12px;background:var(--surface-2);font-size:.84rem;margin-bottom:.9rem}
+.gen-tag{display:inline-block;font-size:.62rem;font-weight:600;line-height:1;padding:.18rem .42rem;border-radius:999px;background:rgba(230,150,20,.2);color:var(--text-main);margin-left:.45rem;vertical-align:middle;white-space:nowrap}
+.flashcard-face .gen-tag{display:table;margin:.35rem auto 0}
+
+.modal[aria-label="Creator panel"]{padding-bottom:0}
+.modal[aria-label="Creator panel"] .seg[aria-label="Creator tools"]{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;width:100%;padding:6px;border-radius:18px;margin:0 0 1.1rem;box-sizing:border-box}
+.modal[aria-label="Creator panel"] .seg[aria-label="Creator tools"]:has(> :nth-child(4):last-child){grid-template-columns:repeat(2,1fr)}
+.modal[aria-label="Creator panel"] .seg[aria-label="Creator tools"] a{display:flex;align-items:center;justify-content:center;text-align:center;min-height:42px;padding:.45rem .35rem;border-radius:12px;font-size:.84rem;font-weight:600;white-space:nowrap;box-sizing:border-box}
+@media (min-width:700px){.modal[aria-label="Creator panel"] .seg[aria-label="Creator tools"]{grid-template-columns:repeat(6,1fr)}.modal[aria-label="Creator panel"] .seg[aria-label="Creator tools"]:has(> :nth-child(4):last-child){grid-template-columns:repeat(4,1fr)}}
+.modal[aria-label="Creator panel"] .modal-actions[style*="flex-start"]{justify-content:center!important}
+.modal[aria-label="Creator panel"] .modal-actions[style*="flex-start"] .btn,.modal[aria-label="Creator panel"] #crRefreshMembers{min-width:min(260px,100%);justify-content:center;text-align:center;border-radius:999px}
+.modal[aria-label="Creator panel"] .btn{justify-content:center;text-align:center}
+.modal[aria-label="Creator panel"] .cr-foot{position:sticky;bottom:0;display:flex;flex-direction:column;align-items:stretch;gap:.5rem;margin:1rem -.2rem 0;padding:.7rem .2rem calc(.7rem + env(safe-area-inset-bottom,0px));background:var(--card-bg);border-top:1px solid var(--border);box-shadow:0 -10px 16px -12px rgba(0,0,0,.25);text-align:center}
+.modal[aria-label="Creator panel"] .cr-foot .modal-actions{display:grid;grid-template-columns:1fr 1fr 1.5fr;gap:.5rem;width:100%;margin:0;justify-content:stretch}
+.modal[aria-label="Creator panel"] .cr-foot .modal-actions .btn{width:100%;min-height:44px;border-radius:999px;padding-left:.4rem;padding-right:.4rem}
+.modal[aria-label="Creator panel"] .member-admin-row{flex-direction:column;align-items:stretch;gap:.65rem}
+.modal[aria-label="Creator panel"] .member-admin-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:.45rem;width:100%}
+.modal[aria-label="Creator panel"] .member-admin-actions .btn{width:100%;min-height:40px;border-radius:999px}
 </style>
 <style id="lfhsHeroStyle">#lfhsHero{position:fixed;inset:0;z-index:1000;display:none;background:#000;overflow:hidden}#lfhsHero.show{display:block}#lfhsHero.leaving{opacity:0;transition:opacity .6s ease;pointer-events:none}@media print{#lfhsHero{display:none!important}}#lfhsHero .lh-root{
   --dim: rgba(255,255,255,.64); --faint: rgba(255,255,255,.42);
@@ -1727,7 +1757,7 @@ body.ab-open .ab-exit{display:inline-flex}
       <a href="https://www.aplusblog.in/" target="_blank" rel="noopener noreferrer">A+ Blog</a>
       <a href="#about">About Us</a>
       <a href="#creators">Creators</a>
-      <span style="opacity:.6;font-size:.75rem">v22</span>
+      <span style="opacity:.6;font-size:.75rem">v23</span>
     </div>
   </div>
 </footer>
@@ -4936,7 +4966,7 @@ function loadMembers(){
           +'<button type="button" class="btn btn-outline btn-sm" data-cr="member-reset" data-user="'+username+'"><i class="fa-solid fa-key" aria-hidden="true"></i> Reset password</button>'
           +'<button type="button" class="btn btn-danger btn-sm" data-cr="member-delete" data-user="'+username+'"><i class="fa-solid fa-trash" aria-hidden="true"></i> Delete account</button>';
       }
-      return '<div class="ed-line member-admin-row"><div class="notice-main"><span class="notice-title">'+username+'</span><div class="notice-meta">'+esc(m.role)+' · joined '+esc(m.created?new Date(m.created).toLocaleDateString():'date unavailable')+(owner?' · protected owner account':'')+'</div><div id="crMemberProfile'+index+'" hidden></div></div><div class="member-admin-actions">'+actions+'</div></div>';
+      return '<div class="ed-line member-admin-row"><div class="notice-main"><span class="notice-title">'+username+'</span><div class="notice-meta">'+esc(m.role)+' · joined '+esc(m.created?new Date(m.created).toLocaleDateString():'date unavailable')+(owner?' · protected owner account':'')+(m.classAccount?' · class account':'')+'</div><div id="crMemberProfile'+index+'" hidden></div></div><div class="member-admin-actions">'+actions+'</div></div>';
     }).join(''):'<p class="section-note">No accounts found.</p>';
   });
   loadResetRequests();
@@ -4953,7 +4983,7 @@ $('noticeMore').addEventListener('click',function(){CS.showAll=!CS.showAll;rende
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&creatorBack&&creatorBack.classList.contains('show'))requestClose()});
 /* ===== Accounts: log in on any device, sync study data, guest mode, creator access ===== */
 var SYNC_KEYS=['lfhs.tasks','lfhs.progress','lfhs.saved','lfhs.recent','lfhs.recentSearch','lfhs.class','lfhs.theme','lfhs.focusStats','lfhs.flashcards','lfhs.quizHistory'];
-var AC={token:null,username:null,role:null,isOwner:false,timer:null,pending:false,last:'',statusIssue:'',syncVersion:0};
+var AC={token:null,username:null,role:null,isOwner:false,classAccount:false,timer:null,pending:false,last:'',statusIssue:'',syncVersion:0};
 function acctCall(body,keepalive){
   var h={'Content-Type':'application/json'};if(AC.token)h.Authorization='Bearer '+AC.token;
   return fetch('/api/account',{method:'POST',headers:h,body:JSON.stringify(body),cache:'no-store',keepalive:!!keepalive})
@@ -4964,8 +4994,8 @@ function localData(){var d={};SYNC_KEYS.forEach(function(k){var v=localStorage.g
 function applyRemote(d){SYNC_KEYS.forEach(function(k){var n=k.slice(5);if(d&&d[n]!==undefined)localStorage.setItem(k,JSON.stringify(d[n]))})}
 function hasLocal(){return SYNC_KEYS.some(function(k){return localStorage.getItem(k)!==null})}
 function clearSyncLocal(){SYNC_KEYS.forEach(function(k){localStorage.removeItem(k)})}
-function setSession(s){AC.token=s.token;AC.username=s.username;AC.role=s.role;AC.isOwner=s.isOwner===true;store.set('lfhs.session',{token:s.token,username:s.username,role:s.role});updateAccountLabel();applyRole()}
-function clearSession(){AC.token=null;AC.username=null;AC.role=null;AC.isOwner=false;localStorage.removeItem('lfhs.session');updateAccountLabel();applyRole()}
+function setSession(s){AC.token=s.token;AC.username=s.username;AC.role=s.role;AC.isOwner=s.isOwner===true;AC.classAccount=s.classAccount===true;store.set('lfhs.session',{token:s.token,username:s.username,role:s.role,classAccount:AC.classAccount});updateAccountLabel();applyRole()}
+function clearSession(){AC.token=null;AC.username=null;AC.role=null;AC.isOwner=false;AC.classAccount=false;localStorage.removeItem('lfhs.session');updateAccountLabel();applyRole()}
 function setSyncNote(msg){
   AC.last=msg;
   if(/not saved|could not|failed|unable to|not connected/i.test(msg))AC.statusIssue=msg;
@@ -5075,6 +5105,7 @@ function viewAuth(tab,msg){
     body='<div class="acc-field"><label for="accUser">Choose a username</label><input id="accUser" autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="20" placeholder="e.g. ayesha.k"><span class="acc-help">3–20 characters: letters, numbers, dots or underscores.</span></div>'
       +'<div class="acc-field"><label for="accPass">Create a password</label><input id="accPass" type="password" autocomplete="new-password" maxlength="100" placeholder="At least 6 characters"><span class="acc-help">Choose a strong password you do not use on another site.</span></div>'
       +'<div class="acc-field"><label for="accPass2">Confirm password</label><input id="accPass2" type="password" autocomplete="new-password" maxlength="100" data-enter="signup" placeholder="Type it again"></div>'
+      +'<label class="acc-classopt" for="accClass"><input type="checkbox" id="accClass"><span><strong>Class Account</strong><small>A shared login for a whole class. Change password and Log out are hidden; they sit in Settings, which needs this password to open.</small></span></label>'
       +'<button class="btn btn-primary acc-submit" type="button" data-acc="signup"><i class="fa-solid fa-user-plus" aria-hidden="true"></i> Sign up</button>';
   } else if(tab==='guest'){
     title='Continue as guest';subtitle='You can explore without creating an account.';
@@ -5092,13 +5123,50 @@ function viewAuth(tab,msg){
     +'<div class="acc-foot"><button class="btn btn-ghost" type="button" data-acc="close">Close</button></div>','Account');
   if(tab==='guest'){var cb=$('accAck');cb.addEventListener('change',function(){$('accGuestBtn').disabled=!cb.checked})}
 }
+function acctStats(){
+  function arr(k){var v=store.get(k,[]);return Array.isArray(v)?v:[]}
+  var tasks=arr('lfhs.tasks'),saved=arr('lfhs.saved'),quiz=getQuizHistory(),cards=getFlashcardLibrary();
+  var pr=store.get('lfhs.progress',{});var pv=pr&&typeof pr==='object'&&!Array.isArray(pr)?Object.keys(pr).map(function(k){return pr[k]}):[];
+  var fs=store.get('lfhs.focusStats',{});
+  var avg=quiz.length?Math.round(quiz.reduce(function(a,q){return a+(Number(q.score)/Math.max(1,Number(q.total)||1))*100},0)/quiz.length):null;
+  return {cls:state.dashClass,tasks:tasks.length,doneTasks:tasks.filter(function(t){return t&&t.done}).length,saved:saved.length,tracked:pv.length,doneTopics:pv.filter(function(v){return v==='done'}).length,cards:cards.length,quizzes:quiz.length,avg:avg,mins:Math.max(0,Math.floor(Number(fs&&fs.minutes)||0))};
+}
+function fmtMins(m){return m>=60?Math.floor(m/60)+' hr'+(m%60?' '+(m%60)+' min':''):m+' min'}
+function statsHtml(){
+  var s=acctStats();
+  function tile(v,l,wide){return '<div class="acc-stat'+(wide?' wide':'')+'"><b>'+v+'</b><span>'+l+'</span></div>'}
+  return '<div class="acc-stats" role="group" aria-label="Study summary">'
+    +tile('Class '+esc(s.cls),'Selected class')
+    +tile(s.doneTasks+' / '+s.tasks,'Planner tasks done')
+    +tile(s.doneTopics+' / '+s.tracked,'Topics completed')
+    +tile(s.saved,'Saved resources')
+    +tile(s.cards,'Flashcards')
+    +tile(s.quizzes?s.avg+'%':'&ndash;','Quiz average ('+s.quizzes+')')
+    +tile(fmtMins(s.mins),'Focus time',true)
+    +'</div>';
+}
 function viewAccount(msg){
   var creator=AC.role==='creator';
-  openModal('<div class="acc-head"><div class="acc-ico"><i class="fa-solid fa-user-graduate" aria-hidden="true"></i></div><div><h3>'+esc(AC.username)+'</h3><p class="section-note">'+(creator?'Creator account':'Student account')+' &middot; <span id="accSync">'+esc(AC.last||'Synced')+'</span></p></div></div>'
+  openModal('<div class="acc-head"><div class="acc-ico"><i class="fa-solid fa-user-graduate" aria-hidden="true"></i></div><div><h3>'+esc(AC.username)+'</h3><p class="section-note">'+(creator?'Creator account':AC.classAccount?'Class account':'Student account')+' &middot; <span id="accSync">'+esc(AC.last||'Synced')+'</span></p></div></div>'
     +'<p class="acc-msg" id="accMsg" role="status">'+(msg?esc(msg):'')+'</p>'
+    +statsHtml()
     +(creator?'<button class="btn btn-primary acc-submit" type="button" data-acc="creator"><i class="fa-solid fa-sliders" aria-hidden="true"></i> Open creator panel</button>':'')
+    +'<div class="acc-foot"><button class="btn btn-ghost" type="button" data-acc="close">Close</button><button class="btn btn-outline" type="button" data-acc="settings"><i class="fa-solid fa-gear" aria-hidden="true"></i> Settings'+(AC.classAccount?' <i class="fa-solid fa-lock" aria-hidden="true"></i>':'')+'</button></div>','Account');
+}
+function viewSettings(msg){
+  openModal('<div class="acc-head"><div class="acc-ico"><i class="fa-solid fa-gear" aria-hidden="true"></i></div><div><h3>Settings</h3><p class="section-note">'+esc(AC.username)+(AC.classAccount?' &middot; class account':'')+'</p></div></div>'
+    +'<p class="acc-msg" id="accMsg" role="status">'+(msg?esc(msg):'')+'</p>'
     +'<div class="acc-section"><h4>Change password</h4><div class="acc-field"><label for="accOld">Current password</label><input id="accOld" type="password" autocomplete="current-password"></div><div class="acc-field"><label for="accNew">New password</label><input id="accNew" type="password" autocomplete="new-password" maxlength="100"></div><button class="btn btn-outline acc-submit" type="button" data-acc="changepw">Update password</button></div>'
-    +'<div class="acc-foot"><button class="btn btn-ghost" type="button" data-acc="close">Close</button><button class="btn btn-danger" type="button" data-acc="logout"><i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> Log out</button></div>','Account');
+    +'<div class="acc-foot"><button class="btn btn-ghost" type="button" data-acc="back"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Back</button><button class="btn btn-danger" type="button" data-acc="logout"><i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> Log out</button></div>','Account');
+}
+function viewSettingsLock(msg){
+  openModal('<div class="acc-head"><div class="acc-ico"><i class="fa-solid fa-lock" aria-hidden="true"></i></div><div><h3>Settings are locked</h3><p class="section-note">'+esc(AC.username)+' &middot; class account</p></div></div>'
+    +'<p class="acc-msg" id="accMsg" role="status">'+(msg?esc(msg):'')+'</p>'
+    +'<div class="acc-locknote"><i class="fa-solid fa-circle-info" aria-hidden="true"></i><span>Enter this account\'s password to open Settings (change password and log out).</span></div>'
+    +'<div class="acc-field"><label for="accUnlock">Password</label><input id="accUnlock" type="password" autocomplete="current-password" data-enter="unlock" placeholder="Class account password"></div>'
+    +'<button class="btn btn-primary acc-submit" type="button" data-acc="unlock"><i class="fa-solid fa-unlock" aria-hidden="true"></i> Unlock settings</button>'
+    +'<div class="acc-foot"><button class="btn btn-ghost" type="button" data-acc="back"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Back</button></div>','Account');
+  var f=$('accUnlock');if(f)setTimeout(function(){try{f.focus()}catch(e){}},50);
 }
 function onAccClick(e){
   var b=e.target.closest?e.target.closest('[data-acc]'):null;if(!b)return;
@@ -5119,7 +5187,7 @@ function onAccClick(e){
     var su=($('accUser').value||'').trim().toLowerCase(),sp=$('accPass').value,sp2=$('accPass2').value;
     if(sp!==sp2){accMsg('The two passwords do not match.','err');return}
     b.disabled=true;accMsg('Creating your account...');
-    acctCall({action:'register',username:su,password:sp}).then(function(r){
+    acctCall({action:'register',username:su,password:sp,classAccount:!!($('accClass')&&$('accClass').checked)}).then(function(r){
       b.disabled=false;
       if(!r.ok){accMsg(r.data.error||'Could not create the account.','err');return}
       afterSignIn(r.data);
@@ -5141,6 +5209,20 @@ function onAccClick(e){
     if(!$('accAck')||!$('accAck').checked){accMsg('Please confirm that you understand guest data is stored only on this device.','err');return}
     localStorage.setItem('lfhs.guestAck','1');clearSession();closeAccount();dismissIntro();toast('Using guest mode on this device');return;
   }
+  if(a==='settings'){if(AC.classAccount)viewSettingsLock();else viewSettings();return}
+  if(a==='back'){viewAccount();return}
+  if(a==='unlock'){
+    var up=($('accUnlock')||{}).value;
+    if(!up){accMsg('Enter the password.','err');return}
+    b.disabled=true;accMsg('Checking...');
+    acctCall({action:'verifyPassword',password:up}).then(function(r){
+      b.disabled=false;
+      if(r.ok){viewSettings();return}
+      if(r.status===401){clearSession();viewAuth('login','Please log in again.');return}
+      accMsg(r.data.error||(r.status===0?'No connection. Check your internet and try again.':'Could not check the password.'),'err');
+      var f=$('accUnlock');if(f){f.value='';f.focus()}
+    });return;
+  }
   if(a==='logout'){
     if(AC.pending&&!window.confirm('Some changes are not saved yet. Log out anyway?'))return;
     acctCall({action:'logout',token:AC.token}).then(function(){clearSession();clearSyncLocal();location.reload()});return;
@@ -5153,7 +5235,7 @@ function onAccClick(e){
       if(r.ok){
         if(r.data&&r.data.token){
           AC.token=r.data.token;
-          store.set('lfhs.session',{token:AC.token,username:AC.username,role:AC.role});
+          store.set('lfhs.session',{token:AC.token,username:AC.username,role:AC.role,classAccount:AC.classAccount});
         }
         $('accOld').value='';$('accNew').value='';accMsg('Password updated.','ok')
       }
@@ -5228,12 +5310,12 @@ function initAccount(){
   var s=store.get('lfhs.session',null);
   updateAccountLabel();applyRole();
   if(!s||!s.token)return;
-  AC.token=s.token;AC.username=s.username;AC.role=s.role;AC.isOwner=false;updateAccountLabel();applyRole();
+  AC.token=s.token;AC.username=s.username;AC.role=s.role;AC.isOwner=false;AC.classAccount=s.classAccount===true;updateAccountLabel();applyRole();
   acctCall({action:'me'}).then(function(r){
     if(r.status===401){clearSession();showIntro();return}
     if(!r.ok){setSyncNote('Could not verify your account sync. Your local data remains on this device.');return}
-    AC.username=r.data.username;AC.role=r.data.role;AC.isOwner=!!r.data.isOwner;
-    store.set('lfhs.session',{token:AC.token,username:AC.username,role:AC.role});
+    AC.username=r.data.username;AC.role=r.data.role;AC.isOwner=!!r.data.isOwner;AC.classAccount=r.data.classAccount===true;
+    store.set('lfhs.session',{token:AC.token,username:AC.username,role:AC.role,classAccount:AC.classAccount});
     applyRole();updateAccountLabel();
     return acctCall({action:'load'}).then(function(l){
       if(!l.ok){setSyncNote('Could not load synced data. Your local data remains on this device.');return}
@@ -5462,13 +5544,13 @@ function renderQuiz(){
       ? '<p class="qz-explain"><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> '+esc(it.explain)
         +'<button type="button" class="btn btn-ghost btn-sm" style="margin-top:.4rem;display:flex;align-items:center;gap:6px" data-ask-explain="'+i+'"><i class="fa-solid fa-robot" aria-hidden="true"></i> Ask AI to explain step-by-step</button></p>'
       : '';
-    return '<article class="qz-card"><p class="qz-q"><span class="qz-num">'+(i+1)+'.</span>'+esc(it.q)+'</p><div class="qz-opts">'+opts+'</div>'+exp+'<button type="button" class="btn btn-ghost btn-sm answer-report" data-report-quiz="'+i+'"><i class="fa-regular fa-flag" aria-hidden="true"></i> Flag a problem with this question</button></article>';
+    return '<article class="qz-card"><p class="qz-q"><span class="qz-num">'+(i+1)+'.</span>'+esc(it.q)+(it.general?'<span class="gen-tag" title="Not taken from your textbooks">general answer*</span>':'')+'</p><div class="qz-opts">'+opts+'</div>'+exp+'<button type="button" class="btn btn-ghost btn-sm answer-report" data-report-quiz="'+i+'"><i class="fa-regular fa-flag" aria-hidden="true"></i> Flag a problem with this question</button></article>';
   }).join('');
   var retryBtn='';
   if(done===q.items.length&&score<q.items.length){
     retryBtn='<button type="button" class="btn btn-outline btn-sm" data-quiz-retry-missed><i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Retry missed questions ('+(q.items.length-score)+')</button>';
   }
-  var foot='<div class="qz-foot"><p class="section-note">AI-generated practice questions. Check important answers in your textbook.</p><div style="display:flex;gap:.5rem;flex-wrap:wrap">'+retryBtn+'<button type="button" class="btn btn-ghost btn-sm" data-quiz-reset><i class="fa-solid fa-rotate-left" aria-hidden="true"></i> New quiz</button></div></div>';
+  var foot='<div class="qz-foot"><p class="section-note">AI-generated practice questions. Check important answers in your textbook.'+(q.items.some(function(x){return x.general})?' * General answer: not taken from your textbooks.':'')+'</p><div style="display:flex;gap:.5rem;flex-wrap:wrap">'+retryBtn+'<button type="button" class="btn btn-ghost btn-sm" data-quiz-reset><i class="fa-solid fa-rotate-left" aria-hidden="true"></i> New quiz</button></div></div>';
   $('quizOut').innerHTML=head+body+foot;
 }
 function startQuiz(){
@@ -5485,7 +5567,7 @@ function startQuiz(){
     if(runId!==QZ.runId||FC.active)return;
     if(d.noEvidence||!d.items||!d.items.length){$('quizOut').innerHTML='<div class="empty"><i class="fa-solid fa-book-open"></i><p>'+esc(d.reply||'Not enough material found for this topic.')+'</p></div>';return}
     var src=d.sources||[];
-    var qs=d.items.map(function(x){var ex=x.explain||'';if(x.src&&x.src.length){var s0=src[x.src[0]-1];if(s0)ex=(ex?ex+' ':'')+'[Source: '+srcName(s0)+']'}return {q:x.q,options:x.options,answer:x.answer,explain:ex}});
+    var qs=d.items.map(function(x){var ex=x.explain||'';if(x.src&&x.src.length){var s0=src[x.src[0]-1];if(s0)ex=(ex?ex+' ':'')+'[Source: '+srcName(s0)+']'}return {q:x.q,options:x.options,answer:x.answer,explain:ex,general:x.general===true}});
     QZ.quiz={cls:cls,subj:subj,topic:topic,items:qs};
     renderQuiz();
     if(d.shortfall)toast('Only '+d.returned+' reliable question'+(d.returned===1?'':'s')+' found in your materials');
@@ -5507,7 +5589,7 @@ function startFlashcards(){
     if(runId!==QZ.runId||!FC.active)return;
     if(d.noEvidence||!d.items||!d.items.length){$('flashcardWrap').innerHTML='<div class="empty"><i class="fa-solid fa-book-open"></i><p>'+esc(d.reply||'Not enough material found for this topic.')+'</p></div>';return}
     var srcF=d.sources||[];
-    var cards=d.items.map(function(x){var s0=x.src&&x.src.length?srcF[x.src[0]-1]:null;return {q:x.q,a:x.a+(s0?' ['+srcName(s0)+']':'')}});
+    var cards=d.items.map(function(x){var s0=x.src&&x.src.length?srcF[x.src[0]-1]:null;return {q:x.q,a:x.a+(s0?' ['+srcName(s0)+']':''),gen:x.general===true}});
     if(d.shortfall)toast('Only '+d.returned+' reliable card'+(d.returned===1?'':'s')+' found in your materials');
     FLASHCARDS=storeGeneratedFlashcards(cards,cls,subj,topic);
     FC.idx=0;FC.flipped=false;FC.mastered=0;FC.review=0;FC.cls=cls;FC.subj=subj;FC.topic=topic;FC.sessionType='generated';
@@ -5895,9 +5977,9 @@ function storeGeneratedFlashcards(cards,cls,subj,topic){
   var lib=getFlashcardLibrary(),now=Date.now(),session=[];
   cards.forEach(function(c){
     var id=flashcardId(c,cls,subj,topic),existing=lib.find(function(x){return x.id===id});
-    var saved=existing?Object.assign({},existing,{q:c.q,a:c.a,subj:subj,topic:topic,updatedAt:now}):{id:id,cls:cls,subj:subj,topic:topic,q:c.q,a:c.a,dueAt:now,intervalDays:0,reps:0,lastReviewed:0,updatedAt:now};
+    var saved=existing?Object.assign({},existing,{q:c.q,a:c.a,subj:subj,topic:topic,updatedAt:now,gen:c.gen===true?true:undefined}):{id:id,cls:cls,subj:subj,topic:topic,q:c.q,a:c.a,dueAt:now,intervalDays:0,reps:0,lastReviewed:0,updatedAt:now,gen:c.gen===true?true:undefined};
     if(existing)lib[lib.indexOf(existing)]=saved;else lib.push(saved);
-    session.push({id:id,cls:cls,subj:subj,topic:topic,q:c.q,a:c.a});
+    session.push({id:id,cls:cls,subj:subj,topic:topic,q:c.q,a:c.a,gen:c.gen===true});
   });
   lib.sort(function(a,b){return Number(a.updatedAt||0)-Number(b.updatedAt||0)});
   lib=lib.slice(-30);store.set('lfhs.flashcards',lib);
@@ -5983,6 +6065,7 @@ function renderFlashcardUI(){
     + '<div class="flashcard' + (FC.flipped ? ' flipped' : '') + '" id="fcCard">'
     + '<div class="flashcard-face flashcard-front">'
     + '<div class="flashcard-kicker"><span>' + esc(c.subj.toUpperCase()) + '</span><span>Tap to flip ↻</span></div>'
+    + (c.gen ? '<span class="gen-tag" title="Not taken from your textbooks">general answer*</span>' : '')
     + '<div class="flashcard-body">' + esc(c.q) + '</div>'
     + '<div class="flashcard-hint"><i class="fa-regular fa-hand-pointer"></i> Tap card or press Space or Enter to reveal the answer</div>'
     + '</div>'

@@ -214,6 +214,30 @@ function shapeCards(reply, n, want) {
   }
   return out;
 }
+const normQ = (t) => String(t || '').toLowerCase().replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 80);
+// Items written WITHOUT textbook excerpts. They carry general:true so the app can label them "general answer*".
+function shapeQuizGeneral(reply, want, seen) {
+  const d = parseJson(reply); const list = d && Array.isArray(d.questions) ? d.questions : []; const out = [];
+  for (const x of list) {
+    if (!x || typeof x.q !== 'string' || !x.q.trim() || !Array.isArray(x.options) || x.options.length !== 4 || typeof x.answer !== 'number') continue;
+    const opts = x.options.map((o) => String(o == null ? '' : o).trim().slice(0, 160)); const ans = Number(x.answer);
+    if (opts.some((o) => !o) || !Number.isInteger(ans) || ans < 0 || ans > 3) continue;
+    const k = normQ(x.q); if (seen.has(k)) continue; seen.add(k);
+    out.push({ q: x.q.trim().slice(0, 320), options: opts, answer: ans, explain: String(x.explain || '').trim().slice(0, 300), general: true });
+    if (out.length >= want) break;
+  }
+  return out;
+}
+function shapeCardsGeneral(reply, want, seen) {
+  const d = parseJson(reply); const list = d && Array.isArray(d.cards) ? d.cards : []; const out = [];
+  for (const x of list) {
+    if (!x || typeof x.q !== 'string' || typeof x.a !== 'string' || !x.q.trim() || !x.a.trim()) continue;
+    const k = normQ(x.q); if (seen.has(k)) continue; seen.add(k);
+    out.push({ q: x.q.trim().slice(0, 320), a: x.a.trim().slice(0, 800), general: true }); if (out.length >= want) break;
+  }
+  return out;
+}
+
 // Past questions need no AI: rank retrieved paper / question-bank questions by how many different files repeat them.
 function importantQuestions(rows) {
   const norm = (s) => s.toLowerCase().replace(/^\s*\d+[.)]\s*/, '').replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 90);
@@ -268,19 +292,70 @@ async function ask(res, body, ctx, only, deadline) {
   return res.status(200).json({ reply: c.text, provider: out.provider, grounded: true, supplementary: false, sources: sources.map((s) => ({ ...s, cited: c.used.includes(s.n) })), unverified: c.used.length === 0 });
 }
 
+/* ---------- quiz / flashcards: from the library first, then topped up to the chosen amount ---------- */
+async function practiceSet(res, ctx, topic, only, deadline) {
+  const cls = ctx.cls, action = ctx.action;
+  const wantN = Math.max(1, Math.min(Number(ctx.count) || 5, 10));
+  const mcq = action === 'quiz' && ctx.qtype !== 'short';
+  const subj = ctx.subj || inferSubject(topic, cls);
+  const run = (job) => generate(job, only, deadline);
+
+  let key = null;
+  key = cacheKey({ type: action, cls, subj, chapter: ctx.chapter, topic, count: wantN, qtype: ctx.qtype, version: kbVersion(cls) });
+  if (topic.length <= 80) { const hit = await cacheGet(key); if (hit) return res.status(200).json({ ...hit, cached: true }); } else key = null;
+
+  // 1) textbook-grounded items
+  let items = [], sources = [], provider = null;
+  if (!ctx.subjUnsupported) {
+    let rr = retrieve({ cls, subj, chapterNo: ctx.chapter, kinds: KINDS.practice, text: topic, limit: 8 });
+    let gate = evidenceEnough(rr.rows, rr.terms);
+    if (!gate.ok && subj && !ctx.subj) { rr = retrieve({ cls, subj: null, chapterNo: ctx.chapter, kinds: KINDS.practice, text: topic, limit: 8 }); gate = evidenceEnough(rr.rows, rr.terms); }
+    if (gate.ok) {
+      const { context, kept } = buildContext(rr.rows, 3800); sources = sourcesOf(kept);
+      const base = STUDY_RULES + ' You are helping a ' + clsName(cls) + ' Kerala SCERT student. Reply in the language the student writes in.';
+      const job = action === 'quiz'
+        ? { system: base + ' Write exam-style practice questions that each come from the excerpts. Reply with ONLY JSON: ' + (mcq ? '{"questions":[{"q":"...","options":["..","..","..",".."],"answer":0,"explain":"..","src":[1]}]}' : '{"questions":[{"q":"...","a":"model answer","explain":"..","src":[1]}]}') + ' where src lists the excerpt numbers used and answer is the index 0-3. Keep each question under 20 words. Write fewer questions rather than inventing any the excerpts do not support.', msgs: [{ role: 'user', text: 'EXCERPTS:\n' + context + '\n\nWrite up to ' + wantN + (mcq ? ' multiple-choice' : ' short-answer') + ' questions on: ' + topic }], maxTokens: 160 * wantN + 200, temperature: 0.3 }
+        : { system: base + ' Make active-recall flashcards (definitions, formulas, key concepts) from the excerpts. Reply with ONLY JSON {"cards":[{"q":"...","a":"... (under 60 words)","src":[1]}]} where src lists excerpt numbers. Make fewer cards rather than inventing any.', msgs: [{ role: 'user', text: 'EXCERPTS:\n' + context + '\n\nMake up to ' + wantN + ' flashcards on: ' + topic }], maxTokens: 140 * wantN + 200, temperature: 0.3 };
+      const out = await dedupe(key ? key + ':g' : 'g' + Math.random(), () => run(job));
+      if (out.error) return fail(res, out.error);
+      provider = out.provider;
+      items = action === 'quiz' ? shapeQuiz(out.reply, sources.length, wantN) : shapeCards(out.reply, sources.length, wantN);
+    }
+  }
+  const groundedCount = items.length;
+
+  // 2) top up with clearly marked general items so the student gets the amount they chose
+  if (items.length < wantN) {
+    const need = wantN - items.length; const seen = new Set(items.map((x) => normQ(x.q)));
+    const avoid = items.slice(0, 10).map((x) => '- ' + x.q.slice(0, 90)).join('\n');
+    const baseG = 'You write study material for a ' + clsName(cls) + ' Kerala SCERT student. This material is NOT taken from the textbook, so keep it at ' + clsName(cls) + ' level, accurate and exam-style. Reply in the language the student writes in.';
+    const job = action === 'quiz'
+      ? { system: baseG + ' Reply with ONLY JSON: {"questions":[{"q":"...","options":["..","..","..",".."],"answer":0,"explain":".."}]} where answer is the index 0-3. Keep each question under 20 words.', msgs: [{ role: 'user', text: 'Write exactly ' + need + ' multiple-choice questions on: ' + topic + (ctx.subjLabel ? ' (' + ctx.subjLabel + ')' : '') + (avoid ? '\nDo not repeat these:\n' + avoid : '') }], maxTokens: 160 * need + 200, temperature: 0.5 }
+      : { system: baseG + ' Reply with ONLY JSON {"cards":[{"q":"...","a":"... (under 60 words)"}]}.', msgs: [{ role: 'user', text: 'Make exactly ' + need + ' flashcards on: ' + topic + (ctx.subjLabel ? ' (' + ctx.subjLabel + ')' : '') + (avoid ? '\nDo not repeat these:\n' + avoid : '') }], maxTokens: 140 * need + 200, temperature: 0.5 };
+    const out = await run(job);
+    if (out.error) { if (!items.length) return fail(res, out.error); }
+    else { provider = provider || out.provider; items = items.concat(action === 'quiz' ? shapeQuizGeneral(out.reply, need, seen) : shapeCardsGeneral(out.reply, need, seen)); }
+  }
+  if (!items.length) return res.status(200).json({ reply: 'I could not build ' + (action === 'quiz' ? 'questions' : 'flashcards') + ' for this topic. Try a broader topic or a chapter name.', noEvidence: true, sources: [], items: [], requested: wantN, returned: 0, provider });
+  const payload = { items, sources, requested: wantN, returned: items.length, groundedCount, generalCount: items.length - groundedCount, shortfall: items.length < wantN, grounded: groundedCount > 0, provider };
+  if (key) await cacheSet(key, payload); // awaited: serverless functions can freeze right after the response
+  return res.status(200).json(payload);
+}
+
 /* ---------- study actions: library only, never general knowledge ---------- */
 async function study(res, body, ctx, only, deadline) {
   const cls = ctx.cls, action = ctx.action;
   const noEvidence = (reply) => res.status(200).json({ reply, noEvidence: true, sources: [], items: [], requested: ctx.count || undefined, returned: 0, provider: null });
-  if (ctx.subjUnsupported) return noEvidence('I don\'t have ' + ctx.subjLabel + ' materials in the library yet. Try another subject.');
   const msgs = cleanMessages(body.messages, CTX_TURNS, HIST_CHARS); const last = msgs.length ? msgs[msgs.length - 1] : null;
   const topic = String(ctx.topic || (last && last.text) || '').slice(0, 200);
   if (!topic.trim() && !ctx.passage) return res.status(400).json({ error: 'Send a topic first.' });
   const practice = action === 'quiz' || action === 'flashcards';
-  const kinds = action === 'important' ? KINDS.papers : practice ? KINDS.practice : KINDS.explain;
+  if (practice) return practiceSet(res, ctx, topic, only, deadline);
+  if (ctx.subjUnsupported) return noEvidence('I don\'t have ' + ctx.subjLabel + ' materials in the library yet. Try another subject.');
+  const kinds = action === 'important' ? KINDS.papers : KINDS.explain;
   const subj = ctx.subj || inferSubject(topic, cls);
   const text = topic + (ctx.passage ? ' ' + ctx.passage.slice(0, 300) : '');
-  let rr = retrieve({ cls, subj, chapterNo: ctx.chapter, kinds, text, limit: action === 'revision' ? 10 : practice ? 8 : 6 });
+  let rr = retrieve({ cls, subj, chapterNo: ctx.chapter, kinds, text, limit: action === 'revision' ? 10 : 6 });
   let gate = evidenceEnough(rr.rows, rr.terms);
   if (!gate.ok && subj && !ctx.subj) { rr = retrieve({ cls, subj: null, chapterNo: ctx.chapter, kinds, text, limit: 8 }); gate = evidenceEnough(rr.rows, rr.terms); }
   if (!gate.ok) return noEvidence('I couldn\'t find enough about this topic in your ' + clsName(cls) + ' materials. Try a broader topic or a chapter name.');
@@ -294,16 +369,8 @@ async function study(res, body, ctx, only, deadline) {
   const { context, kept } = buildContext(rr.rows, action === 'revision' ? 5200 : 3800);
   const sources = sourcesOf(kept);
   const base = STUDY_RULES + ' You are helping a ' + clsName(cls) + ' Kerala SCERT student. Reply in the language the student writes in.';
-  const wantN = Math.max(1, Math.min(Number(ctx.count) || 5, 10));
   let job, cacheable = null;
-  if (action === 'quiz') {
-    const mcq = ctx.qtype !== 'short';
-    job = { system: base + ' Write exam-style practice questions that each come from the excerpts. Reply with ONLY JSON: ' + (mcq ? '{"questions":[{"q":"...","options":["..","..","..",".."],"answer":0,"explain":"..","src":[1]}]}' : '{"questions":[{"q":"...","a":"model answer","explain":"..","src":[1]}]}') + ' where src lists the excerpt numbers used and answer is the index 0-3. Keep each question under 20 words. Write fewer questions rather than inventing any the excerpts do not support.', msgs: [{ role: 'user', text: 'EXCERPTS:\n' + context + '\n\nWrite up to ' + wantN + (mcq ? ' multiple-choice' : ' short-answer') + ' questions on: ' + topic }], maxTokens: 160 * wantN + 200, temperature: 0.3 };
-    cacheable = 'quiz';
-  } else if (action === 'flashcards') {
-    job = { system: base + ' Make active-recall flashcards (definitions, formulas, key concepts) from the excerpts. Reply with ONLY JSON {"cards":[{"q":"...","a":"... (under 60 words)","src":[1]}]} where src lists excerpt numbers. Make fewer cards rather than inventing any.', msgs: [{ role: 'user', text: 'EXCERPTS:\n' + context + '\n\nMake up to ' + wantN + ' flashcards on: ' + topic }], maxTokens: 140 * wantN + 200, temperature: 0.3 };
-    cacheable = 'flashcards';
-  } else if (action === 'revision') {
+  if (action === 'revision') {
     job = { system: base + ' Write a one-page revision sheet: key ideas, definitions, a short list of things to remember, each cited like [1].', msgs: [{ role: 'user', text: 'EXCERPTS:\n' + context + '\n\nRevision sheet for: ' + topic }], maxTokens: 1000, temperature: 0.3 };
     cacheable = 'revision';
   } else { // explain a pasted passage
@@ -312,7 +379,7 @@ async function study(res, body, ctx, only, deadline) {
 
   let key = null;
   if (cacheable && !ctx.passage && topic.length <= 80) {
-    key = cacheKey({ type: cacheable, cls, subj, chapter: ctx.chapter, topic, count: wantN, qtype: ctx.qtype, version: kbVersion(cls) });
+    key = cacheKey({ type: cacheable, cls, subj, chapter: ctx.chapter, topic, count: 0, qtype: '', version: kbVersion(cls) });
     const hit = await cacheGet(key); if (hit) return res.status(200).json({ ...hit, cached: true });
   }
   const run = () => generate(job, only, deadline);
@@ -320,11 +387,7 @@ async function study(res, body, ctx, only, deadline) {
   if (out.error) return fail(res, out.error);
 
   let payload;
-  if (practice) {
-    const items = action === 'quiz' ? shapeQuiz(out.reply, sources.length, wantN) : shapeCards(out.reply, sources.length, wantN);
-    if (!items.length) return noEvidence('I could not build reliable ' + (action === 'quiz' ? 'questions' : 'flashcards') + ' from your ' + clsName(cls) + ' materials for this topic. Try a broader topic or a chapter name.');
-    payload = { items, sources, requested: wantN, returned: items.length, shortfall: items.length < wantN, grounded: true, provider: out.provider };
-  } else {
+  {
     const c = checkCitations(out.reply, sources.length);
     payload = { reply: c.text, sources: sources.map((s) => ({ ...s, cited: c.used.includes(s.n) })), unverified: c.used.length === 0, grounded: true, provider: out.provider };
   }

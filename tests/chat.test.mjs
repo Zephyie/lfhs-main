@@ -6,6 +6,7 @@ Object.assign(process.env, { GROQ_API_KEY: 'gk-SECRET-1', GEMINI_API_KEY: 'gm-SE
 delete process.env.SUPABASE_URL; delete process.env.SUPABASE_SERVICE_ROLE_KEY;
 const { default: handler } = await import('../api/chat.js'); const K = await import('../api/_kb.js');
 
+let generalCalls = 0;
 const calls = { groq: 0, gemini: 0 }; let behaviour = 'ok', last = null, answerText = null;
 global.fetch = async (url) => { throw new Error('unexpected fetch ' + url); };
 global.fetch = async (url, opt = {}) => {
@@ -13,6 +14,8 @@ global.fetch = async (url, opt = {}) => {
   if (u.includes('api.groq.com')) {
     calls.groq++; const b = JSON.parse(opt.body); last = b; if (behaviour === '429') return j(429, { error: { message: 'rate' } });
     const sys = b.messages[0].content; const user = b.messages[b.messages.length - 1].content; const reply = (c) => j(200, { choices: [{ message: { content: c } }] });
+    if (/Make exactly (\d+) flashcards/.test(user)) { generalCalls++; if (behaviour === 'generalFails') return j(500, { error: { message: 'x' } }); const n = Number(user.match(/exactly (\d+)/)[1]); return reply(JSON.stringify({ cards: [{ q: 'Card 0?', a: 'dup of a textbook card' }].concat(Array.from({ length: n + 1 }, (_, i) => ({ q: 'General card ' + i + '?', a: 'General answer ' + i }))) })); }
+    if (/Write exactly (\d+) multiple-choice/.test(user)) { generalCalls++; if (behaviour === 'generalFails') return j(500, { error: { message: 'x' } }); const n = Number(user.match(/exactly (\d+)/)[1]); return reply('```json\n' + JSON.stringify({ questions: [{ q: 'Q0?', options: ['a', 'b', 'c', 'd'], answer: 0 }].concat(Array.from({ length: n + 1 }, (_, i) => ({ q: 'General Q' + i + '?', options: ['a', 'b', 'c', 'd'], answer: i % 4, explain: 'ge' }))) }) + '\n```'); }
     if (/Make up to (\d+) flashcards/.test(user)) return reply(JSON.stringify({ cards: [0, 1, 2, 3, 4, 5].map((i) => ({ q: 'Card ' + i + '?', a: 'Answer ' + i, src: [1] })) }));
     if (/Write up to (\d+)/.test(user)) {
       const good = (i) => ({ q: 'Q' + i + '?', options: ['a', 'b', 'c', 'd'], answer: i % 4, explain: 'e', src: [1] });
@@ -67,21 +70,35 @@ await t('a new topic after an academic one is NOT glued to the old topic', async
   const h = [{ role: 'user', text: 'What is DNA fingerprinting?' }, { role: 'model', text: 'It compares DNA patterns.' }];
   const r = await chat('tell me a joke', {}, h); assert.ok(!r.body.grounded && r.body.sources.length === 0);
 });
-await t('quiz: only validated items, never padded to the requested count', async () => {
-  behaviour = 'fewer'; const r = await chat('x', { action: 'quiz', count: 10, topic: 'Genetics DNA', subj: 'biology' });
-  assert.equal(r.body.returned, 2); assert.equal(r.body.requested, 10); assert.ok(r.body.shortfall); assert.ok(r.body.items.every((i) => i.src.length && i.options.length === 4));
+await t('quiz fills the chosen amount: textbook questions first, then general ones labelled general', async () => {
+  behaviour = 'fewer'; generalCalls = 0; const r = await chat('x', { action: 'quiz', count: 10, topic: 'Genetics DNA', subj: 'biology' });
+  assert.equal(r.code, 200); assert.equal(r.body.returned, 10); assert.equal(r.body.requested, 10); assert.ok(!r.body.shortfall);
+  assert.equal(r.body.groundedCount, 2); assert.equal(r.body.generalCount, 8); assert.equal(generalCalls, 1);
+  assert.ok(r.body.items.slice(0, 2).every((i) => !i.general && i.src.length), 'textbook items first, not flagged');
+  assert.ok(r.body.items.slice(2).every((i) => i.general === true && !i.src), 'extra items flagged general');
+  assert.equal(new Set(r.body.items.map((i) => i.q)).size, 10, 'no duplicate questions (the model repeated Q0 and it was dropped)');
+  assert.ok(r.body.items.every((i) => i.options.length === 4 && i.answer >= 0 && i.answer <= 3));
 });
-await t('quiz caps at the requested count and is built from library text', async () => {
-  const r = await chat('x', { action: 'quiz', count: 5, topic: 'Nucleotides DNA structure', subj: 'biology' }); assert.equal(r.body.returned, 5); assert.ok(last.messages[1].content.includes('EXCERPTS:'));
+await t('quiz with enough textbook material makes NO general call and flags nothing', async () => {
+  generalCalls = 0; const r = await chat('x', { action: 'quiz', count: 5, topic: 'Nucleotides DNA structure', subj: 'biology' });
+  assert.equal(r.body.returned, 5); assert.equal(generalCalls, 0); assert.ok(r.body.items.every((i) => !i.general)); assert.equal(r.body.generalCount, 0);
 });
-await t('quiz for a subject with no library (Malayalam): honest message, zero AI calls', async () => {
-  const g = calls.groq; const r = await chat('x', { action: 'quiz', count: 5, topic: 'Poems', subj: 'Malayalam', subjLabel: 'Malayalam' }); assert.ok(r.body.noEvidence && /Malayalam/.test(r.body.reply)); assert.equal(calls.groq, g);
+await t('topic with no textbook material: the whole quiz is general and labelled (still the chosen amount)', async () => {
+  generalCalls = 0; const g = calls.groq; const r = await chat('x', { action: 'quiz', count: 5, topic: 'Quantum entanglement', subj: 'biology' });
+  assert.equal(r.body.returned, 5); assert.equal(r.body.groundedCount, 0); assert.ok(r.body.items.every((i) => i.general)); assert.equal(calls.groq, g + 1, 'one AI call only');
 });
-await t('quiz on an unrelated topic: noEvidence, zero AI calls', async () => {
-  const g = calls.groq; const r = await chat('x', { action: 'quiz', count: 5, topic: 'Quantum entanglement', subj: 'biology' }); assert.ok(r.body.noEvidence); assert.equal(calls.groq, g);
+await t('subject with no library (Malayalam): general quiz of the chosen amount, all labelled', async () => {
+  const r = await chat('x', { action: 'quiz', count: 5, topic: 'Poems', subj: 'Malayalam', subjLabel: 'Malayalam' }); assert.equal(r.body.returned, 5); assert.ok(r.body.items.every((i) => i.general));
 });
-await t('flashcards from the library; cards carry source numbers', async () => {
-  const r = await chat('x', { action: 'flashcards', count: 5, topic: 'Heredity genes DNA', subj: 'biology' }); assert.equal(r.body.returned, 5); assert.ok(r.body.items.every((c) => c.src.length));
+await t('if the general top-up fails, the textbook questions are still returned and marked as short', async () => {
+  behaviour = 'generalFails'; const r = await chat('x', { action: 'quiz', count: 10, topic: 'Genetics genes chromosomes', subj: 'biology' });
+  assert.equal(r.code, 200); assert.equal(r.body.returned, 7); assert.equal(r.body.requested, 10); assert.ok(r.body.shortfall); assert.ok(r.body.items.every((i) => !i.general));
+});
+await t('flashcards fill the chosen amount; general cards flagged, repeats dropped', async () => {
+  generalCalls = 0; const r = await chat('x', { action: 'flashcards', count: 8, topic: 'Heredity genes DNA', subj: 'biology' });
+  assert.equal(r.body.returned, 8); assert.equal(r.body.groundedCount, 6); assert.equal(r.body.generalCount, 2); assert.equal(generalCalls, 1);
+  assert.ok(r.body.items.slice(0, 6).every((c) => !c.general && c.src.length) && r.body.items.slice(6).every((c) => c.general === true));
+  assert.equal(new Set(r.body.items.map((c) => c.q)).size, 8);
 });
 await t('cache: same request served without AI; other class / chapter / count never share', async () => {
   const o = { action: 'flashcards', count: 5, topic: 'Heredity genes DNA', subj: 'biology' };
@@ -99,11 +116,13 @@ await t('provider failures: bounded attempts, breaker opens, no endless retries'
   for (let i = 0; i < 5; i++) codes.push((await chat('What is DNA fingerprinting?')).code);
   console.log('     codes', codes.join(','), '| groq calls', calls.groq, '| gemini calls', calls.gemini); assert.ok(codes.every((c) => c === 502)); assert.ok(calls.groq <= 3 && calls.gemini <= 3);
 });
-await t('library missing entirely: no crash; academic question answered with general label, study actions say no material', async () => {
+await t('library missing entirely: no crash; chat answers carry the general label, quizzes are all general, revision says no material', async () => {
   const keep = process.env.LFHS_KB_DIR; process.env.LFHS_KB_DIR = mkdtempSync(join(tmpdir(), 'empty-')); K.resetIndex();
-  const a = await chat('Explain quantum entanglement'); assert.equal(a.code, 200); assert.ok(a.body.supplementary);
-  const q = await chat('x', { action: 'quiz', count: 5, topic: 'Genetics', subj: 'biology' }); assert.ok(q.body.noEvidence);
-  process.env.LFHS_KB_DIR = keep; K.resetIndex();
+  try {
+    const a = await chat('Explain quantum entanglement'); assert.equal(a.code, 200); assert.ok(a.body.supplementary);
+    const q = await chat('x', { action: 'quiz', count: 5, topic: 'Genetics', subj: 'biology' }); assert.equal(q.body.returned, 5); assert.ok(q.body.items.every((i) => i.general));
+    const rv = await chat('x', { action: 'revision', topic: 'Genetics', subj: 'biology' }); assert.ok(rv.body.noEvidence);
+  } finally { process.env.LFHS_KB_DIR = keep; K.resetIndex(); }
 });
 await t('old clients (no ctx) keep the old response shape', async () => { const r = await call({ messages: [{ role: 'user', text: 'hello' }] }); assert.equal(r.code, 200); assert.deepEqual(Object.keys(r.body).sort(), ['provider', 'reply']); });
 await t('bad class falls back to legacy; empty question rejected', async () => {

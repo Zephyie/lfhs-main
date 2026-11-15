@@ -220,7 +220,7 @@ const cleanData = (d) => {
       const dueAt = Number(c.dueAt), lastReviewed = Number(c.lastReviewed);
       const updatedAt = Number(c.updatedAt);
       return {
-        id, cls, subj: str(c.subj, 40), topic: str(c.topic, 120), q, a,
+        id, cls, subj: str(c.subj, 40), topic: str(c.topic, 120), q, a, ...(c.gen === true ? { gen: true } : {}),
         dueAt: Number.isFinite(dueAt) && dueAt > 0 ? Math.min(dueAt, Date.now() + 3 * 365 * 86400000) : Date.now(),
         intervalDays: Math.max(0, Math.min(60, Math.floor(Number(c.intervalDays) || 0))),
         reps: Math.max(0, Math.min(100, Math.floor(Number(c.reps) || 0))),
@@ -276,9 +276,12 @@ export default async function handler(req, res) {
       if (!validPass(body.password)) return res.status(400).json({ error: 'Password: at least 6 characters.' });
       if (await kvGet('user:' + username)) return res.status(409).json({ error: 'That username is taken.' });
       const role = 'user';
-      await kvSet('user:' + username, JSON.stringify({ hash: hashPassword(body.password), role, ver: 1, data: {}, created: new Date().toISOString() }));
+      const classAccount = body.classAccount === true; // shared class login: Settings (password change, log out) is password-locked in the app
+      const record = { hash: hashPassword(body.password), role, ver: 1, data: {}, created: new Date().toISOString() };
+      if (classAccount) record.classAccount = true;
+      await kvSet('user:' + username, JSON.stringify(record));
       const token = await newSession(username, role, 1);
-      return res.status(200).json({ ok: true, token: token, username: username, role: role, isOwner: false });
+      return res.status(200).json({ ok: true, token: token, username: username, role: role, isOwner: false, classAccount: classAccount });
     }
 
     if (body.action === 'login') {
@@ -294,7 +297,7 @@ export default async function handler(req, res) {
       }
       await removeUnissuedCreatorRole(username, user);
       const token = await newSession(username, user.role, user.ver || 1);
-      return res.status(200).json({ ok: true, token: token, username: username, role: user.role, isOwner: !!OWNER_USERNAME && username === OWNER_USERNAME && user.role === 'creator' });
+      return res.status(200).json({ ok: true, token: token, username: username, role: user.role, isOwner: !!OWNER_USERNAME && username === OWNER_USERNAME && user.role === 'creator', classAccount: user.classAccount === true });
     }
 
     if (body.action === 'logout') {
@@ -330,7 +333,17 @@ export default async function handler(req, res) {
 
     const { s, user: sessionUser, isOwner } = auth;
 
-    if (body.action === 'me') return res.status(200).json({ ok: true, username: s.u, role: sessionUser.role, isOwner });
+    if (body.action === 'me') return res.status(200).json({ ok: true, username: s.u, role: sessionUser.role, isOwner, classAccount: sessionUser.classAccount === true });
+
+    // Checks the signed-in account's password without changing anything (opens the locked Settings of a class account).
+    if (body.action === 'verifyPassword') {
+      if (await lockedUser(ip, s.u)) return res.status(429).json({ error: 'Too many wrong attempts. Try again in 15 minutes.' });
+      if (typeof body.password !== 'string' || !sessionUser.hash || !checkPassword(body.password, sessionUser.hash)) {
+        await failedUser(ip, s.u);
+        return res.status(403).json({ error: 'Wrong password.' });
+      }
+      return res.status(200).json({ ok: true });
+    }
 
     if (body.action === 'listPasswordResetRequests') {
       if (!isOwner) return res.status(403).json({ error: 'Owner account required.' });
@@ -358,7 +371,7 @@ export default async function handler(req, res) {
         let u = {}; try { const parsed = JSON.parse(row.value || '{}'); if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) u = parsed; } catch (e) {}
         await removeUnissuedCreatorRole(username, u);
         const isOwner = !!OWNER_USERNAME && username === OWNER_USERNAME;
-        members.push({ username, role: isOwner ? 'owner' : (u.role || 'user'), isOwner, created: u.created || null });
+        members.push({ username, role: isOwner ? 'owner' : (u.role || 'user'), isOwner, created: u.created || null, classAccount: u.classAccount === true });
       }
       members.sort((a, b) => a.username.localeCompare(b.username));
       return res.status(200).json({ ok: true, members });
@@ -382,6 +395,7 @@ export default async function handler(req, res) {
         username,
         role: isTargetOwner ? 'owner' : (targetUser.role || 'user'),
         created: targetUser.created || null,
+        classAccount: targetUser.classAccount === true,
         class: ['8', '9', '10'].includes(String(data.class)) ? String(data.class) : null,
         tasks: tasks.length,
         completedTasks: tasks.filter((t) => t && t.done).length,
