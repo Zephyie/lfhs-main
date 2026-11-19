@@ -27,3 +27,5 @@ Thumbs.db
 out/
 build-log.txt
 pdfs/
+acquired/
+acquire-log.txt

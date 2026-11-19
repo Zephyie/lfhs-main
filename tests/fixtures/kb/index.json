@@ -1,14 +1,37 @@
 {
  "v": 1,
- "built": "2026-11-14T02:29:01.941Z",
+ "built": "2026-11-18T12:00:41.268Z",
  "shards": {
   "10-biology.json": {
    "cls": "10",
    "subj": "biology",
-   "built": "2026-11-14T02:29:01.938Z",
+   "built": "2026-11-18T12:00:41.264Z",
    "resources": 3,
    "chunks": 635,
    "chars": 191492
+  }
+ },
+ "resources": {
+  "LFHS-218": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 104,
+   "chunks": 172,
+   "ocr": 0
+  },
+  "LFHS-234": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 1,
+   "chunks": 16,
+   "ocr": 0
+  },
+  "LFHS-350": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 112,
+   "chunks": 447,
+   "ocr": 0
   }
  },
  "totals": {

@@ -1,6 +1,6 @@
 {
  "v": 1,
- "built": "2026-11-14T07:30:05.703Z",
+ "built": "2026-11-19T07:57:48.642Z",
  "shards": {
   "10-art.json": {
    "cls": "10",
@@ -42,6 +42,14 @@
    "chunks": 1604,
    "chars": 946905
   },
+  "10-hindi.json": {
+   "cls": "10",
+   "subj": "hindi",
+   "built": "2026-11-19T07:44:55.063Z",
+   "resources": 1,
+   "chunks": 133,
+   "chars": 81584
+  },
   "10-ict.json": {
    "cls": "10",
    "subj": "ict",
@@ -49,6 +57,14 @@
    "resources": 4,
    "chunks": 490,
    "chars": 303238
+  },
+  "10-malayalam.json": {
+   "cls": "10",
+   "subj": "malayalam",
+   "built": "2026-11-19T07:46:20.521Z",
+   "resources": 2,
+   "chunks": 254,
+   "chars": 158665
   },
   "10-maths.json": {
    "cls": "10",
@@ -90,6 +106,14 @@
    "chunks": 484,
    "chars": 272191
   },
+  "8-hindi.json": {
+   "cls": "8",
+   "subj": "hindi",
+   "built": "2026-11-19T07:44:08.267Z",
+   "resources": 1,
+   "chunks": 115,
+   "chars": 69886
+  },
   "8-ict.json": {
    "cls": "8",
    "subj": "ict",
@@ -97,6 +121,14 @@
    "resources": 2,
    "chunks": 313,
    "chars": 190023
+  },
+  "8-malayalam.json": {
+   "cls": "8",
+   "subj": "malayalam",
+   "built": "2026-11-19T07:43:38.513Z",
+   "resources": 2,
+   "chunks": 271,
+   "chars": 159626
   },
   "8-maths.json": {
    "cls": "8",
@@ -154,6 +186,14 @@
    "chunks": 609,
    "chars": 326160
   },
+  "9-hindi.json": {
+   "cls": "9",
+   "subj": "hindi",
+   "built": "2026-11-19T07:57:48.641Z",
+   "resources": 1,
+   "chunks": 128,
+   "chars": 78619
+  },
   "9-ict.json": {
    "cls": "9",
    "subj": "ict",
@@ -161,6 +201,14 @@
    "resources": 2,
    "chunks": 331,
    "chars": 195680
+  },
+  "9-malayalam.json": {
+   "cls": "9",
+   "subj": "malayalam",
+   "built": "2026-11-19T07:54:28.425Z",
+   "resources": 3,
+   "chunks": 263,
+   "chars": 178143
   },
   "9-maths.json": {
    "cls": "9",
@@ -187,10 +235,2616 @@
    "chars": 667483
   }
  },
+ "resources": {
+  "LFHS-215": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 128,
+   "chunks": 236,
+   "ocr": 0
+  },
+  "LFHS-216": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 88,
+   "chunks": 131,
+   "ocr": 0
+  },
+  "LFHS-218": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 104,
+   "chunks": 172,
+   "ocr": 0
+  },
+  "LFHS-234": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 1,
+   "chunks": 16,
+   "ocr": 0
+  },
+  "LFHS-350": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 112,
+   "chunks": 447,
+   "ocr": 0
+  },
+  "LFHS-219": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 80,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-235": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 8,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-246": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 13,
+   "chunks": 25,
+   "ocr": 0
+  },
+  "LFHS-247": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 11,
+   "chunks": 27,
+   "ocr": 0
+  },
+  "LFHS-248": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 11,
+   "chunks": 25,
+   "ocr": 0
+  },
+  "LFHS-265": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 1,
+   "chunks": 16,
+   "ocr": 0
+  },
+  "LFHS-266": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 5,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-277": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 90,
+   "chunks": 80,
+   "ocr": 0
+  },
+  "LFHS-278": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 54,
+   "chunks": 70,
+   "ocr": 0
+  },
+  "LFHS-279": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 27,
+   "chunks": 46,
+   "ocr": 0
+  },
+  "LFHS-280": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 76,
+   "chunks": 136,
+   "ocr": 0
+  },
+  "LFHS-325": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 1,
+   "chunks": 18,
+   "ocr": 0
+  },
+  "LFHS-326": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-337": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 1,
+   "chunks": 16,
+   "ocr": 0
+  },
+  "LFHS-357": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 19,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-217": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 80,
+   "chunks": 143,
+   "ocr": 0
+  },
+  "LFHS-220": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 96,
+   "chunks": 178,
+   "ocr": 0
+  },
+  "LFHS-221": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 72,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-236": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 12,
+   "ocr": 0
+  },
+  "LFHS-237": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 5,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-249": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 12,
+   "ocr": 0
+  },
+  "LFHS-250": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 16,
+   "ocr": 0
+  },
+  "LFHS-251": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 26,
+   "ocr": 0
+  },
+  "LFHS-267": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 13,
+   "ocr": 0
+  },
+  "LFHS-268": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-281": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 16,
+   "chunks": 28,
+   "ocr": 0
+  },
+  "LFHS-282": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 48,
+   "chunks": 57,
+   "ocr": 0
+  },
+  "LFHS-283": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 53,
+   "chunks": 68,
+   "ocr": 0
+  },
+  "LFHS-327": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 1,
+   "chunks": 18,
+   "ocr": 0
+  },
+  "LFHS-328": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-338": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 3,
+   "chunks": 24,
+   "ocr": 0
+  },
+  "LFHS-339": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 5,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-351": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 118,
+   "chunks": 460,
+   "ocr": 0
+  },
+  "LFHS-358": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 24,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-222": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 112,
+   "chunks": 206,
+   "ocr": 0
+  },
+  "LFHS-223": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 80,
+   "chunks": 115,
+   "ocr": 0
+  },
+  "LFHS-238": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 29,
+   "ocr": 0
+  },
+  "LFHS-239": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 11,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-252": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 12,
+   "chunks": 48,
+   "ocr": 0
+  },
+  "LFHS-253": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 12,
+   "chunks": 51,
+   "ocr": 0
+  },
+  "LFHS-254": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 14,
+   "chunks": 49,
+   "ocr": 0
+  },
+  "LFHS-269": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 6,
+   "ocr": 0
+  },
+  "LFHS-270": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-284": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 63,
+   "chunks": 149,
+   "ocr": 0
+  },
+  "LFHS-285": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 41,
+   "chunks": 100,
+   "ocr": 0
+  },
+  "LFHS-286": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 144,
+   "chunks": 481,
+   "ocr": 0
+  },
+  "LFHS-287": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 18,
+   "ocr": 0
+  },
+  "LFHS-288": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 8,
+   "chunks": 21,
+   "ocr": 0
+  },
+  "LFHS-289": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 10,
+   "chunks": 20,
+   "ocr": 0
+  },
+  "LFHS-290": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 8,
+   "chunks": 25,
+   "ocr": 0
+  },
+  "LFHS-291": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 16,
+   "ocr": 0
+  },
+  "LFHS-292": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 3,
+   "chunks": 8,
+   "ocr": 0
+  },
+  "LFHS-293": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 11,
+   "chunks": 41,
+   "ocr": 0
+  },
+  "LFHS-294": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 8,
+   "chunks": 32,
+   "ocr": 0
+  },
+  "LFHS-295": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 12,
+   "ocr": 0
+  },
+  "LFHS-296": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 11,
+   "ocr": 0
+  },
+  "LFHS-297": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 17,
+   "chunks": 48,
+   "ocr": 0
+  },
+  "LFHS-298": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 19,
+   "chunks": 47,
+   "ocr": 0
+  },
+  "LFHS-299": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 16,
+   "ocr": 0
+  },
+  "LFHS-329": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 36,
+   "ocr": 0
+  },
+  "LFHS-330": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-340": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 17,
+   "ocr": 0
+  },
+  "LFHS-341": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 8,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-347": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 1,
+   "chunks": 2,
+   "ocr": 0
+  },
+  "LFHS-352": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 166,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-372": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 104,
+   "chunks": 133,
+   "ocr": 0
+  },
+  "LFHS-224": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 120,
+   "chunks": 224,
+   "ocr": 0
+  },
+  "LFHS-225": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 88,
+   "chunks": 177,
+   "ocr": 0
+  },
+  "LFHS-264": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 57,
+   "chunks": 51,
+   "ocr": 0
+  },
+  "LFHS-300": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 11,
+   "chunks": 38,
+   "ocr": 0
+  },
+  "LFHS-370": {
+   "status": "ok",
+   "medium": "Malayalam",
+   "pages": 96,
+   "chunks": 150,
+   "ocr": 1
+  },
+  "LFHS-371": {
+   "status": "ok",
+   "medium": "Malayalam",
+   "pages": 64,
+   "chunks": 104,
+   "ocr": 1
+  },
+  "LFHS-226": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 152,
+   "chunks": 252,
+   "ocr": 0
+  },
+  "LFHS-227": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 144,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-240": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 4,
+   "ocr": 0
+  },
+  "LFHS-241": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 8,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-255": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 16,
+   "chunks": 31,
+   "ocr": 0
+  },
+  "LFHS-256": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 14,
+   "chunks": 43,
+   "ocr": 0
+  },
+  "LFHS-257": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 16,
+   "chunks": 27,
+   "ocr": 0
+  },
+  "LFHS-271": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 2,
+   "ocr": 0
+  },
+  "LFHS-272": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 8,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-301": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 3,
+   "chunks": 4,
+   "ocr": 0
+  },
+  "LFHS-302": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 16,
+   "chunks": 8,
+   "ocr": 0
+  },
+  "LFHS-303": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 8,
+   "ocr": 0
+  },
+  "LFHS-304": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 11,
+   "chunks": 12,
+   "ocr": 0
+  },
+  "LFHS-305": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 8,
+   "chunks": 5,
+   "ocr": 0
+  },
+  "LFHS-306": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 38,
+   "chunks": 47,
+   "ocr": 0
+  },
+  "LFHS-331": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-332": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-342": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 8,
+   "chunks": 8,
+   "ocr": 0
+  },
+  "LFHS-343": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-348": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 4,
+   "ocr": 0
+  },
+  "LFHS-353": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 125,
+   "chunks": 234,
+   "ocr": 0
+  },
+  "LFHS-360": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 46,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-228": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 88,
+   "chunks": 195,
+   "ocr": 0
+  },
+  "LFHS-229": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 72,
+   "chunks": 155,
+   "ocr": 0
+  },
+  "LFHS-242": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 3,
+   "chunks": 18,
+   "ocr": 0
+  },
+  "LFHS-243": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-258": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 11,
+   "chunks": 23,
+   "ocr": 0
+  },
+  "LFHS-259": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 10,
+   "chunks": 15,
+   "ocr": 0
+  },
+  "LFHS-260": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 10,
+   "chunks": 21,
+   "ocr": 0
+  },
+  "LFHS-273": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 20,
+   "ocr": 0
+  },
+  "LFHS-274": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-307": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 13,
+   "chunks": 19,
+   "ocr": 0
+  },
+  "LFHS-308": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 12,
+   "ocr": 0
+  },
+  "LFHS-309": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 14,
+   "ocr": 0
+  },
+  "LFHS-310": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 14,
+   "ocr": 0
+  },
+  "LFHS-311": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 35,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-312": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 9,
+   "ocr": 0
+  },
+  "LFHS-313": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 3,
+   "chunks": 7,
+   "ocr": 0
+  },
+  "LFHS-333": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 20,
+   "ocr": 0
+  },
+  "LFHS-334": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 5,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-344": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 19,
+   "ocr": 0
+  },
+  "LFHS-345": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-354": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 122,
+   "chunks": 427,
+   "ocr": 0
+  },
+  "LFHS-361": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 34,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-230": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 104,
+   "chunks": 242,
+   "ocr": 0
+  },
+  "LFHS-231": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 104,
+   "chunks": 261,
+   "ocr": 0
+  },
+  "LFHS-232": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 128,
+   "chunks": 259,
+   "ocr": 0
+  },
+  "LFHS-233": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 80,
+   "chunks": 158,
+   "ocr": 0
+  },
+  "LFHS-244": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 11,
+   "chunks": 29,
+   "ocr": 0
+  },
+  "LFHS-245": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-261": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 13,
+   "chunks": 55,
+   "ocr": 0
+  },
+  "LFHS-262": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 12,
+   "chunks": 29,
+   "ocr": 0
+  },
+  "LFHS-263": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 11,
+   "chunks": 50,
+   "ocr": 0
+  },
+  "LFHS-275": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 13,
+   "chunks": 33,
+   "ocr": 0
+  },
+  "LFHS-276": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 5,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-314": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 18,
+   "ocr": 0
+  },
+  "LFHS-315": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 5,
+   "chunks": 14,
+   "ocr": 0
+  },
+  "LFHS-316": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 19,
+   "ocr": 0
+  },
+  "LFHS-317": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 1,
+   "chunks": 7,
+   "ocr": 0
+  },
+  "LFHS-318": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 1,
+   "chunks": 5,
+   "ocr": 0
+  },
+  "LFHS-319": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 9,
+   "chunks": 28,
+   "ocr": 0
+  },
+  "LFHS-320": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 105,
+   "chunks": 168,
+   "ocr": 0
+  },
+  "LFHS-321": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 19,
+   "chunks": 56,
+   "ocr": 0
+  },
+  "LFHS-322": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 159,
+   "chunks": 435,
+   "ocr": 0
+  },
+  "LFHS-323": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 13,
+   "chunks": 37,
+   "ocr": 0
+  },
+  "LFHS-324": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 83,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-335": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 17,
+   "chunks": 33,
+   "ocr": 0
+  },
+  "LFHS-336": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-346": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-349": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 15,
+   "chunks": 42,
+   "ocr": 0
+  },
+  "LFHS-355": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 110,
+   "chunks": 397,
+   "ocr": 0
+  },
+  "LFHS-356": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 115,
+   "chunks": 414,
+   "ocr": 0
+  },
+  "LFHS-362": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 22,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-001": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 128,
+   "chunks": 222,
+   "ocr": 0
+  },
+  "LFHS-002": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 104,
+   "chunks": 152,
+   "ocr": 0
+  },
+  "LFHS-003": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 120,
+   "chunks": 174,
+   "ocr": 0
+  },
+  "LFHS-016": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 5,
+   "chunks": 21,
+   "ocr": 0
+  },
+  "LFHS-019": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 11,
+   "ocr": 0
+  },
+  "LFHS-020": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-027": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 3,
+   "chunks": 5,
+   "ocr": 0
+  },
+  "LFHS-028": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 8,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-039": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 7,
+   "ocr": 0
+  },
+  "LFHS-040": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-006": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 104,
+   "chunks": 213,
+   "ocr": 0
+  },
+  "LFHS-007": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 64,
+   "chunks": 122,
+   "ocr": 0
+  },
+  "LFHS-015": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 16,
+   "ocr": 0
+  },
+  "LFHS-025": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 1,
+   "chunks": 7,
+   "ocr": 0
+  },
+  "LFHS-026": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 5,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-037": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 3,
+   "chunks": 17,
+   "ocr": 0
+  },
+  "LFHS-038": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-047": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 1,
+   "chunks": 3,
+   "ocr": 0
+  },
+  "LFHS-048": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 10,
+   "chunks": 20,
+   "ocr": 0
+  },
+  "LFHS-063": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 1,
+   "chunks": 20,
+   "ocr": 0
+  },
+  "LFHS-064": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 3,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-070": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 24,
+   "ocr": 0
+  },
+  "LFHS-071": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 5,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-359": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 30,
+   "chunks": 42,
+   "ocr": 0
+  },
+  "LFHS-365": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 96,
+   "chunks": 115,
+   "ocr": 2
+  },
+  "LFHS-008": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 80,
+   "chunks": 136,
+   "ocr": 0
+  },
+  "LFHS-009": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 88,
+   "chunks": 177,
+   "ocr": 0
+  },
+  "LFHS-363": {
+   "status": "ok",
+   "medium": "Malayalam",
+   "pages": 88,
+   "chunks": 168,
+   "ocr": 1
+  },
+  "LFHS-364": {
+   "status": "ok",
+   "medium": "Malayalam",
+   "pages": 48,
+   "chunks": 103,
+   "ocr": 0
+  },
+  "LFHS-010": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 120,
+   "chunks": 178,
+   "ocr": 0
+  },
+  "LFHS-011": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 96,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-017": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 7,
+   "ocr": 0
+  },
+  "LFHS-029": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 3,
+   "chunks": 8,
+   "ocr": 0
+  },
+  "LFHS-030": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-041": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 10,
+   "ocr": 0
+  },
+  "LFHS-042": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 8,
+   "ocr": 0
+  },
+  "LFHS-049": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 9,
+   "chunks": 11,
+   "ocr": 0
+  },
+  "LFHS-065": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 14,
+   "ocr": 0
+  },
+  "LFHS-066": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-072": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-077": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 7,
+   "ocr": 0
+  },
+  "LFHS-078": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 3,
+   "chunks": 2,
+   "ocr": 0
+  },
+  "LFHS-079": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 5,
+   "ocr": 0
+  },
+  "LFHS-004": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 160,
+   "chunks": 225,
+   "ocr": 0
+  },
+  "LFHS-005": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 152,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-014": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 9,
+   "chunks": 27,
+   "ocr": 0
+  },
+  "LFHS-021": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 7,
+   "ocr": 0
+  },
+  "LFHS-022": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 12,
+   "ocr": 0
+  },
+  "LFHS-023": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 6,
+   "ocr": 0
+  },
+  "LFHS-024": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-033": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 1,
+   "chunks": 8,
+   "ocr": 0
+  },
+  "LFHS-034": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 11,
+   "ocr": 0
+  },
+  "LFHS-035": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 3,
+   "chunks": 12,
+   "ocr": 0
+  },
+  "LFHS-036": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 19,
+   "ocr": 0
+  },
+  "LFHS-045": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 13,
+   "ocr": 0
+  },
+  "LFHS-046": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 5,
+   "chunks": 18,
+   "ocr": 0
+  },
+  "LFHS-062": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 5,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-068": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 1,
+   "chunks": 7,
+   "ocr": 0
+  },
+  "LFHS-069": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 8,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-073": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-075": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 14,
+   "chunks": 25,
+   "ocr": 0
+  },
+  "LFHS-076": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 1,
+   "chunks": 2,
+   "ocr": 0
+  },
+  "LFHS-081": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 3,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-082": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 3,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-012": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 120,
+   "chunks": 244,
+   "ocr": 0
+  },
+  "LFHS-013": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 112,
+   "chunks": 243,
+   "ocr": 0
+  },
+  "LFHS-018": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 3,
+   "chunks": 16,
+   "ocr": 0
+  },
+  "LFHS-031": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 13,
+   "ocr": 0
+  },
+  "LFHS-032": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-043": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 5,
+   "chunks": 12,
+   "ocr": 0
+  },
+  "LFHS-044": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-050": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 40,
+   "chunks": 121,
+   "ocr": 0
+  },
+  "LFHS-051": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 17,
+   "ocr": 0
+  },
+  "LFHS-052": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 18,
+   "ocr": 0
+  },
+  "LFHS-053": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 20,
+   "ocr": 0
+  },
+  "LFHS-054": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 5,
+   "chunks": 15,
+   "ocr": 0
+  },
+  "LFHS-055": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 5,
+   "chunks": 12,
+   "ocr": 0
+  },
+  "LFHS-056": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 5,
+   "chunks": 17,
+   "ocr": 0
+  },
+  "LFHS-057": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 5,
+   "chunks": 17,
+   "ocr": 0
+  },
+  "LFHS-058": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 8,
+   "chunks": 20,
+   "ocr": 0
+  },
+  "LFHS-059": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 17,
+   "ocr": 0
+  },
+  "LFHS-060": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 8,
+   "chunks": 29,
+   "ocr": 0
+  },
+  "LFHS-061": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 9,
+   "chunks": 29,
+   "ocr": 0
+  },
+  "LFHS-067": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-074": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-080": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 19,
+   "ocr": 0
+  },
+  "LFHS-083": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 35,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-084": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 74,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-085": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-086": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-087": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 112,
+   "chunks": 146,
+   "ocr": 0
+  },
+  "LFHS-088": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 88,
+   "chunks": 154,
+   "ocr": 0
+  },
+  "LFHS-089": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 64,
+   "chunks": 99,
+   "ocr": 0
+  },
+  "LFHS-108": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 5,
+   "chunks": 17,
+   "ocr": 0
+  },
+  "LFHS-117": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-118": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-126": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 9,
+   "ocr": 0
+  },
+  "LFHS-127": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-140": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 8,
+   "ocr": 0
+  },
+  "LFHS-141": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-194": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 7,
+   "ocr": 0
+  },
+  "LFHS-195": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-090": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 80,
+   "chunks": 136,
+   "ocr": 0
+  },
+  "LFHS-091": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 80,
+   "chunks": 135,
+   "ocr": 0
+  },
+  "LFHS-106": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 20,
+   "ocr": 0
+  },
+  "LFHS-111": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 11,
+   "chunks": 22,
+   "ocr": 0
+  },
+  "LFHS-120": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 1,
+   "chunks": 6,
+   "ocr": 0
+  },
+  "LFHS-121": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-134": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 1,
+   "chunks": 5,
+   "ocr": 0
+  },
+  "LFHS-135": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 12,
+   "ocr": 0
+  },
+  "LFHS-148": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 3,
+   "chunks": 12,
+   "ocr": 0
+  },
+  "LFHS-149": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 17,
+   "ocr": 0
+  },
+  "LFHS-150": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 28,
+   "ocr": 0
+  },
+  "LFHS-151": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 27,
+   "ocr": 0
+  },
+  "LFHS-152": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 18,
+   "ocr": 0
+  },
+  "LFHS-178": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 1,
+   "chunks": 20,
+   "ocr": 0
+  },
+  "LFHS-179": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-189": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 1,
+   "chunks": 16,
+   "ocr": 0
+  },
+  "LFHS-190": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-201": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 5,
+   "ocr": 0
+  },
+  "LFHS-202": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 6,
+   "ocr": 0
+  },
+  "LFHS-203": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 28,
+   "chunks": 48,
+   "ocr": 0
+  },
+  "LFHS-092": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 88,
+   "chunks": 100,
+   "ocr": 0
+  },
+  "LFHS-093": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 88,
+   "chunks": 192,
+   "ocr": 0
+  },
+  "LFHS-112": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 5,
+   "chunks": 25,
+   "ocr": 0
+  },
+  "LFHS-122": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 13,
+   "ocr": 0
+  },
+  "LFHS-123": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-136": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 7,
+   "ocr": 0
+  },
+  "LFHS-137": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 5,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-153": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 8,
+   "chunks": 6,
+   "ocr": 0
+  },
+  "LFHS-154": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 9,
+   "chunks": 6,
+   "ocr": 0
+  },
+  "LFHS-155": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 11,
+   "chunks": 8,
+   "ocr": 0
+  },
+  "LFHS-156": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 8,
+   "chunks": 4,
+   "ocr": 0
+  },
+  "LFHS-180": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 3,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-191": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-207": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-208": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-209": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-210": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-094": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 112,
+   "chunks": 234,
+   "ocr": 0
+  },
+  "LFHS-095": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 72,
+   "chunks": 129,
+   "ocr": 0
+  },
+  "LFHS-107": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 15,
+   "ocr": 0
+  },
+  "LFHS-113": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 11,
+   "chunks": 38,
+   "ocr": 0
+  },
+  "LFHS-124": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 31,
+   "ocr": 0
+  },
+  "LFHS-125": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-138": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 4,
+   "ocr": 0
+  },
+  "LFHS-139": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 27,
+   "ocr": 0
+  },
+  "LFHS-157": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 1,
+   "chunks": 2,
+   "ocr": 0
+  },
+  "LFHS-158": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 3,
+   "chunks": 9,
+   "ocr": 0
+  },
+  "LFHS-159": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 12,
+   "ocr": 0
+  },
+  "LFHS-160": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 3,
+   "chunks": 11,
+   "ocr": 0
+  },
+  "LFHS-161": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 3,
+   "chunks": 5,
+   "ocr": 0
+  },
+  "LFHS-181": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 35,
+   "ocr": 0
+  },
+  "LFHS-182": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-192": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 1,
+   "chunks": 15,
+   "ocr": 0
+  },
+  "LFHS-193": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 8,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-211": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-369": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 96,
+   "chunks": 128,
+   "ocr": 89
+  },
+  "LFHS-096": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 80,
+   "chunks": 165,
+   "ocr": 0
+  },
+  "LFHS-097": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 80,
+   "chunks": 166,
+   "ocr": 0
+  },
+  "LFHS-367": {
+   "status": "ok",
+   "medium": "Malayalam",
+   "pages": 40,
+   "chunks": 68,
+   "ocr": 1
+  },
+  "LFHS-366": {
+   "status": "ok",
+   "medium": "Malayalam",
+   "pages": 56,
+   "chunks": 112,
+   "ocr": 54
+  },
+  "LFHS-368": {
+   "status": "ok",
+   "medium": "Malayalam",
+   "pages": 56,
+   "chunks": 83,
+   "ocr": 56
+  },
+  "LFHS-098": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 144,
+   "chunks": 208,
+   "ocr": 0
+  },
+  "LFHS-099": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 104,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-109": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 14,
+   "ocr": 0
+  },
+  "LFHS-114": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 13,
+   "chunks": 42,
+   "ocr": 0
+  },
+  "LFHS-128": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 1,
+   "ocr": 0
+  },
+  "LFHS-129": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 5,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-142": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 5,
+   "chunks": 2,
+   "ocr": 0
+  },
+  "LFHS-143": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-162": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 19,
+   "chunks": 4,
+   "ocr": 0
+  },
+  "LFHS-163": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 21,
+   "chunks": 1,
+   "ocr": 0
+  },
+  "LFHS-183": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 2,
+   "ocr": 0
+  },
+  "LFHS-184": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-196": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 5,
+   "ocr": 0
+  },
+  "LFHS-197": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-204": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 7,
+   "ocr": 0
+  },
+  "LFHS-212": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 5,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-100": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 88,
+   "chunks": 171,
+   "ocr": 0
+  },
+  "LFHS-101": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 88,
+   "chunks": 153,
+   "ocr": 0
+  },
+  "LFHS-115": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 8,
+   "chunks": 37,
+   "ocr": 0
+  },
+  "LFHS-119": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 22,
+   "ocr": 0
+  },
+  "LFHS-130": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 14,
+   "ocr": 0
+  },
+  "LFHS-131": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-144": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 5,
+   "chunks": 15,
+   "ocr": 0
+  },
+  "LFHS-145": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-164": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 16,
+   "chunks": 42,
+   "ocr": 0
+  },
+  "LFHS-165": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-166": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-167": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 3,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-168": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 3,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-185": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 20,
+   "ocr": 0
+  },
+  "LFHS-186": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-198": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-205": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 10,
+   "ocr": 0
+  },
+  "LFHS-102": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 104,
+   "chunks": 208,
+   "ocr": 0
+  },
+  "LFHS-103": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 64,
+   "chunks": 145,
+   "ocr": 0
+  },
+  "LFHS-104": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 96,
+   "chunks": 184,
+   "ocr": 0
+  },
+  "LFHS-105": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 88,
+   "chunks": 170,
+   "ocr": 0
+  },
+  "LFHS-110": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 27,
+   "ocr": 0
+  },
+  "LFHS-116": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 12,
+   "chunks": 26,
+   "ocr": 0
+  },
+  "LFHS-132": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 10,
+   "chunks": 23,
+   "ocr": 0
+  },
+  "LFHS-133": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 8,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-146": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 8,
+   "chunks": 21,
+   "ocr": 0
+  },
+  "LFHS-147": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-169": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 12,
+   "ocr": 0
+  },
+  "LFHS-170": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 5,
+   "chunks": 14,
+   "ocr": 0
+  },
+  "LFHS-171": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 9,
+   "chunks": 24,
+   "ocr": 0
+  },
+  "LFHS-172": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 9,
+   "chunks": 27,
+   "ocr": 0
+  },
+  "LFHS-173": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 5,
+   "chunks": 18,
+   "ocr": 0
+  },
+  "LFHS-174": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 19,
+   "ocr": 0
+  },
+  "LFHS-175": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 10,
+   "chunks": 24,
+   "ocr": 0
+  },
+  "LFHS-176": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 10,
+   "ocr": 0
+  },
+  "LFHS-177": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 30,
+   "chunks": 93,
+   "ocr": 0
+  },
+  "LFHS-187": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 9,
+   "chunks": 22,
+   "ocr": 0
+  },
+  "LFHS-188": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-199": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 10,
+   "chunks": 23,
+   "ocr": 0
+  },
+  "LFHS-200": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 5,
+   "chunks": 9,
+   "ocr": 0
+  },
+  "LFHS-206": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 1,
+   "chunks": 11,
+   "ocr": 0
+  },
+  "LFHS-213": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 10,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-214": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 19,
+   "chunks": 0,
+   "ocr": 0
+  }
+ },
  "totals": {
-  "shards": 23,
-  "resources": 363,
-  "chunks": 16140,
-  "chars": 8631255
+  "shards": 29,
+  "resources": 373,
+  "chunks": 17304,
+  "chars": 9357778
  }
 }
