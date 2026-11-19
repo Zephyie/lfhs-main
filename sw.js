@@ -1,5 +1,5 @@
 // LFHS Academic Hub - Offline Service Worker (Cache-first for app shell, network-only for APIs & PDF streams)
-const CACHE_NAME = 'lfhs-cache-v29';
+const CACHE_NAME = 'lfhs-cache-v30';
 const APP_SHELL = [
   '/',
   '/index.html',

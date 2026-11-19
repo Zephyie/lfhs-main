@@ -2936,13 +2936,14 @@ var SUBJ = {
   maths:{n:'Mathematics',lab:'MATHEMATICS',ic:'fa-square-root-variable',h:275,kw:'maths math mathematics'},
   ss:{n:'Social Science',lab:'SOCIAL SCIENCE',ic:'fa-earth-asia',h:345,kw:'social sst history geography'},
   english:{n:'English',lab:'ENGLISH',ic:'fa-language',h:215,kw:''},
-  malayalam:{n:'Malayalam',lab:'MALAYALAM',ic:'fa-book',h:20,kw:''},
+  malayalam:{n:'Malayalam',lab:'MALAYALAM',ic:'fa-book-bookmark',h:20,kw:'malayalam kerala padavali adisthana'},
+  hindi:{n:'Hindi',lab:'HINDI',ic:'fa-language',h:50,kw:'hindi'},
   ict:{n:'ICT',lab:'IT',ic:'fa-laptop-code',h:170,kw:'it computer information technology'},
   art:{n:'Art, Health & Work Ed.',lab:'ART HEALTH WORK',ic:'fa-palette',h:315,kw:'art health physical work education'},
   career:{n:'Career Guidance',lab:'CAREER',ic:'fa-compass',h:255,kw:'career guidance my decision'}
 };
-var LINK_SUBJ_KEYS = ['physics','chemistry','biology','maths','ss','english','malayalam','ict'];
-var PDF_SUBJ_ORDER = ['physics','chemistry','biology','science','maths','ss','english','ict','art','career'];
+var LINK_SUBJ_KEYS = ['physics','chemistry','biology','maths','ss','english','malayalam','hindi','ict'];
+var PDF_SUBJ_ORDER = ['physics','chemistry','biology','science','maths','ss','english','malayalam','hindi','ict','art','career'];
 var TYPES = {
   notes:{n:'Notes',full:'Notes & Study Material',ic:'fa-book-open'},
   textbook:{n:'Textbook',full:'Official Textbook',ic:'fa-book'},
@@ -3079,10 +3080,12 @@ var CHAPTERS = [
   {id:'ch-chemistry',subj:'chemistry',title:'Periodic Table & Electronic Configuration',desc:'Subshell configuration, s, p, d, f blocks and periodic trends.',notes:U.label('CHEMISTRY-X'),papers:U.cheQP,pdfNotes:'LFHS-281',pdfPapers:'LFHS-339',ask:'Explain Subshell Electronic Configuration in Chemistry'},
   {id:'ch-biology',subj:'biology',title:'Sensations and Responses',desc:'Neuron structure, impulse transmission, brain regions and reflex actions.',notes:U.label('BIOLOGY-X'),papers:U.sslc26,pdfNotes:'LFHS-277',pdfPapers:'LFHS-326',ask:'Explain Neuron structure and Reflex Action in Biology'},
   {id:'ch-maths',subj:'maths',title:'Arithmetic Sequences',desc:'Algebraic form, common difference and the sum of the first n terms.',notes:U.mathNotes,papers:U.mathQP,pdfNotes:'LFHS-301',pdfPapers:'LFHS-343',ask:'How to find the sum of n terms in an Arithmetic Progression'},
-  {id:'ch-ss',subj:'ss',title:'Revolutions That Shaped the World',desc:'American War of Independence, French Revolution and Latin American struggles.',notes:U.label('SOCIAL SCIENCE-X'),papers:U.sslc26,pdfNotes:'LFHS-320',pdfPapers:'LFHS-346',ask:'Summarize the French Revolution causes and effects for SSLC'}
+  {id:'ch-ss',subj:'ss',title:'Revolutions That Shaped the World',desc:'American War of Independence, French Revolution and Latin American struggles.',notes:U.label('SOCIAL SCIENCE-X'),papers:U.sslc26,pdfNotes:'LFHS-320',pdfPapers:'LFHS-346',ask:'Summarize the French Revolution causes and effects for SSLC'},
+  {id:'ch-malayalam',subj:'malayalam',title:'നരബലി (Narabali)',desc:'ഉലകിന്നുയിരാം ഉണർവുകൾ — ശാസ്ത്ര സാങ്കേതിക മുന്നേറ്റങ്ങളും മനുഷ്യനും.',notes:U.label('MALAYALAM-X'),papers:U.sslc26,pdfNotes:'LFHS-370',pdfPapers:'',ask:'Explain Narabali chapter from Class 10 Malayalam Kerala Padavali'},
+  {id:'ch-hindi',subj:'hindi',title:'खिड़की (Khidki)',desc:'लघुकथा — मानवीय संवेदना और जीवन के अनुभव.',notes:U.label('HINDI-X'),papers:U.sslc26,pdfNotes:'LFHS-372',pdfPapers:'',ask:'Explain Khidki chapter summary from Class 10 Hindi'}
 ];
 
-var AI_QUICK = ["Explain Ohm's Law with an example",'SSLC Physics chapter list','How to make a maze game in PictoBlox?','Careers after +2 Science in Kerala','Summarize the French Revolution','Tips to score A+ in Maths'];
+var AI_QUICK = ["Explain Ohm's Law with an example",'SSLC Physics chapter list','Explain Narabali from Class 10 Malayalam','Toota Hua Aadmi summary in Hindi','How to make a maze game in PictoBlox?','Careers after +2 Science in Kerala','Summarize the French Revolution','Tips to score A+ in Maths'];
 
 function $(id){return document.getElementById(id)}
 function esc(s){
@@ -3531,9 +3534,7 @@ function renderNotes(){
     html+='<div class="results-head"><h2>'+esc(title)+'</h2><span>'+items.length+' resource'+(items.length===1?'':'s')+'</span></div>';
     if(!items.length){
       var emptyAction='';
-      if(wantPdf&&subj==='malayalam'){
-        emptyAction='<p style="margin-top:.7rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><button class="btn btn-primary" type="button" data-source-mode="links">Switch to Links for Malayalam</button><a class="btn btn-outline" href="'+nhash(cls,'-','all')+'">All Class '+cls+' subjects</a></p>';
-      }else if(wantPdf&&subj!=='-'&&subjList.indexOf(subj)===-1){
+      if(wantPdf&&subj!=='-'&&subjList.indexOf(subj)===-1){
         var hasLinksSubj=LINK_SUBJ_KEYS.indexOf(subj)!==-1;
         emptyAction='<p style="margin-top:.7rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><a class="btn btn-primary" href="'+nhash(cls,'-','all')+'">Show Class '+cls+' subjects</a>'+(hasLinksSubj?'<button class="btn btn-outline" type="button" data-source-mode="links">Switch to Links</button>':'')+'</p>';
       }else if(type!=='all'){

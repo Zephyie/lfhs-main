@@ -66,12 +66,58 @@ const STOP_EN = new Set(('a an the is are was were be been am do does did of in 
   'explain describe define tell give show list write make create please help us more less some any each every all not no yes also very much many ' +
   'class chapter topic question questions answer answers sslc kerala syllabus textbook notes paper papers important difference between meaning mean means ' +
   'short long simple simply briefly clearly easy easily detail details example examples again word words simpler further elaborate summary summarize ' +
-  'tell lesson lessons study studying learn learning').split(' '));
-// Function words only (never content words), so they cannot hide a real topic.
-const STOP_HI = new Set('है हैं था थी थे हो हूँ और का की के को में से पर यह वह ये वे एक कि तो भी नहीं क्या कौन कैसे क्यों कब कहाँ कहां इस उस इन उन जो या तथा लिए द्वारा साथ बारे अपने अपना अपनी कृपया बताइए बताओ समझाइए समझाओ'.split(' '));
-const STOP_ML = new Set('ഒരു ആണ് ആയിരുന്നു എന്ന എന്ന് അത് ഇത് ആ ഈ എന്ത് എന്താണ് ആരാണ് എങ്ങനെ എന്തുകൊണ്ട് എപ്പോൾ എവിടെ ഏത് ഏതാണ് പറയൂ പറയുക വിശദീകരിക്കൂ വിശദീകരിക്കുക ദയവായി കുറിച്ച് ആണു അല്ല ഉം'.split(' '));
+  'tell lesson lessons study studying learn learning ' +
+  'story stories poem poems explanation theme central idea ' +
+  '8th 9th 10th eighth ninth tenth malayalam hindi keralapadavali padavali adisthana scert').split(' '));
+// Function words & study metadata terms (never content words), so they cannot hide a real topic.
+const STOP_HI = new Set(('है हैं था थी थे हो हूँ और का की के को में से पर यह वह ये वे एक कि तो भी नहीं क्या कौन कैसे क्यों कब कहाँ कहां इस उस इन उन जो या तथा लिए द्वारा साथ बारे अपने अपना अपनी कृपया बताइए बताओ समझाइए समझाओ ' +
+  'पाठ पाठों अध्याय कहानी कविता कविताएं कहानियां सारांश भावार्थ अर्थ व्याख्या विवरण विस्तार प्रश्न प्रश्नों प्रश्नोत्तर उत्तर समाधान किताब पुस्तक पाठ्यपुस्तक टिप्पणी नोट्स मुख्य महत्वपूर्ण जरूरी लिखिए दीजिए कीजिए बताएं समझाएं पात्र चरित्र विशेषताएं हिंदी हिन्दी').split(' '));
+const STOP_ML = new Set(('ഒരു ആണ് ആയിരുന്നു എന്ന എന്ന് അത് ഇത് ആ ഈ എന്ത് എന്താണ് ആരാണ് എങ്ങനെ എന്തുകൊണ്ട് എപ്പോൾ എവിടെ ഏത് ഏതാണ് പറയൂ പറയുക വിശദീകരിക്കൂ വിശദീകരിക്കുക ദയവായി കുറിച്ച് ആണു അല്ല ഉം ' +
+  'പാഠം പാഠങ്ങൾ പാഠത്തിന്റെ പാഠത്തിലെ കഥ കഥകൾ കഥയുടെ കഥയിലെ കവിത കവിതകൾ കവിതയുടെ കവിതയിലെ അധ്യായം അദ്ധ്യായം ആശയം സംഗ്രഹം സാരം വിവരണം വിവരിക്കുക വിശദീകരണം വ്യക്തമാക്കുക അർത്ഥം അർഥം ചോദ്യം ചോദ്യങ്ങൾ ചോദ്യോത്തരങ്ങൾ ഉത്തരം ഉത്തരങ്ങൾ പുസ്തകം ടെക്സ്റ്റ്ബുക്ക് പാഠപുസ്തകം കുറിപ്പ് കുറിപ്പുകൾ നോട്ട്സ് പ്രധാന പ്രധാനപ്പെട്ട മുഖ്യ എഴുതുക തയ്യാറാക്കുക സവിശേഷതകൾ പ്രത്യേകതകൾ കഥാപാത്രം കഥാപാത്രങ്ങൾ മലയാളം കേരളപാഠാവലി കേരളപദവലി അടിസ്ഥാനപാഠാവലി').split(' '));
 const isIndic = (w) => w.charCodeAt(0) >= 0x900 && /[\u0900-\u0d7f]/.test(w);
 const isStop = (w) => (isIndic(w) ? STOP_HI.has(w) || STOP_ML.has(w) : STOP_EN.has(w));
+
+const INDIC_ALIASES = {
+  narabali: 'നരബലി',
+  naresh: 'നരേശ്',
+  prayanam: 'പ്രയാണം',
+  bal: 'തേൻ',
+  then: 'തേൻ',
+  fiza: 'ഫിസ',
+  kalluvayal: 'കല്ലുവയൽ',
+  arangum: 'അരങ്ങും',
+  porulum: 'പൊരുളും',
+  swargathile: 'സ്വർഗ്ഗത്തിലെ',
+  kuttikal: 'കുട്ടികൾ',
+  ekodarasodarar: 'ഏകോദരസോദരർ',
+  ujvalahrudaya: 'ഉജ്ജ്വലഹൃദയസ്പന്ദങ്ങൾ',
+  rasmikal: 'രശ്മികൾ',
+  vidilla: 'വിടില്ലഞാനീരശ്മികളെ',
+  onasadya: 'ഓണസദ്യ',
+  kalavarsham: 'കാലവർഷം',
+  mazhakkalam: 'മഴക്കാലം',
+  puzhayum: 'പുഴയും',
+  jeevithavum: 'ജീവിതവും',
+  pusthakavum: 'പുസ്തകവും',
+  vayanayum: 'വായനയും',
+  khidki: 'खिड़की',
+  khidkee: 'खिड़की',
+  toota: 'टूटा',
+  tuta: 'टूटा',
+  hua: 'हुआ',
+  aadmi: 'आदमी',
+  admi: 'आदमी',
+  galileo: 'गैलीलियो',
+  zindagi: 'जिंदगी',
+  safar: 'सफ़र',
+  nikhurpa: 'निखुर्पा',
+  kharbanda: 'खरबंदा',
+  nadi: 'नदी',
+  jeevan: 'जीवन',
+  varsha: 'वर्षा',
+  ritu: 'ऋतु',
+  vidyalay: 'विद्यालय'
+};
 
 const SUFFIXES = ['ization', 'ational', 'ations', 'ation', 'ments', 'ment', 'ities', 'ity', 'ness', 'ings', 'ing', 'ances', 'ance', 'ences', 'ence', 'ally', 'ions', 'ion', 'ful', 'ous', 'ive', 'ers', 'ed', 'er', 'ly', 'al'];
 export function stem(word) {
@@ -95,7 +141,15 @@ const words = (text) => { const s = normText(text).toLowerCase(); return (NON_AS
 // Index/query keys for one word. English: stem. Malayalam/Hindi: the exact word plus a 5-code-point prefix key
 // ("~" + prefix) so inflected forms (പുസ്തകത്തിന്റെ / പുസ്തകം, विद्यालयों / विद्यालय) still meet.
 export function keysOf(w) {
-  if (!isIndic(w)) return [[stem(w), 1]];
+  if (!isIndic(w)) {
+    const s = stem(w);
+    const alias = INDIC_ALIASES[w] || INDIC_ALIASES[s];
+    if (alias) {
+      const aliasKeys = keysOf(alias);
+      return [[s, 1], [alias, 1], ...aliasKeys.map(([k, wt]) => [k, wt * 0.9])];
+    }
+    return [[s, 1]];
+  }
   const n = w.charCodeAt(0) >= 0x0d00 ? 5 : 4; // Malayalam words are longer (5 code points); Devanagari 4
   const keys = [[w, 1]]; // Indic scripts live in the BMP, so string length == code points
   if (w.length > n) keys.push(['~' + w.slice(0, n), 0.6]);
@@ -200,10 +254,10 @@ export function retrieve({ cls, subj, chapterNo, kinds, text, lang, limit = 6, m
 // Deterministic check: do the top passages really contain the question's key terms?
 export function evidenceEnough(rows, terms, { minCoverage = 0.5 } = {}) {
   if (!rows.length || !terms.length) return { ok: false, coverage: 0 };
-  const have = new Set(rows.slice(0, 3).flatMap((r) => contentWords(r.text).flatMap((w) => keysOf(w).map((k) => k[0]))));
+  const have = new Set(rows.slice(0, 5).flatMap((r) => contentWords(r.text).flatMap((w) => keysOf(w).map((k) => k[0]))));
   const q = [...new Set(terms)];
   const hit = q.filter((t) => keysOf(t).some(([k]) => have.has(k))).length;
-  const coverage = hit / q.length; const need = q.length <= 2 ? 1 : minCoverage;
+  const coverage = hit / q.length; const need = q.length <= 1 ? 1 : minCoverage;
   return { ok: coverage >= need, coverage: Math.round(coverage * 100) / 100 };
 }
 
