@@ -1,6 +1,6 @@
 {
  "v": 1,
- "built": "2026-11-19T07:57:48.642Z",
+ "built": "2026-11-19T15:28:07.893Z",
  "shards": {
   "10-art.json": {
    "cls": "10",
@@ -45,10 +45,10 @@
   "10-hindi.json": {
    "cls": "10",
    "subj": "hindi",
-   "built": "2026-11-19T07:44:55.063Z",
+   "built": "2026-11-19T15:28:07.884Z",
    "resources": 1,
    "chunks": 133,
-   "chars": 81584
+   "chars": 79504
   },
   "10-ict.json": {
    "cls": "10",
@@ -61,10 +61,10 @@
   "10-malayalam.json": {
    "cls": "10",
    "subj": "malayalam",
-   "built": "2026-11-19T07:46:20.521Z",
+   "built": "2026-11-19T15:28:06.832Z",
    "resources": 2,
-   "chunks": 254,
-   "chars": 158665
+   "chunks": 250,
+   "chars": 155683
   },
   "10-maths.json": {
    "cls": "10",
@@ -109,10 +109,10 @@
   "8-hindi.json": {
    "cls": "8",
    "subj": "hindi",
-   "built": "2026-11-19T07:44:08.267Z",
+   "built": "2026-11-19T15:27:55.234Z",
    "resources": 1,
-   "chunks": 115,
-   "chars": 69886
+   "chunks": 111,
+   "chars": 65440
   },
   "8-ict.json": {
    "cls": "8",
@@ -125,10 +125,10 @@
   "8-malayalam.json": {
    "cls": "8",
    "subj": "malayalam",
-   "built": "2026-11-19T07:43:38.513Z",
+   "built": "2026-11-19T15:27:54.533Z",
    "resources": 2,
-   "chunks": 271,
-   "chars": 159626
+   "chunks": 268,
+   "chars": 155314
   },
   "8-maths.json": {
    "cls": "8",
@@ -205,10 +205,10 @@
   "9-malayalam.json": {
    "cls": "9",
    "subj": "malayalam",
-   "built": "2026-11-19T07:54:28.425Z",
+   "built": "2026-11-19T15:27:58.241Z",
    "resources": 3,
    "chunks": 263,
-   "chars": 178143
+   "chars": 177969
   },
   "9-maths.json": {
    "cls": "9",
@@ -765,15 +765,15 @@
    "status": "ok",
    "medium": "Malayalam",
    "pages": 96,
-   "chunks": 150,
-   "ocr": 1
+   "chunks": 146,
+   "ocr": 0
   },
   "LFHS-371": {
    "status": "ok",
    "medium": "Malayalam",
    "pages": 64,
    "chunks": 104,
-   "ocr": 1
+   "ocr": 0
   },
   "LFHS-226": {
    "status": "ok",
@@ -1458,8 +1458,8 @@
    "status": "ok",
    "medium": "Hindi",
    "pages": 96,
-   "chunks": 115,
-   "ocr": 2
+   "chunks": 111,
+   "ocr": 0
   },
   "LFHS-008": {
    "status": "ok",
@@ -1479,8 +1479,8 @@
    "status": "ok",
    "medium": "Malayalam",
    "pages": 88,
-   "chunks": 168,
-   "ocr": 1
+   "chunks": 165,
+   "ocr": 0
   },
   "LFHS-364": {
    "status": "ok",
@@ -2411,7 +2411,7 @@
    "medium": "Malayalam",
    "pages": 40,
    "chunks": 68,
-   "ocr": 1
+   "ocr": 0
   },
   "LFHS-366": {
    "status": "ok",
@@ -2844,7 +2844,7 @@
  "totals": {
   "shards": 29,
   "resources": 373,
-  "chunks": 17304,
-  "chars": 9357778
+  "chunks": 17293,
+  "chars": 9343784
  }
 }

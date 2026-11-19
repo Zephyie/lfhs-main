@@ -1,8 +1,12 @@
 {
- "at": "2026-11-19T07:57:48.697Z",
- "processed": 1,
+ "at": "2026-11-19T15:28:07.935Z",
+ "processed": 7,
  "unchanged": 0,
- "failed": [],
+ "failed": [
+  "LFHS-366 text is not mostly malayalam script (0%): wrong medium in catalog, wrong book, or a legacy-font PDF that needs OCR",
+  "LFHS-368 no extractable text (the text layer is unreadable symbols: a legacy-font PDF); OCR needed but tesseract with mal+eng data is not installed",
+  "LFHS-369 text is not mostly hindi script (0%): wrong medium in catalog, wrong book, or a legacy-font PDF that needs OCR"
+ ],
  "questionable": [],
  "noText": [],
  "warnings": []
