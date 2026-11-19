@@ -9,7 +9,7 @@ const get = (cls, text, o = {}) => { const r = K.retrieve({ cls, text, ...o }); 
 
 await t('terms drop filler words', () => assert.deepEqual(K.extractTerms('What is DNA fingerprinting? Explain simply'), ['dna', 'fingerprinting']));
 await t('stemming joins word forms', () => { assert.equal(K.stem('fingerprinting'), K.stem('fingerprint')); assert.equal(K.stem('electricity'), K.stem('electrical')); assert.equal(K.stem('genes'), K.stem('gene')); });
-await t('subject mapping (class 8 science merge)', () => { assert.equal(K.subjectKey('Biology', '8'), 'science'); assert.equal(K.subjectKey('Biology', '10'), 'biology'); assert.equal(K.subjectKey('Social Science', '9'), 'ss'); assert.equal(K.subjectKey('Malayalam', '10'), null); });
+await t('subject mapping (class 8 science merge)', () => { assert.equal(K.subjectKey('Biology', '8'), 'science'); assert.equal(K.subjectKey('Biology', '10'), 'biology'); assert.equal(K.subjectKey('Social Science', '9'), 'ss'); assert.equal(K.subjectKey('Malayalam', '10'), 'malayalam'); assert.equal(K.subjectKey('Hindi', '9'), 'hindi'); assert.equal(K.subjectKey('Sanskrit', '10'), null); });
 await t('subject named in the question is detected; otherwise left to ranking', () => { assert.equal(K.inferSubject('In physics, what is Ohm\'s law?', '10'), 'physics'); assert.equal(K.inferSubject('what is Ohm\'s law?', '10'), null); assert.equal(K.inferSubject('biology of the cell', '8'), 'science'); });
 
 await t('REAL data: CRISPR question finds the Genetics chapter of the real textbook with its real page', () => {

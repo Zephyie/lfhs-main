@@ -1656,7 +1656,7 @@ body.ab-open .ab-exit{display:inline-flex}
           <button type="button" class="ai-tool" data-aiact="important"><i class="fa-solid fa-circle-question" aria-hidden="true"></i> Past questions</button>
           <button type="button" class="ai-tool" data-aiact="explain"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> Explain a passage</button>
           <button type="button" class="ai-tool" data-aiact="saved"><i class="fa-regular fa-bookmark" aria-hidden="true"></i> Saved answers</button>
-          <label class="ai-tools-lang">Voice language <select id="voiceLang" class="chat-voice-lang" aria-label="Voice recognition language" title="Choose the language to recognize"><option value="en-IN">English</option><option value="ml-IN">മലയാളം</option></select></label>
+          <label class="ai-tools-lang">Voice language <select id="voiceLang" class="chat-voice-lang" aria-label="Voice recognition language" title="Choose the language to recognize"><option value="en-IN">English</option><option value="ml-IN">മലയാളം</option><option value="hi-IN">हिन्दी</option></select></label>
         </div>
         <div class="chat-input-area">
           <button id="aiToolsBtn" class="ai-tools-btn" type="button" aria-label="Study tools" aria-expanded="false" aria-controls="aiTools"><i class="fa-solid fa-plus" aria-hidden="true"></i></button>
@@ -4404,12 +4404,13 @@ function kbCall(ctx,messages){
     .catch(function(){return {ok:false,status:0,data:{}}})
     .then(function(r){clearTimeout(timer);if(r.ok||(r.data&&r.data.noEvidence))return r.data;var e=new Error((r.data&&r.data.error)||('http '+r.status));e.status=r.status;e.data=r.data;throw e});
 }
-function srcName(s){var r=BYID[s.id];return (r?r.title:s.id)+' p.'+Number(s.page)}
+function srcMedium(s){return s&&s.medium&&s.medium!=='english'?({malayalam:'Malayalam textbook',hindi:'Hindi textbook'}[s.medium]||s.medium):''}
+function srcName(s){var r=BYID[s.id];return (r?r.title:s.id)+' p.'+Number(s.page)+(srcMedium(s)?' ('+srcMedium(s)+')':'')}
 function srcHtml(sources){
   if(!sources||!sources.length)return '';
   var cited=sources.filter(function(s){return s.cited}),list=cited.length?cited:sources,seen={},items=[];
   list.forEach(function(s){var r=BYID[s.id];if(!r)return;var k=s.id+':'+s.page;if(seen[k])return;seen[k]=1;
-    items.push('<li><button type="button" class="ai-srclink" data-open-src="'+esc(s.id)+'" data-page="'+Number(s.page)+'">'+esc(r.title)+' &middot; p.'+Number(s.page)+(s.chapter?' &middot; '+esc(s.chapter):'')+'</button></li>')});
+    items.push('<li><button type="button" class="ai-srclink" data-open-src="'+esc(s.id)+'" data-page="'+Number(s.page)+'">'+esc(r.title)+' &middot; p.'+Number(s.page)+(s.chapter?' &middot; '+esc(s.chapter):'')+(srcMedium(s)?' &middot; '+esc(srcMedium(s)):'')+'</button></li>')});
   return items.length?'<details class="ai-src"><summary><i class="fa-solid fa-book-open" aria-hidden="true"></i> Sources ('+items.length+')</summary><ul>'+items.join('')+'</ul></details>':'';
 }
 function sendMessage(opts){

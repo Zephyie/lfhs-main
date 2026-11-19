@@ -39,6 +39,16 @@ else {
       if (c && c.pages && r[1] > c.pages) badPage++;
     }
     chunks += s.c.length;
+    // Unicode quality: NFC, no replacement characters / private-use (legacy font) symbols, and Malayalam/Hindi books really in their script
+    let notNfc = 0, junk = 0; const own = {}, tot = {};
+    for (const r of s.c) {
+      const x = r[7]; if (x !== x.normalize('NFC')) notNfc++; if (/[\ufffd\ue000-\uf8ff]/.test(x)) junk++;
+      const med = s.res[r[0]] && s.res[r[0]].medium; const re = /^mal/i.test(med || '') ? /[\u0d00-\u0d7f]/g : /^hin/i.test(med || '') ? /[\u0900-\u097f]/g : null;
+      if (re) { own[r[0]] = (own[r[0]] || 0) + (x.match(re) || []).length; tot[r[0]] = (tot[r[0]] || 0) + x.length; }
+    }
+    if (notNfc) (Object.keys(tot).length ? bad : warn)(f + ': ' + notNfc + ' chunks are not NFC-normalised' + (Object.keys(tot).length ? '' : ' (English: harmless, a re-ingest normalises them)')); if (junk) { const lang = Object.keys(tot).length > 0; (lang ? bad : warn)(f + ': ' + junk + ' chunks contain replacement or private-use characters' + (lang ? ' (legacy-font garbage in a Malayalam/Hindi book)' : ' (usually Word bullet symbols: harmless, a re-ingest cleans them)')); }
+    for (const id of Object.keys(tot)) { const ratio = own[id] / Math.max(1, tot[id]); if (ratio < 0.3) bad(f + ': ' + id + ' is marked ' + s.res[id].medium + ' but only ' + Math.round(100 * ratio) + '% of its text is in that script'); }
+    for (const [id, m] of Object.entries(s.res)) { if ((m.status || 'ok') !== 'ok' && !String(id).startsWith('SYN-')) (/^eng/i.test(m.medium || 'english') ? warn : bad)(f + ': ' + id + ' has status "' + m.status + '"'); }
     if (badRows) bad(f + ': ' + badRows + ' malformed chunk rows'); if (badRefs) bad(f + ': ' + badRefs + ' chunks point at resource IDs that are not in data/pdfs.js'); if (badPage) bad(f + ': ' + badPage + ' chunks cite a page beyond the PDF length');
     if (!badRows && !badRefs && !badPage) ok(f + ': ' + s.c.length + ' chunks, ' + Object.keys(s.res).length + ' resources, ' + (size / 1024).toFixed(0) + ' KB');
   }
@@ -54,16 +64,25 @@ else {
     for (const c of ['8', '9', '10']) if (!classes.has(c)) warn('no library files for Class ' + c + ' yet');
   }
 }
+try { const rep = JSON.parse(read(join(KB, 'ingest-report.json'))); if (rep.failed && rep.failed.length) warn('last ingest left ' + rep.failed.length + ' book(s) out of the library (see api/_kb/ingest-report.json): ' + rep.failed.slice(0, 3).join(' | ')); } catch (e) { /* no report yet */ }
 if (LIB_ONLY) { console.log('\n' + fails + ' failed, ' + warns + ' warnings'); process.exit(fails ? 1 : 0); }
 
+/* ---- acquisition manifest ---- */
+if (existsSync('data/acquisition.json')) {
+  try {
+    const m = JSON.parse(read('data/acquisition.json')); const keys = new Set(), files = new Map(); let dup = 0;
+    for (const b of m.books) { if (keys.has(b.key)) dup++; keys.add(b.key); if (!b.superseded) { if (files.has(b.file)) dup++; files.set(b.file, 1); } if (!['English', 'Malayalam', 'Hindi'].includes(b.medium)) bad('acquisition.json: ' + b.key + ' has an invalid medium'); }
+    if (dup) bad('acquisition.json has duplicate keys or file names'); else ok('data/acquisition.json: ' + m.books.length + ' books, ' + m.books.filter((b) => b.url).length + ' with a url, ' + m.books.filter((b) => !b.url).length + ' still need a url');
+  } catch (e) { bad('data/acquisition.json: ' + e.message); }
+}
 /* ---- code ---- */
 const jsFiles = [...readdirSync('api').filter((f) => f.endsWith('.js')).map((f) => 'api/' + f), ...(existsSync('scripts') ? readdirSync('scripts').filter((f) => f.endsWith('.mjs')).map((f) => 'scripts/' + f) : []), 'sw.js'];
 for (const f of jsFiles) { try { execFileSync(process.execPath, ['--check', f], { stdio: 'pipe' }); ok('syntax ' + f); } catch (e) { bad('syntax error in ' + f + ': ' + String(e.stderr).split('\n')[0]); } }
 try {
-  const html = read('index.html'); const scripts = [...html.matchAll(/<script(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/g)].map((m) => m[1]).filter((x) => x.trim());
+  const html = read('index.html'); const scripts = [...html.matchAll(/<script(?![^>]*\bsrc=)(?![^>]*\btype=["']application\/ld\+json["'])[^>]*>([\s\S]*?)<\/script>/g)].map((m) => m[1]).filter((x) => x.trim());
   let n = 0; for (const code of scripts) { try { new vm.Script(code); n++; } catch (e) { bad('index.html inline script: ' + e.message); } }
   ok('index.html: ' + n + '/' + scripts.length + ' inline scripts parse');
-  for (const need of ['/api/chat', 'aiToolsBtn', 'openPdfViewer(id,page)']) if (!html.includes(need)) bad('index.html is missing "' + need + '"');
+  for (const need of ['/api/chat', 'aiToolsBtn', 'openPdfViewer(id,page)', 'srcMedium']) if (!html.includes(need)) bad('index.html is missing "' + need + '"');
   for (const gone of ['data-aimode', 'id="aiSubj"']) if (html.includes(gone)) bad('index.html still contains removed control ' + gone);
 } catch (e) { bad('index.html: ' + e.message); }
 
