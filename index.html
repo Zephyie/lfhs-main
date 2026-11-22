@@ -969,7 +969,7 @@ body.searching .search-kbd, .search input:focus ~ .search-kbd, .search.has-val .
 body.is-offline .offline-banner { display: block; }
 .offline-header-btn { white-space: nowrap; }
 .offline-sr-only { position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0; }
-@media(max-width:720px){.offline-header-btn{display:none}}
+/* .offline-header-btn display handled responsively */
 
 /* Print Stylesheet */
 @media print {
@@ -1315,6 +1315,11 @@ body.is-offline .offline-banner { display: block; }
 
   
 
+
+/* Desktop Question Papers Filter visibility */
+.mobile-paper-filters { display: none !important; }
+.desktop-paper-filters { display: flex; }
+
 /* Desktop defaults for Phase 4 controls */
 #showMoreChaptersBtn { display: none; }
 .rc-chapter.rc-ch-more { display: flex; }
@@ -1409,17 +1414,123 @@ body.is-offline .offline-banner { display: block; }
   }
 
   /* ===== Phase 2: Mobile Tabs & Page Intro (Original Header Preserved) ===== */
-  /* Mobile header: original styling preserved, clean 2-row wrap without layout overflow */
-  .search {
-    order: 3;
-    flex: 1 1 100%;
-    max-width: 100%;
-    margin-left: 0;
-    margin-top: 6px;
+  /* Mobile header: Row 1 has brand on left, actions grouped on right in exact order: offline, account, theme */
+  .header-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 12px 10px;
   }
   .brand {
-    flex: 1 1 auto;
+    order: 1;
+    flex: 0 1 auto;
     min-width: 0;
+    max-width: calc(100% - 150px);
+    margin-right: auto;
+  }
+  .brand-text {
+    min-width: 0;
+  }
+  .brand-text strong {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 15px;
+  }
+  .brand-text small {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 11px;
+  }
+  #offlinePrepareHeader {
+    order: 2;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 40px;
+    min-height: 40px;
+    padding: 0 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    flex-shrink: 0;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text-heading);
+    box-sizing: border-box;
+  }
+  #accountBtn {
+    order: 3;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 40px;
+    min-height: 40px;
+    padding: 0 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    flex-shrink: 0;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text-heading);
+    box-sizing: border-box;
+    margin-right: 0;
+  }
+  #themeBtn {
+    order: 4;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    padding: 0;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text-heading);
+    box-sizing: border-box;
+  }
+  .search {
+    order: 10;
+    flex: 1 1 100%;
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-top: 4px;
+  }
+  @media (max-width: 480px) {
+    #offlinePrepareHeader span[data-offline-label] {
+      max-width: 72px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    #accountBtn span {
+      display: none;
+    }
+    #accountBtn {
+      width: 40px;
+      padding: 0;
+    }
+  }
+  @media (max-width: 375px) {
+    #offlinePrepareHeader span[data-offline-label] {
+      display: none;
+    }
+    #offlinePrepareHeader {
+      width: 40px;
+      padding: 0;
+    }
+    .brand {
+      max-width: calc(100% - 132px);
+    }
   }
 
   /* Remove top segmented control in study tab on mobile as requested */
@@ -2166,11 +2277,46 @@ body.ab-open .ab-exit{display:inline-flex}
         <span class="src-mode-hint" id="papersModeHint">In-app PDF reader &middot; Opens inside LFHS Hub</span>
       </div>
       <div class="callout" id="papersCallout"><i class="fa-solid fa-circle-info" aria-hidden="true"></i><span>All PDFs open directly inside the website. Looking for Class 8 or 9? Open <a href="#notes/8/-/papers" style="text-decoration:underline;font-weight:600;">Class 8 papers</a> or <a href="#notes/9/-/papers" style="text-decoration:underline;font-weight:600;">Class 9 papers</a>.</span></div>
-      <div class="controls" role="region" aria-label="Filter question papers">
+      <!-- Desktop Paper Filters -->
+      <div class="controls desktop-paper-filters" role="region" aria-label="Filter question papers">
         <div><div class="control-label">Exam type</div><div class="chip-row scroll" id="paperTypeFilters"></div></div>
         <div><div class="control-label">Subject</div><div class="chip-row scroll" id="paperSubjectFilters"></div></div>
         <div><div class="control-label">Year</div><div class="chip-row scroll" id="paperYearFilters"></div></div>
         <div><div class="control-label">Answer key</div><div class="chip-row scroll" id="paperAnswerFilters"></div></div>
+      </div>
+
+      <!-- Mobile Paper Filters (Collapsible row with 2x2 grid of 44px selects with visible labels) -->
+      <div class="mobile-paper-filters" style="margin-bottom:12px;">
+        <button type="button" class="btn btn-filter-trigger" id="paperFilterCollapseBtn" aria-expanded="false" aria-controls="paperMobileFilterPanel" style="width:100%;min-height:44px;display:flex;justify-content:space-between;align-items:center;padding:0 14px;border:1px solid var(--border);border-radius:var(--r-md);background:var(--card-bg);margin-bottom:8px;box-sizing:border-box;">
+          <span style="display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:14px;"><i class="fa-solid fa-sliders"></i> Filters</span>
+          <span style="display:inline-flex;align-items:center;gap:8px;">
+            <span class="badge" id="paperFilterActiveCount" style="background:var(--primary-soft);color:var(--primary);font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;">All papers</span>
+            <i class="fa-solid fa-chevron-down" id="paperFilterChevron" style="font-size:12px;transition:transform .2s;"></i>
+          </span>
+        </button>
+        <div id="paperMobileFilterPanel" hidden style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--r-md);padding:12px;margin-bottom:8px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div>
+              <label for="mobilePaperTypeSelect" style="display:block;font-size:11px;font-weight:700;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px;">Exam Type</label>
+              <select id="mobilePaperTypeSelect" class="form-select paper-select" style="width:100%;min-height:44px;height:44px;padding:0 8px;border:1px solid var(--border);border-radius:var(--r-sm);background:var(--surface-2);color:var(--text-heading);font-size:13px;box-sizing:border-box;"></select>
+            </div>
+            <div>
+              <label for="mobilePaperSubjectSelect" style="display:block;font-size:11px;font-weight:700;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px;">Subject</label>
+              <select id="mobilePaperSubjectSelect" class="form-select paper-select" style="width:100%;min-height:44px;height:44px;padding:0 8px;border:1px solid var(--border);border-radius:var(--r-sm);background:var(--surface-2);color:var(--text-heading);font-size:13px;box-sizing:border-box;"></select>
+            </div>
+            <div>
+              <label for="mobilePaperYearSelect" style="display:block;font-size:11px;font-weight:700;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px;">Year</label>
+              <select id="mobilePaperYearSelect" class="form-select paper-select" style="width:100%;min-height:44px;height:44px;padding:0 8px;border:1px solid var(--border);border-radius:var(--r-sm);background:var(--surface-2);color:var(--text-heading);font-size:13px;box-sizing:border-box;"></select>
+            </div>
+            <div>
+              <label for="mobilePaperAnswersSelect" style="display:block;font-size:11px;font-weight:700;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px;">Answer Key</label>
+              <select id="mobilePaperAnswersSelect" class="form-select paper-select" style="width:100%;min-height:44px;height:44px;padding:0 8px;border:1px solid var(--border);border-radius:var(--r-sm);background:var(--surface-2);color:var(--text-heading);font-size:13px;box-sizing:border-box;"></select>
+            </div>
+          </div>
+          <div style="margin-top:10px;display:flex;justify-content:flex-end;">
+            <button type="button" class="btn btn-ghost btn-sm" id="mobilePaperResetBtn" style="font-size:12px;color:var(--primary);padding:4px 8px;">Reset filters</button>
+          </div>
+        </div>
       </div>
       <div class="chip-row scroll" id="paperJump" aria-label="Jump to section"></div>
       <div id="papersBody"></div>
@@ -4476,6 +4622,44 @@ function renderPapers(){
     ? '<button class="chip'+(state.paperAnswers==='all'?' active':'')+'" type="button" data-paper-answers="all">Any</button>'
       +'<button class="chip'+(state.paperAnswers==='with'?' active':'')+'" type="button" data-paper-answers="with"><i class="fa-solid fa-circle-check"></i> With answer key</button>'
     : '<span class="chip" style="cursor:default;opacity:.7">No answer-key filter</span>';
+
+  // Populate Mobile Selects (Phase 7: 2x2 grid of full-width 44px selects with visible labels)
+  var mobileTypeSelect = $('mobilePaperTypeSelect');
+  if(mobileTypeSelect){
+    mobileTypeSelect.innerHTML = typeChips.map(function(p){
+      return '<option value="' + p[0] + '"' + (state.paperType === p[0] ? ' selected' : '') + '>' + p[1] + '</option>';
+    }).join('');
+  }
+  var mobileSubjSelect = $('mobilePaperSubjectSelect');
+  if(mobileSubjSelect){
+    mobileSubjSelect.innerHTML = subjChips.map(function(p){
+      return '<option value="' + p[0] + '"' + (state.paperSubject === p[0] ? ' selected' : '') + '>' + p[1] + '</option>';
+    }).join('');
+  }
+  var mobileYearSelect = $('mobilePaperYearSelect');
+  if(mobileYearSelect){
+    mobileYearSelect.innerHTML = yearChips.map(function(p){
+      return '<option value="' + p[0] + '"' + (state.paperYear === p[0] ? ' selected' : '') + '>' + p[1] + '</option>';
+    }).join('');
+  }
+  var mobileAnsSelect = $('mobilePaperAnswersSelect');
+  if(mobileAnsSelect){
+    mobileAnsSelect.innerHTML = '<option value="all"' + (state.paperAnswers === 'all' ? ' selected' : '') + '>Any</option>'
+      + (hasKeys ? '<option value="with"' + (state.paperAnswers === 'with' ? ' selected' : '') + '>With answer key</option>' : '');
+  }
+
+  // Active filter badge count for mobile collapsible trigger
+  var activeCount = 0;
+  if(state.paperType !== 'all') activeCount++;
+  if(state.paperSubject !== 'all') activeCount++;
+  if(state.paperYear !== 'all') activeCount++;
+  if(state.paperAnswers !== 'all') activeCount++;
+  var pBadge = $('paperFilterActiveCount');
+  if(pBadge){
+    pBadge.textContent = activeCount ? (activeCount + ' active') : 'All papers';
+    pBadge.style.background = activeCount ? 'var(--primary)' : 'var(--primary-soft)';
+    pBadge.style.color = activeCount ? '#fff' : 'var(--primary)';
+  }
   var items=pool.filter(function(r){
     if(state.paperType!=='all'&&itemPaperType(r)!==state.paperType)return false;
     if(state.paperSubject!=='all'&&r.subj!==state.paperSubject)return false;
@@ -8071,6 +8255,61 @@ function initNotesPageIntro(){
 
 initPdfReader();
 initNotesSubNav();
+
+function initPaperMobileFilters(){
+  var btn = $('paperFilterCollapseBtn');
+  var panel = $('paperMobileFilterPanel');
+  var chevron = $('paperFilterChevron');
+  if(btn && panel){
+    btn.addEventListener('click', function(){
+      var isHidden = panel.hidden;
+      panel.hidden = !isHidden;
+      btn.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+      if(chevron) chevron.style.transform = isHidden ? 'rotate(180deg)' : 'none';
+    });
+  }
+  var tSel = $('mobilePaperTypeSelect');
+  if(tSel){
+    tSel.addEventListener('change', function(){
+      state.paperType = tSel.value;
+      renderPapers();
+    });
+  }
+  var sSel = $('mobilePaperSubjectSelect');
+  if(sSel){
+    sSel.addEventListener('change', function(){
+      state.paperSubject = sSel.value;
+      renderPapers();
+    });
+  }
+  var ySel = $('mobilePaperYearSelect');
+  if(ySel){
+    ySel.addEventListener('change', function(){
+      state.paperYear = ySel.value;
+      renderPapers();
+    });
+  }
+  var aSel = $('mobilePaperAnswersSelect');
+  if(aSel){
+    aSel.addEventListener('change', function(){
+      state.paperAnswers = aSel.value;
+      renderPapers();
+    });
+  }
+  var rBtn = $('mobilePaperResetBtn');
+  if(rBtn){
+    rBtn.addEventListener('click', function(){
+      state.paperType = 'all';
+      state.paperSubject = 'all';
+      state.paperYear = 'all';
+      state.paperAnswers = 'all';
+      renderPapers();
+      toast('Filters reset');
+    });
+  }
+}
+
+initPaperMobileFilters();
 initNotesPageIntro();
 initFlashcards();
 initFocusSound();
