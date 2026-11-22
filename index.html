@@ -1274,6 +1274,11 @@ body.is-offline .offline-banner { display: block; }
   .mft-class-pills { display: flex; gap: .3rem; }
 
   
+
+/* Desktop defaults for Phase 4 controls */
+#showMoreChaptersBtn { display: none; }
+.rc-chapter.rc-ch-more { display: flex; }
+
 /* Desktop defaults for Phase 2 controls */
 .sub-more-toggle { display: none; }
 #notesInfoToggleBtn { display: none; }
@@ -1781,7 +1786,136 @@ body.is-offline .offline-banner { display: block; }
     flex: 2;
     min-height: 48px;
     font-weight: 700;
+  
+  /* ===== Phase 4: 2-Column Subject Grid & Popular Chapter Cards ===== */
+  /* 2-column grid of subject tiles */
+  .tile-grid.compact {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: .75rem;
   }
+  .tile-grid.compact .tile {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 6px;
+    min-height: 76px;
+    padding: 12px 14px;
+    border-radius: var(--r-md);
+    white-space: normal;
+    text-align: left;
+  }
+  .tile-grid.compact .tile .tile-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 15px;
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+  .tile-grid.compact .tile .tile-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 100%;
+  }
+  .tile-grid.compact .tile .tile-copy strong {
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+  .tile-grid.compact .tile .tile-prog {
+    margin-left: 0;
+    margin-top: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 1px 6px;
+    align-self: flex-start;
+  }
+
+  /* Popular chapters mobile layout */
+  .rc-chapter.rc-ch-more {
+    display: none;
+  }
+  #popularChaptersGrid.all-shown .rc-chapter.rc-ch-more {
+    display: flex;
+  }
+  .rc-chapter .rc-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+  .rc-chapter .rc-top .tag {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+  .rc-chapter .meta {
+    display: none; /* Hide duplicate Class 10 line */
+  }
+  .rc-chapter h3 {
+    font-size: 15px;
+    line-height: 1.3;
+    margin-bottom: 4px;
+  }
+  .rc-chapter .desc {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--text-muted);
+    margin: 4px 0 12px;
+  }
+  .rc-chapter .rc-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 6px;
+    width: 100%;
+    margin-top: auto;
+  }
+  .rc-chapter .rc-actions .btn {
+    min-height: 40px;
+    padding: 0 4px;
+    font-size: 13px;
+    justify-content: center;
+    text-align: center;
+    border-radius: var(--r-md);
+    white-space: nowrap;
+  }
+  @media (max-width: 340px) {
+    .rc-chapter .rc-actions {
+      grid-template-columns: 1fr 1fr;
+    }
+    .rc-chapter .rc-actions [data-ask] {
+      grid-column: 1 / -1;
+    }
+  }
+  #showMoreChaptersBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    width: 100%;
+    margin-top: 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    background: var(--surface-2);
+    color: var(--primary);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  #popularChaptersGrid.all-shown + #showMoreChaptersBtn {
+    display: none;
+  }
+
+}
 
 }
 
@@ -3916,11 +4050,12 @@ function resourceCard(r0){
   return out;
 }
 
-function chapterCard(ch){
+function chapterCard(ch, idx){
   var S=SUBJ[ch.subj];
   var usePdf=(state.sourceMode==='pdfs'&&ch.pdfNotes&&BYID[ch.pdfNotes]);
-  var out='<article class="rc" style="--h:'+S.h+'">';
-  out+='<div class="rc-top"><span class="tag"><i class="fa-solid '+S.ic+'"></i> '+S.n+'</span></div>';
+  var hidClass = (idx !== undefined && idx >= 3) ? ' rc-ch-more' : '';
+  var out='<article class="rc rc-chapter'+hidClass+'" style="--h:'+S.h+'">';
+  out+='<div class="rc-top"><span class="tag"><i class="fa-solid '+S.ic+'"></i> '+esc(S.n).toUpperCase()+' &middot; CLASS 10</span></div>';
   out+='<h3>'+esc(ch.title)+'</h3>';
   out+='<p class="meta"><span><i class="fa-solid fa-graduation-cap"></i> Class 10</span></p>';
   out+='<p class="desc">'+esc(ch.desc)+'</p>';
@@ -3928,10 +4063,10 @@ function chapterCard(ch){
   if(usePdf){
     out+='<button class="btn btn-primary btn-sm" type="button" data-open-pdf="'+esc(ch.pdfNotes)+'" data-rid="'+esc(ch.pdfNotes)+'">Notes PDF</button>';
     if(ch.pdfPapers&&BYID[ch.pdfPapers])out+='<button class="btn btn-outline btn-sm" type="button" data-open-pdf="'+esc(ch.pdfPapers)+'" data-rid="'+esc(ch.pdfPapers)+'">Papers PDF</button>';
-    else out+='<a class="btn btn-outline btn-sm" href="'+esc(ch.papers)+'" target="_blank" rel="noopener noreferrer">Papers</a>';
+    else out+='<a class="btn btn-outline btn-sm" href="'+esc(ch.papers)+'" target="_blank" rel="noopener noreferrer">Papers PDF</a>';
   }else{
-    out+='<a class="btn btn-primary btn-sm" href="'+esc(ch.notes)+'" target="_blank" rel="noopener noreferrer">Notes</a>';
-    out+='<a class="btn btn-outline btn-sm" href="'+esc(ch.papers)+'" target="_blank" rel="noopener noreferrer">Papers</a>';
+    out+='<a class="btn btn-primary btn-sm" href="'+esc(ch.notes)+'" target="_blank" rel="noopener noreferrer">Notes PDF</a>';
+    out+='<a class="btn btn-outline btn-sm" href="'+esc(ch.papers)+'" target="_blank" rel="noopener noreferrer">Papers PDF</a>';
   }
   out+='<button class="btn btn-ghost btn-sm" type="button" data-ask="'+esc(ch.ask)+'"><i class="fa-solid fa-robot"></i> Ask AI</button>';
   out+='</div></article>';
@@ -4191,7 +4326,9 @@ function renderNotes(){
     if(cls==='10'){
       html+='<div class="block"><h3 class="section-title">Popular chapters (Class 10)</h3>'
         +'<p class="section-note" style="margin:.2rem 0 .7rem;">Chapter names follow the textbook edition used to build this page.</p>'
-        +'<div class="resource-grid">'+CHAPTERS.map(chapterCard).join('')+'</div></div>';
+        +'<div class="resource-grid" id="popularChaptersGrid">'+CHAPTERS.map(function(ch, i){ return chapterCard(ch, i); }).join('')+'</div>'
+        +'<button type="button" class="btn btn-ghost more-chapters-btn" id="showMoreChaptersBtn"><i class="fa-solid fa-chevron-down"></i> Show more chapters</button>'
+        +'</div>';
     }
   } else {
     var items=ALL.filter(function(r){
@@ -4222,6 +4359,15 @@ function renderNotes(){
   }
   
   $('notesBody').innerHTML = html;
+  var mChBtn = $('showMoreChaptersBtn');
+  if(mChBtn){
+    mChBtn.addEventListener('click', function(){
+      var g = $('popularChaptersGrid');
+      if(g) g.classList.add('all-shown');
+      mChBtn.style.display = 'none';
+    });
+  }
+
   
   // Attach Desktop Select Handlers
   var dSubj = $('desktopSubjSelect');
@@ -4890,7 +5036,8 @@ function onScrollToTop(){
   var btn=$('toTopBtn');
   var y=window.pageYOffset||document.documentElement.scrollTop;
   if(btn){
-    if(y>400)btn.classList.add('show');else btn.classList.remove('show');
+    var threshold = (window.innerWidth <= 768) ? 900 : 400;
+    if(y > threshold) btn.classList.add('show'); else btn.classList.remove('show');
   }
   var header=document.querySelector('.site-header');
   if(header&&window.innerWidth<=768){
