@@ -40,13 +40,19 @@ else {
     }
     chunks += s.c.length;
     // Unicode quality: NFC, no replacement characters / private-use (legacy font) symbols, and Malayalam/Hindi books really in their script
-    let notNfc = 0, junk = 0; const own = {}, tot = {};
+    let notNfc = 0, junk = 0, langJunk = 0; const own = {}, tot = {};
     for (const r of s.c) {
-      const x = r[7]; if (x !== x.normalize('NFC')) notNfc++; if (/[\ufffd\ue000-\uf8ff]/.test(x)) junk++;
-      const med = s.res[r[0]] && s.res[r[0]].medium; const re = /^mal/i.test(med || '') ? /[\u0d00-\u0d7f]/g : /^hin/i.test(med || '') ? /[\u0900-\u097f]/g : null;
+      const x = r[7]; if (x !== x.normalize('NFC')) notNfc++;
+      const med = s.res[r[0]] && s.res[r[0]].medium;
+      if (/[\ufffd\ue000-\uf8ff]/.test(x)) {
+        junk++;
+        if (/^mal|^hin/i.test(med || '')) langJunk++;
+      }
+      const re = /^mal/i.test(med || '') ? /[\u0d00-\u0d7f]/g : /^hin/i.test(med || '') ? /[\u0900-\u097f]/g : null;
       if (re) { own[r[0]] = (own[r[0]] || 0) + (x.match(re) || []).length; tot[r[0]] = (tot[r[0]] || 0) + x.length; }
     }
-    if (notNfc) (Object.keys(tot).length ? bad : warn)(f + ': ' + notNfc + ' chunks are not NFC-normalised' + (Object.keys(tot).length ? '' : ' (English: harmless, a re-ingest normalises them)')); if (junk) { const lang = Object.keys(tot).length > 0; (lang ? bad : warn)(f + ': ' + junk + ' chunks contain replacement or private-use characters' + (lang ? ' (legacy-font garbage in a Malayalam/Hindi book)' : ' (usually Word bullet symbols: harmless, a re-ingest cleans them)')); }
+    if (notNfc) (Object.keys(tot).length ? bad : warn)(f + ': ' + notNfc + ' chunks are not NFC-normalised' + (Object.keys(tot).length ? '' : ' (English: harmless, a re-ingest normalises them)'));
+    if (junk) { (langJunk ? bad : warn)(f + ': ' + junk + ' chunks contain replacement or private-use characters' + (langJunk ? ' (legacy-font garbage in a Malayalam/Hindi book)' : ' (usually Word bullet symbols: harmless, a re-ingest cleans them)')); }
     for (const id of Object.keys(tot)) { const ratio = own[id] / Math.max(1, tot[id]); if (ratio < 0.3) bad(f + ': ' + id + ' is marked ' + s.res[id].medium + ' but only ' + Math.round(100 * ratio) + '% of its text is in that script'); }
     for (const [id, m] of Object.entries(s.res)) { if ((m.status || 'ok') !== 'ok' && !String(id).startsWith('SYN-')) (/^eng/i.test(m.medium || 'english') ? warn : bad)(f + ': ' + id + ' has status "' + m.status + '"'); }
     if (badRows) bad(f + ': ' + badRows + ' malformed chunk rows'); if (badRefs) bad(f + ': ' + badRefs + ' chunks point at resource IDs that are not in data/pdfs.js'); if (badPage) bad(f + ': ' + badPage + ' chunks cite a page beyond the PDF length');

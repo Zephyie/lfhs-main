@@ -67,7 +67,7 @@ const normText = (t) => String(t == null ? '' : t).normalize('NFC')
 // Output cleanup (after the page-quality decision). Word/PDF "symbol font" glyphs live in the private-use area (U+F0xx); the common ones
 // are mapped to the real character (arrows, comparison signs, bullets), everything else private-use or U+FFFD is dropped.
 const SYMBOLS = { f0ae: '\u2192', f0ac: '\u2190', f0ad: '\u2191', f0af: '\u2193', f0ba: '\u2261', f0b1: '\u00b1', f0b3: '\u2265', f0a3: '\u2264', f0b4: '\u00d7', f0b8: '\u00f7', f0b9: '\u2260', f0bb: '\u2248', f0b0: '\u00b0', f0a5: '\u221e', f0de: '\u21d2', f0db: '\u21d4',
-  f0b7: '\u2022', f06c: '\u2022', f0a7: '\u25aa', f076: '\u2022', f0d8: '\u2022', f0fc: '\u2713', f020: ' ' };
+  f0b7: '\u2022', f06c: '\u2022', f0a7: '\u25aa', f076: '\u2022', f0d8: '\u2022', f0fc: '\u2713', f020: ' ', f074: '\u2022', f097: '\u25aa' };
 const cleanSym = (t) => t.replace(/[\ue000-\uf8ff\ufffd]/g, (c) => SYMBOLS[c.charCodeAt(0).toString(16)] || '');
 function tidy(s) {
   return normText(s).replace(/\u00a0/g, ' ').replace(/[ \t]+$/gm, '').replace(/ {2,}/g, ' ');
