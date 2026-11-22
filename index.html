@@ -1409,6 +1409,19 @@ body.is-offline .offline-banner { display: block; }
   }
 
   /* ===== Phase 2: Mobile Tabs & Page Intro (Original Header Preserved) ===== */
+  /* Mobile header: original styling preserved, clean 2-row wrap without layout overflow */
+  .search {
+    order: 3;
+    flex: 1 1 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-top: 6px;
+  }
+  .brand {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
   /* Remove top segmented control in study tab on mobile as requested */
   #tab-notes .section-header .seg[aria-label="Resource type"],
   #tab-papers .section-header .seg[aria-label="Resource type"] {
