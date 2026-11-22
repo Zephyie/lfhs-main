@@ -1272,6 +1272,91 @@ body.is-offline .offline-banner { display: block; }
   }
   .mft-row { display: flex; justify-content: space-between; align-items: center; gap: .5rem; }
   .mft-class-pills { display: flex; gap: .3rem; }
+
+  /* ===== Phase 1: Shared Base for Buttons and Chips (Mobile Touch & Centering) ===== */
+  .btn,
+  .chip,
+  .seg button,
+  .seg a,
+  .icon-btn,
+  .btn-filter-trigger,
+  .to-top-btn {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-align: center;
+    line-height: 1;
+    min-height: 44px;
+    padding: 0 16px;
+    white-space: nowrap;
+  }
+
+  .btn i,
+  .btn svg,
+  .chip i,
+  .chip svg,
+  .seg button i,
+  .seg button svg,
+  .seg a i,
+  .seg a svg,
+  .icon-btn i,
+  .icon-btn svg,
+  .btn-filter-trigger i,
+  .btn-filter-trigger svg {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .icon-btn {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
+    border-radius: 50%;
+  }
+
+  /* Specific buttons centering and sizing: Filters, Ask AI, Print formulas, Open Lessons */
+  .btn-filter-trigger {
+    min-height: 44px;
+    padding: 0 14px;
+    gap: 8px;
+  }
+
+  [data-ask] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 12px;
+    box-sizing: border-box;
+  }
+
+  button[onclick*="print"] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 14px;
+    box-sizing: border-box;
+  }
+
+  .rc-foot span:last-child {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    line-height: 1;
+    box-sizing: border-box;
+  }
 }
 
 </style>
