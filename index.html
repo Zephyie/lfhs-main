@@ -1259,6 +1259,46 @@ body.is-offline .offline-banner { display: block; }
   background: var(--surface-2);
 }
 
+/* First Bell 2.0 badge and header fix (all screen sizes) */
+.fb-badge {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  line-height: 1;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #ff9a62;
+  background: rgba(255, 107, 44, .14);
+  border: 1px solid rgba(255, 107, 44, .35);
+}
+.fb-badge i, .fb-badge svg, .fb-badge .play {
+  width: 12px;
+  height: 12px;
+  font-size: 11px;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.fb-meta {
+  flex: 1;
+  min-width: 0;
+  text-align: right;
+  font-size: 12px;
+  line-height: 1.3;
+  color: var(--text-muted, #8b96ab);
+}
+.fb-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
 @media (max-width: 768px) {
   .desktop-filter-toolbar { display: none; }
   .mobile-filter-toolbar {
@@ -6755,38 +6795,42 @@ function renderGlossaryView(container){
     return matchCls && matchSubj && matchQ;
   });
 
-  var out = '<div style="margin-bottom:1rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;">'
-    + '<div><h3 style="margin:0 0 .2rem;font-size:1.15rem;color:var(--text-heading);"><i class="fa-solid fa-language" aria-hidden="true"></i> Malayalam–English Academic Glossary</h3>'
-    + '<p style="margin:0;font-size:.82rem;color:var(--text-muted);">Parallel textbook terminology dictionary for Classes 8–10 Kerala SCERT curriculum across Sciences, Mathematics, Social Studies and ICT.</p></div>'
-    + '<button class="btn btn-ghost btn-sm" type="button" onclick="window.print()"><i class="fa-solid fa-print"></i> Print glossary</button>'
+  var out = '<div style="margin-bottom:.85rem;">'
+    + '<h3 style="margin:0 0 .2rem;font-size:1.15rem;color:var(--text-heading);"><i class="fa-solid fa-language" aria-hidden="true"></i> Malayalam–English Academic Glossary</h3>'
+    + '<p style="margin:0;font-size:.82rem;color:var(--text-muted);">Parallel textbook terminology dictionary for Classes 8–10 Kerala SCERT curriculum across Sciences, Mathematics, Social Studies and ICT.</p>'
     + '</div>';
 
-  out += '<div class="glossary-controls" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--r-lg);padding:.9rem;margin-bottom:1rem;display:flex;flex-direction:column;gap:.75rem;">'
-    + '<div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;">'
-    + '<div style="position:relative;flex:1;min-width:240px;">'
-    + '<i class="fa-solid fa-magnifying-glass" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:.8rem;"></i>'
-    + '<input type="search" id="glossarySearchInput" placeholder="Search in English or മലയാളം (e.g. Refraction, അപവർത്തനം, ആക്കം)..." value="' + esc(GLOSSARY_FILTERS.search) + '" style="width:100%;height:38px;padding:0 .8rem 0 2rem;border:1px solid var(--border);border-radius:var(--r-md);background:var(--surface-2);color:var(--text-heading);font-size:.88rem;">'
+  out += '<div class="glossary-controls" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--r-lg);padding:.85rem;margin-bottom:1rem;display:flex;flex-direction:column;gap:.65rem;">'
+    // Search box and Print button on the same row
+    + '<div class="glossary-search-row" style="display:flex;gap:8px;align-items:center;width:100%;">'
+    + '<div style="position:relative;flex:1;min-width:0;">'
+    + '<i class="fa-solid fa-magnifying-glass" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:.8rem;"></i>'
+    + '<input type="search" id="glossarySearchInput" placeholder="Search in English or മലയാളം (e.g. Refraction, അപവർത്തനം)..." value="' + esc(GLOSSARY_FILTERS.search) + '" style="width:100%;height:44px;padding:0 .8rem 0 2.2rem;border:1px solid var(--border);border-radius:var(--r-md);background:var(--surface-2);color:var(--text-heading);font-size:.85rem;box-sizing:border-box;">'
     + '</div>'
-    + '<div class="chip-group" id="glossClsRow" style="display:flex;gap:.3rem;flex-wrap:wrap;">'
-    + '<button class="chip' + (GLOSSARY_FILTERS.cls === 'all' ? ' active' : '') + '" type="button" data-gloss-cls="all">All Classes</button>'
-    + '<button class="chip' + (GLOSSARY_FILTERS.cls === '10' ? ' active' : '') + '" type="button" data-gloss-cls="10">Class 10</button>'
-    + '<button class="chip' + (GLOSSARY_FILTERS.cls === '9' ? ' active' : '') + '" type="button" data-gloss-cls="9">Class 9</button>'
-    + '<button class="chip' + (GLOSSARY_FILTERS.cls === '8' ? ' active' : '') + '" type="button" data-gloss-cls="8">Class 8</button>'
+    + '<button class="btn btn-ghost btn-sm btn-print-glossary" type="button" onclick="window.print()" title="Print glossary" aria-label="Print glossary" style="flex:none;min-width:44px;height:44px;padding:0 12px;border:1px solid var(--border);border-radius:var(--r-md);box-sizing:border-box;display:inline-flex;align-items:center;gap:6px;"><i class="fa-solid fa-print"></i> <span style="font-size:.8rem;font-weight:600;">Print</span></button>'
     + '</div>'
+    
+    // Class chips single scrolling row
+    + '<div class="chip-row scroll" id="glossClsRow" style="display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap;padding:2px 0 4px;-webkit-overflow-scrolling:touch;">'
+    + '<button class="chip' + (GLOSSARY_FILTERS.cls === 'all' ? ' active' : '') + '" type="button" data-gloss-cls="all" style="flex-shrink:0;">All Classes</button>'
+    + '<button class="chip' + (GLOSSARY_FILTERS.cls === '10' ? ' active' : '') + '" type="button" data-gloss-cls="10" style="flex-shrink:0;">Class 10</button>'
+    + '<button class="chip' + (GLOSSARY_FILTERS.cls === '9' ? ' active' : '') + '" type="button" data-gloss-cls="9" style="flex-shrink:0;">Class 9</button>'
+    + '<button class="chip' + (GLOSSARY_FILTERS.cls === '8' ? ' active' : '') + '" type="button" data-gloss-cls="8" style="flex-shrink:0;">Class 8</button>'
     + '</div>'
-    + '<div style="display:flex;gap:.35rem;flex-wrap:wrap;align-items:center;" id="glossSubjRow">'
-    + '<span style="font-size:.74rem;font-weight:700;text-transform:uppercase;color:var(--text-muted);margin-right:.4rem;">Subject:</span>'
-    + '<button class="chip' + (GLOSSARY_FILTERS.subj === 'all' ? ' active' : '') + '" type="button" data-gloss-subj="all">All Subjects (' + GLOSSARY.length + ')</button>'
-    + '<button class="chip' + (GLOSSARY_FILTERS.subj === 'physics' ? ' active' : '') + '" type="button" data-gloss-subj="physics"><i class="fa-solid fa-bolt"></i> Physics</button>'
-    + '<button class="chip' + (GLOSSARY_FILTERS.subj === 'chemistry' ? ' active' : '') + '" type="button" data-gloss-subj="chemistry"><i class="fa-solid fa-flask-vial"></i> Chemistry</button>'
-    + '<button class="chip' + (GLOSSARY_FILTERS.subj === 'biology' ? ' active' : '') + '" type="button" data-gloss-subj="biology"><i class="fa-solid fa-dna"></i> Biology</button>'
-    + '<button class="chip' + (GLOSSARY_FILTERS.subj === 'maths' ? ' active' : '') + '" type="button" data-gloss-subj="maths"><i class="fa-solid fa-square-root-variable"></i> Mathematics</button>'
-    + '<button class="chip' + (GLOSSARY_FILTERS.subj === 'ss' ? ' active' : '') + '" type="button" data-gloss-subj="ss"><i class="fa-solid fa-landmark"></i> Social Science</button>'
-    + '<button class="chip' + (GLOSSARY_FILTERS.subj === 'ict' ? ' active' : '') + '" type="button" data-gloss-subj="ict"><i class="fa-solid fa-laptop-code"></i> ICT</button>'
+    
+    // Subject chips single scrolling row
+    + '<div class="chip-row scroll" id="glossSubjRow" style="display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap;padding:2px 0 4px;-webkit-overflow-scrolling:touch;">'
+    + '<button class="chip' + (GLOSSARY_FILTERS.subj === 'all' ? ' active' : '') + '" type="button" data-gloss-subj="all" style="flex-shrink:0;">All Subjects (' + GLOSSARY.length + ')</button>'
+    + '<button class="chip' + (GLOSSARY_FILTERS.subj === 'physics' ? ' active' : '') + '" type="button" data-gloss-subj="physics" style="flex-shrink:0;"><i class="fa-solid fa-bolt"></i> Physics</button>'
+    + '<button class="chip' + (GLOSSARY_FILTERS.subj === 'chemistry' ? ' active' : '') + '" type="button" data-gloss-subj="chemistry" style="flex-shrink:0;"><i class="fa-solid fa-flask-vial"></i> Chemistry</button>'
+    + '<button class="chip' + (GLOSSARY_FILTERS.subj === 'biology' ? ' active' : '') + '" type="button" data-gloss-subj="biology" style="flex-shrink:0;"><i class="fa-solid fa-dna"></i> Biology</button>'
+    + '<button class="chip' + (GLOSSARY_FILTERS.subj === 'maths' ? ' active' : '') + '" type="button" data-gloss-subj="maths" style="flex-shrink:0;"><i class="fa-solid fa-square-root-variable"></i> Mathematics</button>'
+    + '<button class="chip' + (GLOSSARY_FILTERS.subj === 'ss' ? ' active' : '') + '" type="button" data-gloss-subj="ss" style="flex-shrink:0;"><i class="fa-solid fa-landmark"></i> Social Science</button>'
+    + '<button class="chip' + (GLOSSARY_FILTERS.subj === 'ict' ? ' active' : '') + '" type="button" data-gloss-subj="ict" style="flex-shrink:0;"><i class="fa-solid fa-laptop-code"></i> ICT</button>'
     + '</div>'
     + '</div>';
 
-  out += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;font-size:.82rem;color:var(--text-muted);">'
+  out += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.65rem;font-size:.82rem;color:var(--text-muted);">'
     + '<span>Showing <strong>' + list.length + '</strong> academic terminology entries</span>'
     + (GLOSSARY_FILTERS.search || GLOSSARY_FILTERS.cls !== 'all' || GLOSSARY_FILTERS.subj !== 'all' ? '<button class="btn btn-ghost btn-sm" id="resetGlossaryFiltersBtn" type="button" style="padding:.2rem .5rem;font-size:.78rem;">Reset filters</button>' : '')
     + '</div>';
@@ -6850,12 +6894,13 @@ function renderGlossaryView(container){
     });
   }
 }
-
 var VICTERS_FILTERS = { cls: 'all' };
+var VICTERS_EXPANDED = false;
 function renderVictersView(container){
   var currentClass = state.dashClass || '10';
   if(VICTERS_FILTERS.cls === null) VICTERS_FILTERS.cls = currentClass;
-  var playlists = (VICTERS_DATA.playlists || []).filter(function(v){
+  var allPlaylists = VICTERS_DATA.playlists || [];
+  var filtered = allPlaylists.filter(function(v){
     return VICTERS_FILTERS.cls === 'all' || v.cls === VICTERS_FILTERS.cls;
   });
 
@@ -6887,34 +6932,42 @@ function renderVictersView(container){
   out += '</div></div>';
 
   out += '<div style="margin-top:1.5rem;">'
-    + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem;flex-wrap:wrap;gap:.5rem;">'
-    + '<h4 style="font-size:.92rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin:0;"><i class="fa-solid fa-video" style="margin-right:6px;"></i> First Bell 2.0 Class Playlists (' + playlists.length + ')</h4>'
-    + '<div class="chip-group" id="victersClsRow" style="display:flex;gap:.3rem;">'
-    + '<button class="chip' + (VICTERS_FILTERS.cls === 'all' ? ' active' : '') + '" type="button" data-vic-cls="all">All Classes</button>'
-    + '<button class="chip' + (VICTERS_FILTERS.cls === '10' ? ' active' : '') + '" type="button" data-vic-cls="10">Class 10</button>'
-    + '<button class="chip' + (VICTERS_FILTERS.cls === '9' ? ' active' : '') + '" type="button" data-vic-cls="9">Class 9</button>'
-    + '<button class="chip' + (VICTERS_FILTERS.cls === '8' ? ' active' : '') + '" type="button" data-vic-cls="8">Class 8</button>'
+    + '<h4 style="font-size:.92rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin:0 0 .5rem;"><i class="fa-solid fa-video" style="margin-right:6px;"></i> First Bell 2.0 Class Playlists (' + filtered.length + ')</h4>'
+    + '<div class="chip-row scroll" id="victersClsRow" style="display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap;padding:2px 0 8px;margin-bottom:12px;-webkit-overflow-scrolling:touch;">'
+    + '<button class="chip' + (VICTERS_FILTERS.cls === 'all' ? ' active' : '') + '" type="button" data-vic-cls="all" style="flex-shrink:0;">All Classes (' + allPlaylists.length + ')</button>'
+    + '<button class="chip' + (VICTERS_FILTERS.cls === '10' ? ' active' : '') + '" type="button" data-vic-cls="10" style="flex-shrink:0;">Class 10</button>'
+    + '<button class="chip' + (VICTERS_FILTERS.cls === '9' ? ' active' : '') + '" type="button" data-vic-cls="9" style="flex-shrink:0;">Class 9</button>'
+    + '<button class="chip' + (VICTERS_FILTERS.cls === '8' ? ' active' : '') + '" type="button" data-vic-cls="8" style="flex-shrink:0;">Class 8</button>'
     + '</div>'
-    + '</div>'
-    + '<div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:.85rem;">';
+    + '<div class="victers-playlist-grid" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:.85rem;">';
 
-  playlists.forEach(function(v){
+  var visibleList = (VICTERS_EXPANDED || filtered.length <= 6) ? filtered : filtered.slice(0, 6);
+
+  visibleList.forEach(function(v){
     out += '<a class="rc" href="' + esc(v.url) + '" target="_blank" rel="noopener noreferrer" style="border:1px solid var(--border);border-radius:var(--r-md);padding:1rem;background:var(--card-bg);display:flex;flex-direction:column;justify-content:space-between;text-decoration:none;">'
       + '<div>'
-      + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.35rem;">'
-      + '<span class="badge" style="background:#ff0000;color:#fff;"><i class="fa-solid fa-play"></i> First Bell 2.0</span>'
-      + '<span class="rc-meta">Class ' + esc(v.cls) + ' · ' + esc(v.medium) + '</span>'
+      + '<div class="fb-top" style="margin-bottom:.45rem;">'
+      + '<span class="fb-badge"><i class="fa-solid fa-play"></i> First Bell 2.0</span>'
+      + '<span class="fb-meta">Class ' + esc(v.cls) + ' · ' + esc(v.medium) + '</span>'
       + '</div>'
       + '<h4 class="rc-title" style="font-size:.98rem;font-weight:700;color:var(--text-heading);margin-bottom:.3rem;">' + esc(v.subj) + '</h4>'
-      + '<p class="rc-desc" style="font-size:.8rem;color:var(--text-muted);line-height:1.4;margin:0;">' + esc(v.desc) + '</p>'
+      + '<p class="rc-desc" style="font-size:.8rem;color:var(--text-muted);line-height:1.45;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">' + esc(v.desc) + '</p>'
       + '</div>'
-      + '<div class="rc-foot" style="margin-top:.7rem;padding-top:.45rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:.76rem;color:var(--text-muted);">'
+      + '<div class="rc-foot" style="margin-top:.7rem;padding-top:.45rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;min-height:44px;font-size:.76rem;color:var(--text-muted);box-sizing:border-box;">'
       + '<span>Official KITE series</span>'
-      + '<span style="color:var(--primary);font-weight:600;">Open Lessons <i class="fa-solid fa-arrow-up-right-from-square"></i></span>'
+      + '<span style="display:inline-flex;align-items:center;gap:6px;min-height:44px;color:var(--primary);font-weight:600;">Open Lessons <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:.7rem;"></i></span>'
       + '</div>'
       + '</a>';
   });
-  out += '</div></div>';
+  out += '</div>';
+
+  if (!VICTERS_EXPANDED && filtered.length > 6) {
+    out += '<div style="text-align:center;margin-top:1.2rem;">'
+      + '<button type="button" class="btn btn-outline" id="victersShowAllBtn" style="width:100%;max-width:320px;min-height:44px;border-radius:999px;font-weight:600;"><i class="fa-solid fa-chevron-down"></i> Show all ' + filtered.length + ' playlists</button>'
+      + '</div>';
+  }
+
+  out += '</div>';
 
   container.innerHTML = out;
   container.querySelectorAll('[data-vic-cls]').forEach(function(btn){
@@ -6923,8 +6976,14 @@ function renderVictersView(container){
       renderVictersView(container);
     });
   });
+  var showAllBtn = container.querySelector('#victersShowAllBtn');
+  if(showAllBtn){
+    showAllBtn.addEventListener('click', function(){
+      VICTERS_EXPANDED = true;
+      renderVictersView(container);
+    });
+  }
 }
-
 var FOCUS_ACTIVE_TAB = 'subjects';
 function renderFocusView(container){
   var out = '<div style="margin-bottom:1rem;">'
