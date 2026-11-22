@@ -1368,119 +1368,11 @@ body.is-offline .offline-banner { display: block; }
     box-sizing: border-box;
   }
 
-  /* ===== Phase 2: Mobile Header, Search Bar, Tabs, & Page Intro ===== */
-  .site-header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    transition: transform .28s cubic-bezier(.2,.8,.2,1);
-    background: color-mix(in srgb, var(--card-bg) 95%, transparent);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--border);
-  }
-  .site-header.header-hidden {
-    transform: translateY(-100%);
-  }
-  .header-inner {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    padding: 8px 12px 10px;
-    gap: 8px;
-  }
-  .brand {
-    flex: 1 1 auto;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    min-width: 0;
-    text-decoration: none;
-  }
-  .brand-logo {
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    flex-shrink: 0;
-  }
-  .brand-text {
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-  }
-  .brand-text strong {
-    font-size: 14px;
-    font-weight: 700;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: var(--text-heading);
-  }
-  .brand-text small {
-    font-size: 11px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: var(--text-muted);
-  }
-  #offlinePrepareHeader {
-    display: none;
-  }
-  #accountBtn {
-    flex-shrink: 0;
-  }
-  #themeBtn {
-    flex-shrink: 0;
-  }
-
-  /* Search bar under header at 44px */
-  .search {
-    width: 100%;
-    flex: 1 1 100%;
-    margin: 4px 0 0;
-    max-width: 100%;
-    order: 10;
-  }
-  .search input {
-    height: 44px;
-    font-size: 14px;
-    border-radius: 12px;
-  }
-
-  /* Full-width segmented control for Notes & Textbooks / Question Papers */
+  /* ===== Phase 2: Mobile Tabs & Page Intro (Original Header Preserved) ===== */
+  /* Remove top segmented control in study tab on mobile as requested */
   #tab-notes .section-header .seg[aria-label="Resource type"],
   #tab-papers .section-header .seg[aria-label="Resource type"] {
-    display: flex;
-    width: 100%;
-    border-radius: 999px;
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-    padding: 3px;
-    gap: 3px;
-    box-sizing: border-box;
-    margin-bottom: 12px;
-  }
-  #tab-notes .section-header .seg[aria-label="Resource type"] a,
-  #tab-papers .section-header .seg[aria-label="Resource type"] a {
-    flex: 1;
-    min-height: 40px;
-    padding: 0 12px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    border-radius: 999px;
-    font-size: 13px;
-    font-weight: 600;
-    text-decoration: none;
-    box-sizing: border-box;
-    color: var(--text-muted);
-  }
-  #tab-notes .section-header .seg[aria-label="Resource type"] a[aria-current="true"],
-  #tab-papers .section-header .seg[aria-label="Resource type"] a[aria-current="true"] {
-    background: var(--primary);
-    color: #fff;
-    box-shadow: 0 2px 8px rgba(37,99,235,0.25);
+    display: none !important;
   }
 
   /* Compact breadcrumb summary line */
@@ -1615,12 +1507,12 @@ body.is-offline .offline-banner { display: block; }
     overflow-x: auto;
     overscroll-behavior-x: contain;
     -webkit-overflow-scrolling: touch;
-    margin: 6px -12px 14px;
-    padding: 2px 12px 6px;
+    margin: 8px 0 14px;
+    padding: 2px 0 6px;
     scroll-snap-type: x proximity;
     scrollbar-width: none;
-    -webkit-mask: linear-gradient(90deg, #000 88%, transparent);
-    mask: linear-gradient(90deg, #000 88%, transparent);
+    -webkit-mask: linear-gradient(90deg, #000 90%, transparent);
+    mask: linear-gradient(90deg, #000 90%, transparent);
   }
   #notesSubNav::-webkit-scrollbar {
     display: none;
@@ -5039,14 +4931,6 @@ function onScrollToTop(){
     var threshold = (window.innerWidth <= 768) ? 900 : 400;
     if(y > threshold) btn.classList.add('show'); else btn.classList.remove('show');
   }
-  var header=document.querySelector('.site-header');
-  if(header&&window.innerWidth<=768){
-    if(y>70&&y>lastScrollTop+8){
-      header.classList.add('header-hidden');
-    }else if(y<lastScrollTop-8||y<=50){
-      header.classList.remove('header-hidden');
-    }
-  }
   lastScrollTop=Math.max(0,y);
 }
 window.addEventListener('scroll',onScrollToTop,{passive:true});
@@ -6722,36 +6606,40 @@ function renderFormulasView(container){
     return matchCls && matchSubj && matchQ;
   });
   
-  var out = '<div style="margin-bottom:1rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;">'
-    + '<div><h3 style="margin:0 0 .2rem;font-size:1.15rem;color:var(--text-heading);"><i class="fa-solid fa-square-root-variable" aria-hidden="true"></i> Formulas &amp; Laws Library</h3>'
-    + '<p style="margin:0;font-size:.82rem;color:var(--text-muted);">Verified reference for Classes 8–10 following Kerala SCERT syllabus. Includes SI units, conditions, worked examples and common mistakes.</p></div>'
-    + '<button class="btn btn-ghost btn-sm" type="button" onclick="window.print()"><i class="fa-solid fa-print"></i> Print formulas</button>'
+  var out = '<div style="margin-bottom:.85rem;">'
+    + '<h3 style="margin:0 0 .2rem;font-size:1.15rem;color:var(--text-heading);"><i class="fa-solid fa-square-root-variable" aria-hidden="true"></i> Formulas &amp; Laws Library</h3>'
+    + '<p style="margin:0;font-size:.82rem;color:var(--text-muted);">Verified reference for Classes 8–10 following Kerala SCERT syllabus. Includes SI units, conditions, worked examples and common mistakes.</p>'
     + '</div>';
     
-  out += '<div class="formula-controls" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--r-lg);padding:.9rem;margin-bottom:1rem;display:flex;flex-direction:column;gap:.75rem;">'
-    + '<div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;">'
-    + '<div style="position:relative;flex:1;min-width:220px;">'
-    + '<i class="fa-solid fa-magnifying-glass" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:.8rem;"></i>'
-    + '<input type="search" id="formulaSearchInput" placeholder="Search formula name, law, variables or chapter..." value="' + esc(FORMULA_FILTERS.search) + '" style="width:100%;height:36px;padding:0 .8rem 0 2rem;border:1px solid var(--border);border-radius:var(--r-md);background:var(--surface-2);color:var(--text-heading);font-size:.85rem;">'
+  out += '<div class="formula-controls" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--r-lg);padding:.85rem;margin-bottom:1rem;display:flex;flex-direction:column;gap:.65rem;">'
+    // Search box and Print button on the SAME row
+    + '<div class="formula-search-row" style="display:flex;gap:8px;align-items:center;width:100%;">'
+    + '<div style="position:relative;flex:1;min-width:0;">'
+    + '<i class="fa-solid fa-magnifying-glass" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:.8rem;"></i>'
+    + '<input type="search" id="formulaSearchInput" placeholder="Search formulas, laws, variables or chapter..." value="' + esc(FORMULA_FILTERS.search) + '" style="width:100%;height:44px;padding:0 .8rem 0 2.2rem;border:1px solid var(--border);border-radius:var(--r-md);background:var(--surface-2);color:var(--text-heading);font-size:.85rem;box-sizing:border-box;">'
     + '</div>'
-    + '<div class="chip-group" id="formClsRow" style="display:flex;gap:.3rem;flex-wrap:wrap;">'
-    + '<button class="chip' + (FORMULA_FILTERS.cls === 'all' ? ' active' : '') + '" type="button" data-form-cls="all">All Classes</button>'
-    + '<button class="chip' + (FORMULA_FILTERS.cls === '10' ? ' active' : '') + '" type="button" data-form-cls="10">Class 10</button>'
-    + '<button class="chip' + (FORMULA_FILTERS.cls === '9' ? ' active' : '') + '" type="button" data-form-cls="9">Class 9</button>'
-    + '<button class="chip' + (FORMULA_FILTERS.cls === '8' ? ' active' : '') + '" type="button" data-form-cls="8">Class 8</button>'
+    + '<button class="btn btn-ghost btn-sm btn-print-formula" type="button" onclick="window.print()" title="Print formulas" aria-label="Print formulas" style="flex:none;min-width:44px;height:44px;padding:0 12px;border:1px solid var(--border);border-radius:var(--r-md);box-sizing:border-box;display:inline-flex;align-items:center;gap:6px;"><i class="fa-solid fa-print"></i> <span style="font-size:.8rem;font-weight:600;">Print</span></button>'
     + '</div>'
+    
+    // Class chips single scrolling row (no wrapping, no orphan Class 8)
+    + '<div class="chip-row scroll" id="formClsRow" style="display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap;padding:2px 0 4px;-webkit-overflow-scrolling:touch;">'
+    + '<button class="chip' + (FORMULA_FILTERS.cls === 'all' ? ' active' : '') + '" type="button" data-form-cls="all" style="flex-shrink:0;">All Classes</button>'
+    + '<button class="chip' + (FORMULA_FILTERS.cls === '10' ? ' active' : '') + '" type="button" data-form-cls="10" style="flex-shrink:0;">Class 10</button>'
+    + '<button class="chip' + (FORMULA_FILTERS.cls === '9' ? ' active' : '') + '" type="button" data-form-cls="9" style="flex-shrink:0;">Class 9</button>'
+    + '<button class="chip' + (FORMULA_FILTERS.cls === '8' ? ' active' : '') + '" type="button" data-form-cls="8" style="flex-shrink:0;">Class 8</button>'
     + '</div>'
-    + '<div style="display:flex;gap:.35rem;flex-wrap:wrap;align-items:center;" id="formSubjRow">'
-    + '<span style="font-size:.74rem;font-weight:700;text-transform:uppercase;color:var(--text-muted);margin-right:.4rem;">Subject:</span>'
-    + '<button class="chip' + (FORMULA_FILTERS.subj === 'all' ? ' active' : '') + '" type="button" data-form-subj="all">All Subjects (' + FORMULAS.length + ')</button>'
-    + '<button class="chip' + (FORMULA_FILTERS.subj === 'physics' ? ' active' : '') + '" type="button" data-form-subj="physics"><i class="fa-solid fa-bolt"></i> Physics</button>'
-    + '<button class="chip' + (FORMULA_FILTERS.subj === 'chemistry' ? ' active' : '') + '" type="button" data-form-subj="chemistry"><i class="fa-solid fa-flask-vial"></i> Chemistry</button>'
-    + '<button class="chip' + (FORMULA_FILTERS.subj === 'maths' ? ' active' : '') + '" type="button" data-form-subj="maths"><i class="fa-solid fa-square-root-variable"></i> Mathematics</button>'
-    + '<button class="chip' + (FORMULA_FILTERS.subj === 'biology' ? ' active' : '') + '" type="button" data-form-subj="biology"><i class="fa-solid fa-dna"></i> Biology</button>'
+    
+    // Subject chips single scrolling row
+    + '<div class="chip-row scroll" id="formSubjRow" style="display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap;padding:2px 0 4px;-webkit-overflow-scrolling:touch;">'
+    + '<button class="chip' + (FORMULA_FILTERS.subj === 'all' ? ' active' : '') + '" type="button" data-form-subj="all" style="flex-shrink:0;">All Subjects (' + FORMULAS.length + ')</button>'
+    + '<button class="chip' + (FORMULA_FILTERS.subj === 'physics' ? ' active' : '') + '" type="button" data-form-subj="physics" style="flex-shrink:0;"><i class="fa-solid fa-bolt"></i> Physics</button>'
+    + '<button class="chip' + (FORMULA_FILTERS.subj === 'chemistry' ? ' active' : '') + '" type="button" data-form-subj="chemistry" style="flex-shrink:0;"><i class="fa-solid fa-flask-vial"></i> Chemistry</button>'
+    + '<button class="chip' + (FORMULA_FILTERS.subj === 'maths' ? ' active' : '') + '" type="button" data-form-subj="maths" style="flex-shrink:0;"><i class="fa-solid fa-square-root-variable"></i> Mathematics</button>'
+    + '<button class="chip' + (FORMULA_FILTERS.subj === 'biology' ? ' active' : '') + '" type="button" data-form-subj="biology" style="flex-shrink:0;"><i class="fa-solid fa-dna"></i> Biology</button>'
     + '</div>'
     + '</div>';
 
-  out += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;font-size:.82rem;color:var(--text-muted);">'
+  out += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.65rem;font-size:.82rem;color:var(--text-muted);">'
     + '<span>Showing <strong>' + list.length + '</strong> verified formulas &amp; laws</span>'
     + (FORMULA_FILTERS.search || FORMULA_FILTERS.cls !== 'all' || FORMULA_FILTERS.subj !== 'all' ? '<button class="btn btn-ghost btn-sm" id="resetFormulaFiltersBtn" type="button" style="padding:.2rem .5rem;font-size:.78rem;">Reset filters</button>' : '')
     + '</div>';
@@ -6769,10 +6657,15 @@ function renderFormulasView(container){
         + (f.chapter ? '<span style="font-size:.7rem;color:var(--text-muted);background:var(--surface-2);padding:.15rem .45rem;border-radius:4px;">' + esc(f.chapter) + '</span>' : '')
         + '</div>'
         + '<h4 class="formula-title" style="font-size:1.02rem;font-weight:700;color:var(--text-heading);margin-bottom:.5rem;">' + esc(f.title) + '</h4>'
-        + '<button type="button" class="formula-box" title="Click to copy formula" aria-label="Copy ' + esc(f.title) + ' formula" data-copy-eq="' + esc(f.eq) + '" style="font-size:.95rem;font-weight:700;letter-spacing:.02em;background:var(--surface-2);color:var(--primary);padding:.65rem .85rem;border-radius:var(--r-md);border:1px solid var(--border);width:100%;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;">'
-        + '<span>' + esc(f.eq) + '</span>'
-        + '<i class="fa-regular fa-copy" style="font-size:.85rem;opacity:.7;"></i>'
+        // Formula box with sideways scroll and fixed 44px copy button slot
+        + '<div class="formula-box-wrap" style="position:relative;display:flex;align-items:center;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-md);overflow:hidden;margin:.5rem 0;">'
+        + '<div class="formula-eq-scroll" style="flex:1;min-width:0;overflow-x:auto;padding:.65rem .85rem;font-size:.95rem;font-weight:700;color:var(--primary);white-space:nowrap;scrollbar-width:none;-webkit-overflow-scrolling:touch;">'
+        + esc(f.eq)
+        + '</div>'
+        + '<button type="button" class="btn btn-ghost icon-btn formula-copy-btn" title="Click to copy formula" aria-label="Copy ' + esc(f.title) + ' formula" data-copy-eq="' + esc(f.eq) + '" style="width:44px;min-width:44px;height:44px;min-height:44px;flex-shrink:0;border:none;border-left:1px solid var(--border);border-radius:0;background:var(--card-bg);color:var(--primary);cursor:pointer;display:flex;align-items:center;justify-content:center;">'
+        + '<i class="fa-regular fa-copy" style="font-size:.9rem;"></i>'
         + '</button>'
+        + '</div>'
         + '<div class="formula-vars" style="margin-top:.6rem;font-size:.8rem;color:var(--text-muted);line-height:1.45;"><strong>Symbols &amp; Units:</strong> ' + esc(f.vars) + '</div>'
         + '<p style="margin-top:.45rem;font-size:.82rem;color:var(--text-main);line-height:1.45;">' + esc(f.desc) + '</p>'
         + '</div>';
@@ -6810,7 +6703,6 @@ function renderFormulasView(container){
   if(searchInput){
     searchInput.addEventListener('input', function(){
       FORMULA_FILTERS.search = searchInput.value;
-      // Re-filter cards without full rerender to maintain input focus
       var term = searchInput.value.toLowerCase().trim();
       var cards = container.querySelectorAll('.formula-card');
       var matchedCount = 0;
