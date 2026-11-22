@@ -4,7 +4,7 @@
 (function () {
   'use strict';
   if (window.LFHSEgg) return;
-  var CFG = Object.assign({ src: 'hall-runner.html', hash: '#hallrunner', konami: true, corner: 'br', cornerSize: 56, cornerTaps: 6, tapWindow: 2600, hint: true }, window.LFHS_EGG || {});
+  var CFG = Object.assign({ src: 'hall-runner.html', hash: '#hallrunner', konami: true, corner: 'br', cornerSize: 56, cornerTaps: 6, tapWindow: 2600, hint: true, word: 'runner' }, window.LFHS_EGG || {});
   var KONAMI = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
   var ov = null, pushed = false, ki = 0, taps = [], styled = false, prevOv = '';
   var FONT = '-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",system-ui,sans-serif';
@@ -74,18 +74,32 @@
   }
   function typing(el) { return el && (/^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName) || el.isContentEditable); }
 
-  if (CFG.konami) document.addEventListener('keydown', function (e) {
-    if (ov || typing(e.target) || e.ctrlKey || e.metaKey || e.altKey) return;
+  var typed = '';
+  function onKey(e) {
+    if (ov || !e || !e.key || typing(e.target) || e.ctrlKey || e.metaKey || e.altKey) return;
     var k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
-    if (k === KONAMI[ki]) { if (++ki === KONAMI.length) { ki = 0; unlock(); } } else ki = (k === KONAMI[0]) ? 1 : 0;
-  });
-  document.addEventListener('pointerup', function (e) {
-    if (ov || e.button > 0) return; var w = window.innerWidth, h = window.innerHeight, s = CFG.cornerSize, c = CFG.corner;
+    if (CFG.konami) { if (k === KONAMI[ki]) { if (++ki === KONAMI.length) { ki = 0; unlock(); return; } } else ki = (k === KONAMI[0]) ? 1 : 0; }
+    if (CFG.word && k.length === 1) { typed = (typed + k).slice(-CFG.word.length); if (typed === CFG.word) { typed = ''; unlock(); } }
+  }
+  function onPtr(e) {
+    if (ov || e.button > 0) return; var win = e.view || window, w = win.innerWidth, h = win.innerHeight, s = CFG.cornerSize, c = CFG.corner;
     var inX = c.charAt(1) === 'r' ? e.clientX > w - s : e.clientX < s, inY = c.charAt(0) === 'b' ? e.clientY > h - s : e.clientY < s;
     if (!(inX && inY)) { taps = []; return; }
     var now = Date.now(); taps = taps.filter(function (t) { return now - t < CFG.tapWindow; }); taps.push(now);
     if (taps.length >= CFG.cornerTaps) { taps = []; unlock(); }
-  }, { passive: true });
+  }
+  function hook(w) {
+    try { if (w.__lfhsEgg) return; w.__lfhsEgg = 1; w.addEventListener('keydown', onKey, true); w.addEventListener('pointerup', onPtr, { capture: true, passive: true }); } catch (e) {}
+  }
+  function hookFrames() {
+    var fs = document.querySelectorAll('iframe');
+    for (var i = 0; i < fs.length; i++) {
+      var f = fs[i]; if (f.closest && f.closest('.lfhs-egg-ov')) continue;
+      if (!f.__lfhsEggL) { f.__lfhsEggL = 1; f.addEventListener('load', function (ev) { try { hook(ev.target.contentWindow); } catch (e) {} }); }
+      try { if (f.contentWindow && f.contentDocument) hook(f.contentWindow); } catch (e) {}
+    }
+  }
+  hook(window);
   window.addEventListener('popstate', function () { if (ov) close(true); });
   window.addEventListener('hashchange', fromHash);
   window.addEventListener('message', function (e) {
@@ -94,5 +108,6 @@
   });
   window.LFHSEgg = { open: open, close: function () { close(); }, isOpen: function () { return !!ov; } };
   if (CFG.hint) try { console.log('%cLFHS%c the hallway has a secret. Some say it starts with \u2191 \u2191 \u2193 \u2193 \u2190 \u2192 \u2190 \u2192 B A', 'background:#2563eb;color:#fff;padding:2px 6px;border-radius:4px;font-weight:700', 'color:#64748b'); } catch (e) {}
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fromHash); else fromHash();
+  function boot() { fromHash(); hookFrames(); try { new MutationObserver(hookFrames).observe(document.documentElement, { childList: true, subtree: true }); } catch (e) {} setInterval(hookFrames, 3000); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 })();

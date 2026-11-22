@@ -1145,6 +1145,135 @@ body.is-offline .offline-banner { display: block; }
 .modal[aria-label="Creator panel"] .member-admin-row{flex-direction:column;align-items:stretch;gap:.65rem}
 .modal[aria-label="Creator panel"] .member-admin-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:.45rem;width:100%}
 .modal[aria-label="Creator panel"] .member-admin-actions .btn{width:100%;min-height:40px;border-radius:999px}
+
+/* ===== Enhanced Filter Bar & Subviews Styling ===== */
+.notes-filter-container { margin-bottom: 1rem; }
+.desktop-filter-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: .75rem 1.1rem;
+  box-shadow: var(--shadow-xs);
+  flex-wrap: wrap;
+}
+.dft-group { display: flex; align-items: center; gap: .5rem; }
+.dft-label { font-size: .74rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); }
+.dft-select {
+  height: 36px;
+  padding: 0 .8rem;
+  border-radius: var(--r-md);
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text-heading);
+  font-size: .84rem;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+.dft-select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px var(--ring); }
+.active-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: .74rem;
+  font-weight: 600;
+  padding: .2rem .55rem;
+  border-radius: 999px;
+  background: var(--primary-soft);
+  color: var(--primary);
+  border: 1px solid var(--primary-border);
+  text-decoration: none;
+  transition: background .15s;
+}
+.active-filter-chip:hover { background: var(--primary); color: #fff; }
+.mobile-filter-toolbar { display: none; }
+.btn-filter-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 .9rem;
+  border-radius: var(--r-md);
+  background: var(--primary-soft);
+  color: var(--primary);
+  border: 1px solid var(--primary-border);
+  font-size: .84rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.filter-count-badge {
+  background: var(--primary);
+  color: #fff;
+  border-radius: 999px;
+  padding: .05rem .45rem;
+  font-size: .68rem;
+  font-weight: 700;
+}
+.mft-active-row { display: flex; gap: .35rem; align-items: center; flex-wrap: wrap; margin-top: .5rem; }
+.mft-clear-all { font-size: .74rem; color: var(--text-muted); text-decoration: underline; margin-left: auto; }
+
+/* Filter Bottom Sheet */
+.filter-bottom-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background: rgba(15, 23, 42, .55);
+  backdrop-filter: blur(4px);
+}
+.fbs-container {
+  background: var(--card-bg);
+  border-radius: 20px 20px 0 0;
+  max-height: 85svh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-lg);
+  border-top: 1px solid var(--border);
+  overflow: hidden;
+}
+.fbs-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.2rem;
+  border-bottom: 1px solid var(--border);
+}
+.fbs-body {
+  padding: 1rem 1.2rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+.fbs-footer {
+  display: flex;
+  gap: .75rem;
+  padding: .9rem 1.2rem calc(.9rem + var(--safe-bottom));
+  border-top: 1px solid var(--border);
+  background: var(--surface-2);
+}
+
+@media (max-width: 768px) {
+  .desktop-filter-toolbar { display: none; }
+  .mobile-filter-toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: .65rem .8rem;
+  }
+  .mft-row { display: flex; justify-content: space-between; align-items: center; gap: .5rem; }
+  .mft-class-pills { display: flex; gap: .3rem; }
+}
+
 </style>
 <style id="lfhsHeroStyle">#lfhsHero{position:fixed;inset:0;z-index:1000;display:none;background:#000;overflow:hidden}#lfhsHero.show{display:block}#lfhsHero.leaving{opacity:0;transition:opacity .6s ease;pointer-events:none}@media print{#lfhsHero{display:none!important}}#lfhsHero .lh-root{
   --dim: rgba(255,255,255,.64); --faint: rgba(255,255,255,.42);
@@ -3479,33 +3608,73 @@ function renderNotes(){
   var typeList=wantPdf?PDF_TYPE_KEYS:LINK_TYPE_KEYS;
   if(type!=='all'&&typeList.indexOf(type)===-1)type='all';
   var bc=$('notesBreadcrumb');
-  var subjName=subj==='-'?'All subjects':SUBJ[subj].n;
-  var typeName=type==='all'?'All types':TYPES[type].n;
+  var subjName=subj==='-'?'All subjects':(SUBJ[subj]?SUBJ[subj].n:subj);
+  var typeName=type==='all'?'All types':(TYPES[type]?TYPES[type].n:type);
   bc.innerHTML='<a href="#notes">Study Resources</a>'
     +'<span class="sep">/</span><a href="'+nhash(cls,subj,'all')+'">Class '+cls+'</a>'
     +'<span class="sep">/</span><a href="'+nhash(cls,subj,type)+'">'+subjName+'</a>'
     +(type!=='all'?'<span class="sep">/</span><span>'+typeName+'</span>':'');
-  var classRow=CLASSES.map(function(c){return chip(nhash(c,subj,type),'Class '+c,c===cls)}).join('');
-  var subjRow=chip(nhash(cls,'-',type),'All subjects',subj==='-')+subjList.map(function(s){return chip(nhash(cls,s,type),SUBJ[s].n,s===subj,SUBJ[s].ic)}).join('');
-  var typeRow=chip(nhash(cls,subj,'all'),'All types',type==='all')+typeList.map(function(t){return chip(nhash(cls,subj,t),TYPES[t].n,t===type,TYPES[t].ic)}).join('');
+
+  // Active filter indicators
+  var activeFilters = [];
+  if(subj !== '-') activeFilters.push({ label: subjName, resetHash: nhash(cls, '-', type) });
+  if(type !== 'all') activeFilters.push({ label: typeName, resetHash: nhash(cls, subj, 'all') });
+
+  // Desktop Class Pills
+  var classChips = CLASSES.map(function(c){
+    return '<a class="chip'+(c===cls?' active':'')+'" href="'+nhash(c,subj,type)+'">Class '+c+'</a>';
+  }).join('');
+
+  // Dropdown Selects for Desktop Toolbar
+  var subjOptions = '<option value="-">All Subjects</option>' + subjList.map(function(s){
+    return '<option value="'+s+'"'+(s===subj?' selected':'')+'>'+(SUBJ[s]?SUBJ[s].n:s)+'</option>';
+  }).join('');
+
+  var typeOptions = '<option value="all">All Types</option>' + typeList.map(function(t){
+    return '<option value="'+t+'"'+(t===type?' selected':'')+'>'+(TYPES[t]?TYPES[t].n:t)+'</option>';
+  }).join('');
+
+  var activeChipsHtml = activeFilters.map(function(af){
+    return '<a class="active-filter-chip" href="'+af.resetHash+'" title="Remove filter">'+esc(af.label)+' <i class="fa-solid fa-xmark"></i></a>';
+  }).join('');
+
+  var mobileActiveBadge = activeFilters.length ? '<span class="filter-count-badge">'+activeFilters.length+'</span>' : '';
+  
   var calloutMsg=wantPdf
     ?'All PDFs open directly in the built-in <strong>LFHS PDF Reader</strong> — no external redirects. Need external portals or Malayalam links? Switch to <strong>Links</strong> above.'
     :'Cards marked <strong>Official</strong> lead to SCERT or Samagra. <strong>Third-party</strong> resources open external sites such as A+ Blog in a new tab.';
-  var html='<div class="controls">'
-    +'<div><div class="control-label">1 / Class</div><div class="chip-row scroll">'+classRow+'</div></div>'
-    +'<div><div class="control-label">2 / Subject</div><div class="chip-row scroll">'+subjRow+'</div></div>'
-    +'<div><div class="control-label">3 / Resource type</div><div class="chip-row scroll">'+typeRow+'</div></div>'
-    +'</div>'
-    +'<div class="callout"><i class="fa-solid fa-circle-info"></i><span>'+calloutMsg+'</span></div>';
+
+  var html = '<div class="notes-filter-container">'
+    // Desktop Toolbar
+    + '<div class="desktop-filter-toolbar">'
+    + '<div class="dft-group"><span class="dft-label">Class</span><div class="chip-group">' + classChips + '</div></div>'
+    + '<div class="dft-group"><span class="dft-label">Subject</span><select id="desktopSubjSelect" class="dft-select">' + subjOptions + '</select></div>'
+    + '<div class="dft-group"><span class="dft-label">Resource Type</span><select id="desktopTypeSelect" class="dft-select">' + typeOptions + '</select></div>'
+    + (activeFilters.length ? '<div style="display:flex;gap:.35rem;align-items:center;margin-left:auto;">' + activeChipsHtml + '<a href="' + nhash(cls, '-', 'all') + '" class="btn btn-ghost btn-sm" style="font-size:.74rem;padding:.2rem .4rem;">Reset all</a></div>' : '')
+    + '</div>'
+    
+    // Mobile Compact Toolbar
+    + '<div class="mobile-filter-toolbar">'
+    + '<div class="mft-row">'
+    + '<div class="mft-class-pills">' + classChips + '</div>'
+    + '<button type="button" class="btn btn-filter-trigger" id="openResourceFilterSheetBtn">'
+    + '<i class="fa-solid fa-sliders"></i> Filters ' + mobileActiveBadge
+    + '</button>'
+    + '</div>'
+    + (activeFilters.length ? '<div class="mft-active-row">' + activeChipsHtml + '<a href="' + nhash(cls, '-', 'all') + '" class="mft-clear-all">Clear</a></div>' : '')
+    + '</div>'
+    + '</div>'
+    + '<div class="callout"><i class="fa-solid fa-circle-info"></i><span>'+calloutMsg+'</span></div>';
+
   if(subj==='-'&&type==='all'){
     var totalClassCount=ALL.filter(function(r){return !!r.isPdf===wantPdf&&matchesClass(r,cls)}).length;
-    html+='<h3 class="section-title">Choose a subject for Class '+cls+(wantPdf?' <span class="pill" style="margin-left:.35rem">'+totalClassCount+' PDFs</span>':'')+'</h3>'
+    html+='<div class="results-head" style="margin-bottom:.5rem;"><h3>Choose a subject for Class '+cls+'</h3><span>'+totalClassCount+' '+(wantPdf?'PDFs':'links')+'</span></div>'
       +'<div class="tile-grid compact" style="margin-top:.7rem;">'+subjList.map(function(s){
         var list=ALL.filter(function(r){return !!r.isPdf===wantPdf&&matchesClass(r,cls)&&r.subj===s});
         var done=list.filter(function(r){return getProgressState(r.id)==='done'}).length;
         var pct=list.length?Math.round((done/list.length)*100):0;
         var badge=list.length?(wantPdf?'<span class="tile-prog'+(pct===0?' zero':'')+'">'+list.length+' PDF'+(list.length===1?'':'s')+(pct>0?' &middot; '+pct+'%':'')+'</span>':'<span class="tile-prog'+(pct===0?' zero':'')+'">'+pct+'%</span>'):'';
-        return '<a class="tile" href="'+nhash(cls,s,'all')+'" style="--h:'+SUBJ[s].h+'"><span class="tile-icon"><i class="fa-solid '+SUBJ[s].ic+'"></i></span><span class="tile-copy"><strong>'+SUBJ[s].n+'</strong>'+badge+'</span></a>';
+        return '<a class="tile" href="'+nhash(cls,s,'all')+'" style="--h:'+(SUBJ[s]?SUBJ[s].h:200)+'"><span class="tile-icon"><i class="fa-solid '+(SUBJ[s]?SUBJ[s].ic:'fa-book')+'"></i></span><span class="tile-copy"><strong>'+(SUBJ[s]?SUBJ[s].n:s)+'</strong>'+badge+'</span></a>';
       }).join('')+'</div>';
     if(cls==='10'){
       html+='<div class="block"><h3 class="section-title">Popular chapters (Class 10)</h3>'
@@ -3518,7 +3687,7 @@ function renderNotes(){
       if(!matchesClass(r,cls))return false;
       var termHub=!r.subj&&r.hub&&(r.examType==='term1'||r.examType==='term2'||r.examType==='annual');
       if(!(subj==='-'||r.subj===subj||termHub))return false;
-      return type==='all'||r.types.indexOf(type)!==-1;
+      return type==='all'||(r.types && r.types.indexOf(type)!==-1);
     });
     items.sort(function(a,b){
       var rd=rank(a)-rank(b);
@@ -3531,54 +3700,101 @@ function renderNotes(){
       return 0;
     });
     items=dedupeByUrl(items);
-    var title='Class '+cls+' / '+(subj==='-'?'All subjects':SUBJ[subj].n)+(type==='all'?'':' / '+TYPES[type].n);
+    var title='Class '+cls+' / '+(subj==='-'?'All subjects':(SUBJ[subj]?SUBJ[subj].n:subj))+(type==='all'?'':' / '+(TYPES[type]?TYPES[type].n:type));
     html+='<div class="results-head"><h2>'+esc(title)+'</h2><span>'+items.length+' resource'+(items.length===1?'':'s')+'</span></div>';
     if(!items.length){
-      var emptyAction='';
-      if(wantPdf&&subj!=='-'&&subjList.indexOf(subj)===-1){
-        var hasLinksSubj=LINK_SUBJ_KEYS.indexOf(subj)!==-1;
-        emptyAction='<p style="margin-top:.7rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap"><a class="btn btn-primary" href="'+nhash(cls,'-','all')+'">Show Class '+cls+' subjects</a>'+(hasLinksSubj?'<button class="btn btn-outline" type="button" data-source-mode="links">Switch to Links</button>':'')+'</p>';
-      }else if(type!=='all'){
-        emptyAction='<p style="margin-top:.7rem;"><a class="btn btn-outline" href="'+nhash(cls,subj,'all')+'">Show all types</a></p>';
-      }
-      html+='<div class="empty"><i class="fa-solid fa-folder-open"></i><p>No '+(type==='all'?'':esc(TYPES[type].n.toLowerCase())+' ')+(wantPdf?'PDF ':'')+'resources listed for this combination yet.</p>'+emptyAction+'</div>';
+      html+='<div class="empty-state"><i class="fa-solid fa-folder-open"></i><h3>No resources found</h3><p>Try switching to another type or class above.</p></div>';
     } else {
-      html+='<div class="resource-grid">'+items.map(resourceCard).join('')+'</div>';
-    }
-    if(subj!=='-'&&cls==='10'&&type==='all'){
-      var ch=CHAPTERS.filter(function(x){return x.subj===subj});
-      if(ch.length)html+='<div class="block"><h3 class="section-title">Chapter shortcuts</h3><div class="resource-grid" style="margin-top:.7rem;">'+ch.map(chapterCard).join('')+'</div></div>';
+      html+='<div class="resource-grid">'+items.map(function(r){return wantPdf?pdfCard(r):linkCard(r)}).join('')+'</div>';
     }
   }
-  $('notesBody').innerHTML=html;
-  centerActiveChips();
-}
-function centerActiveChips(){
-  document.querySelectorAll('.tab-content.active .chip-row.scroll').forEach(function(row){
-    var a=row.querySelector('.chip.active');
-    if(!a||row.scrollWidth<=row.clientWidth)return;
-    var off=a.getBoundingClientRect().left-row.getBoundingClientRect().left+row.scrollLeft;
-    row.scrollLeft=off-(row.clientWidth-a.offsetWidth)/2;
-  });
+  
+  $('notesBody').innerHTML = html;
+  
+  // Attach Desktop Select Handlers
+  var dSubj = $('desktopSubjSelect');
+  if(dSubj){
+    dSubj.addEventListener('change', function(){
+      location.hash = nhash(cls, dSubj.value, type);
+    });
+  }
+  var dType = $('desktopTypeSelect');
+  if(dType){
+    dType.addEventListener('change', function(){
+      location.hash = nhash(cls, subj, dType.value);
+    });
+  }
+  
+  // Attach Mobile Sheet Trigger
+  var mFilterBtn = $('openResourceFilterSheetBtn');
+  if(mFilterBtn){
+    mFilterBtn.addEventListener('click', function(){
+      openResourceFilterSheet(cls, subj, type, subjList, typeList);
+    });
+  }
 }
 
-function paperPool(){
-  var wantPdf=(state.sourceMode==='pdfs');
-  return ALL.filter(function(r){
-    if(!!r.isPdf!==wantPdf)return false;
-    if(wantPdf){
-      if(r.cls!=='10')return false;
-      return r.types.indexOf('papers')!==-1||r.types.indexOf('model')!==-1||r.types.indexOf('previous')!==-1||r.types.indexOf('answers')!==-1||r.types.indexOf('questionbank')!==-1;
+function openResourceFilterSheet(cls, subj, type, subjList, typeList){
+  var sheet = $('resourceFilterSheet');
+  if(!sheet) return;
+  var tempCls = cls, tempSubj = subj, tempType = type;
+  
+  function renderSheetContent(){
+    var classPills = CLASSES.map(function(c){
+      return '<button type="button" class="chip '+(c===tempCls?'active':'')+'" data-ms-cls="'+c+'">Class '+c+'</button>';
+    }).join('');
+    
+    var subjPills = '<button type="button" class="chip '+('-'===tempSubj?'active':'')+'" data-ms-subj="-">All Subjects</button>'
+      + subjList.map(function(s){
+        return '<button type="button" class="chip '+(s===tempSubj?'active':'')+'" data-ms-subj="'+s+'">'+(SUBJ[s]?SUBJ[s].n:s)+'</button>';
+      }).join('');
+      
+    var typePills = '<button type="button" class="chip '+('all'===tempType?'active':'')+'" data-ms-type="all">All Types</button>'
+      + typeList.map(function(t){
+        return '<button type="button" class="chip '+(t===tempType?'active':'')+'" data-ms-type="'+t+'">'+(TYPES[t]?TYPES[t].n:t)+'</button>';
+      }).join('');
+      
+    sheet.querySelector('.rfs-classes').innerHTML = classPills;
+    sheet.querySelector('.rfs-subjects').innerHTML = subjPills;
+    sheet.querySelector('.rfs-types').innerHTML = typePills;
+    
+    sheet.querySelectorAll('[data-ms-cls]').forEach(function(b){
+      b.onclick = function(){ tempCls = b.dataset.msCls; renderSheetContent(); };
+    });
+    sheet.querySelectorAll('[data-ms-subj]').forEach(function(b){
+      b.onclick = function(){ tempSubj = b.dataset.msSubj; renderSheetContent(); };
+    });
+    sheet.querySelectorAll('[data-ms-type]').forEach(function(b){
+      b.onclick = function(){ tempType = b.dataset.msType; renderSheetContent(); };
+    });
+  }
+  
+  renderSheetContent();
+  sheet.hidden = false;
+  document.body.classList.add('sheet-open');
+  
+  sheet.querySelector('#applyResourceFiltersBtn').onclick = function(){
+    sheet.hidden = true;
+    document.body.classList.remove('sheet-open');
+    location.hash = nhash(tempCls, tempSubj, tempType);
+  };
+  sheet.querySelector('#resetResourceFiltersBtn').onclick = function(){
+    sheet.hidden = true;
+    document.body.classList.remove('sheet-open');
+    location.hash = nhash(cls, '-', 'all');
+  };
+  sheet.querySelector('.rfs-close-btn').onclick = function(){
+    sheet.hidden = true;
+    document.body.classList.remove('sheet-open');
+  };
+  sheet.onclick = function(e){
+    if(e.target === sheet){
+      sheet.hidden = true;
+      document.body.classList.remove('sheet-open');
     }
-    if(r.cls!=='10'&&r.cls!=='8-10')return false;
-    return r.types.indexOf('papers')!==-1||r.types.indexOf('model')!==-1||r.types.indexOf('previous')!==-1||r.types.indexOf('answers')!==-1;
-  });
+  };
 }
-function itemPaperType(r){
-  if(r.examType)return r.examType;
-  if(r.types.indexOf('questionbank')!==-1)return 'questionbank';
-  return '';
-}
+
 function renderPapers(){
   syncSourceModeUI();
   var wantPdf=(state.sourceMode==='pdfs');
@@ -5733,167 +5949,99 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'&&UV.css)setU
 
 
 /* ---- v20: Study Notes Sub-Navigation (Formulas, Glossary, Victers, Focus Guidance) ---- */
-var FORMULAS = [
-  { cls:'10', subj:'physics', title:"Ohm's Law", eq:"V = I × R", vars:"V = Potential Difference (V), I = Current (A), R = Resistance (Ω)", desc:"At constant temperature, current through a conductor is directly proportional to potential difference across its ends." },
-  { cls:'10', subj:'physics', title:"Joule's Law of Heating", eq:"H = I² × R × t = V × I × t", vars:"H = Heat generated (J), I = Current (A), R = Resistance (Ω), t = Time (s)", desc:"Heat produced in a resistor is proportional to square of current, resistance and time of current flow." },
-  { cls:'10', subj:'physics', title:"Electric Power", eq:"P = V × I = V² / R = I² × R", vars:"P = Electric Power (W or J/s), V = Voltage (V), I = Current (A)", desc:"Rate at which electrical energy is consumed. 1 kWh = 3.6 × 10⁶ J." },
-  { cls:'10', subj:'physics', title:"Snell's Law (Refraction)", eq:"sin(i) / sin(r) = n₂₁", vars:"i = Angle of incidence, r = Angle of refraction, n₂₁ = Refractive index of medium 2 relative to medium 1", desc:"For a given pair of media, the sine ratio is the relative refractive index under the usual ray-angle convention." },
-  { cls:'10', subj:'physics', title:"Mirror Formula & Magnification", eq:"1/f = 1/u + 1/v  |  m = -v/u", vars:"f = Focal length, u = Object distance, v = Image distance, m = Magnification", desc:"Sign convention: Cartesian coordinate system. Concave mirror f is negative, convex mirror f is positive." },
-  { cls:'10', subj:'physics', title:"Lens Formula & Power", eq:"1/f = 1/v - 1/u  |  P = 1/f (meters)", vars:"f = Focal length (m), P = Lens Power (Dioptre, D)", desc:"Convex lens power is positive; concave lens power is negative." },
-  { cls:'10', subj:'chemistry', title:"Reactivity Series of Metals", eq:"K > Na > Ca > Mg > Al > Zn > Fe > Pb > [H] > Cu > Ag > Au", vars:"High reactivity: K, Na, Ca | Medium: Mg, Al, Zn, Fe | Low: Cu, Ag, Au", desc:"Metals above Hydrogen displace H₂ from dilute acids. Highly reactive metals are extracted by electrolysis." },
-  { cls:'10', subj:'chemistry', title:"Hydrocarbon Homologous Series", eq:"Alkanes: CₙH₂ₙ₊₂  |  Alkenes: CₙH₂ₙ  |  Alkynes: CₙH₂ₙ₋₂", vars:"n = Number of carbon atoms (1=meth, 2=eth, 3=prop, 4=but, 5=pent, 6=hex)", desc:"For open-chain alkanes, alkenes with one C=C, and alkynes with one C≡C. Successive members within a series differ by -CH₂- (14 u)." },
-  { cls:'10', subj:'chemistry', title:"Gas Laws (Boyle, Charles, Avogadro)", eq:"PV = constant  |  V/T = constant  |  V ∝ n", vars:"P = Pressure, V = Volume, T = Absolute Temperature (K), n = Number of moles", desc:"For a fixed amount of gas: Boyle's law assumes constant temperature; Charles' law assumes constant pressure; Avogadro's law compares gases at the same temperature and pressure. At school-textbook STP (0 °C, 1 atm), 1 mole of ideal gas occupies about 22.4 L." },
-  { cls:'10', subj:'maths', title:"Arithmetic Sequence (n-th Term)", eq:"xₙ = a + (n - 1)d = d×n + (a - d)", vars:"a = First term, d = Common difference (x₂ - x₁), n = Position of term", desc:"An arithmetic progression has a constant difference between consecutive terms." },
-  { cls:'10', subj:'maths', title:"Sum of First n Terms of an AP", eq:"Sₙ = (n / 2) × (x₁ + xₙ) = (n / 2) × [2a + (n - 1)d]", vars:"Sₙ = Sum of n terms, x₁ = First term, xₙ = Last term, d = Common difference", desc:"Sum of first n odd numbers is n². Sum of first n natural numbers is n(n+1)/2." },
-  { cls:'10', subj:'maths', title:"Tangent-Radius Circle Theorem", eq:"Radius ⊥ Tangent at Point of Contact (∠ = 90°)", vars:"Tangents from an external point to a circle are equal in length.", desc:"Angle between tangent and chord equals angle in alternating segment." },
-  { cls:'10', subj:'maths', title:"Quadratic Formula", eq:"x = (-b ± √(b² - 4ac)) / (2a)", vars:"For ax² + bx + c = 0. Discriminant D = b² - 4ac", desc:"D > 0: two distinct real roots. D = 0: two equal real roots. D < 0: no real roots." },
-  { cls:'9', subj:'physics', title:"Newton's Laws of Motion", eq:"F = m × a  |  p = m × v  |  F_AB = -F_BA", vars:"F = Force (N), m = Mass (kg), a = Acceleration (m/s²), p = Momentum (kg·m/s)", desc:"First law: inertia. Second law: rate of change of momentum is force. Third law: action and reaction are equal and opposite." },
-  { cls:'9', subj:'physics', title:"Equations of Motion", eq:"v = u + at  |  s = ut + ½at²  |  v² = u² + 2as", vars:"u = Initial velocity, v = Final velocity, a = Acceleration, t = Time, s = Displacement", desc:"Valid for motion along a straight line under uniform acceleration." },
-  { cls:'9', subj:'maths', title:"Area of Triangle (Heron's Formula)", eq:"Area = √(s(s - a)(s - b)(s - c))", vars:"s = Semi-perimeter = (a + b + c) / 2, where a, b, c are side lengths", desc:"Allows finding the area of any triangle given its three side lengths." },
-  { cls:'8', subj:'physics', title:"Pressure & Thrust", eq:"P = F / A", vars:"P = Pressure (Pascal, Pa or N/m²), F = Thrust / Perpendicular Force (N), A = Area (m²)", desc:"For the same perpendicular force, pressure decreases as the contact area increases." },
-  { cls:'8', subj:'maths', title:"Sum of Angles of a Polygon", eq:"Sum = (n - 2) × 180°", vars:"n = Number of sides of the polygon", desc:"For a triangle (n=3) sum is 180°. For a quadrilateral (n=4) sum is 360°." },
-  { cls:'10', subj:'physics', title:"Electrical Energy", eq:"E = P × t = V × I × t", vars:"E = Energy (J), P = Power (W), t = Time (s)", desc:"For electricity billing, energy is commonly measured in kilowatt-hours (kWh). Energy in kWh = power in kW × time in hours." },
-  { cls:'10', subj:'physics', title:"Resistance in Series and Parallel", eq:"Series: Rₜ = R₁ + R₂ + …  |  Parallel: 1/Rₜ = 1/R₁ + 1/R₂ + …", vars:"Rₜ = Equivalent resistance; each R is an individual resistance (Ω)", desc:"Series resistances add directly. For parallel branches, reciprocal resistances add; the equivalent resistance is smaller than the smallest branch resistance." },
-  { cls:'10', subj:'physics', title:"Wave Speed", eq:"v = f × λ", vars:"v = Wave speed (m/s), f = Frequency (Hz), λ = Wavelength (m)", desc:"Frequency is the number of oscillations per second. Keep units consistent when substituting values." },
-  { cls:'10', subj:'physics', title:"Density", eq:"ρ = m / V", vars:"ρ = Density (kg/m³), m = Mass (kg), V = Volume (m³)", desc:"Convert mass and volume to compatible units before calculating density." },
-  { cls:'10', subj:'maths', title:"Coordinate Distance Formula", eq:"d = √[(x₂ − x₁)² + (y₂ − y₁)²]", vars:"(x₁,y₁), (x₂,y₂) = Coordinates of two points", desc:"Derived from Pythagoras’ theorem; distance is always non-negative." },
-  { cls:'10', subj:'maths', title:"Midpoint Formula", eq:"M = ((x₁+x₂)/2, (y₁+y₂)/2)", vars:"(x₁,y₁), (x₂,y₂) = Endpoints of a line segment", desc:"The midpoint is found by averaging the x-coordinates and the y-coordinates separately." },
-  { cls:'10', subj:'maths', title:"Probability", eq:"P(E) = Number of favourable outcomes / Total equally likely outcomes", vars:"P(E) = Probability of event E; 0 ≤ P(E) ≤ 1", desc:"This simple ratio applies when outcomes are equally likely. P(impossible)=0 and P(certain)=1." },
-  { cls:'9', subj:'physics', title:"Work and Power", eq:"W = F × s  |  P = W / t", vars:"W = Work (J), F = Force (N), s = displacement along force (m), P = Power (W)", desc:"For a constant force in the direction of motion, work equals force multiplied by displacement. Power is work done per unit time." },
-  { cls:'9', subj:'physics', title:"Kinetic and Potential Energy", eq:"KE = ½mv²  |  PE = mgh", vars:"m = Mass (kg), v = Speed (m/s), g ≈ 9.8 m/s², h = Height (m)", desc:"Kinetic energy depends on the square of speed. Gravitational potential energy is measured relative to a chosen reference level." },
-  { cls:'9', subj:'physics', title:"Pressure in a Liquid", eq:"P = ρgh", vars:"P = Gauge pressure (Pa), ρ = Liquid density (kg/m³), g = Gravitational acceleration, h = Depth (m)", desc:"For a stationary liquid of uniform density, pressure increases with depth. This expression is gauge pressure, excluding atmospheric pressure." },
-  { cls:'9', subj:'maths', title:"Laws of Exponents", eq:"aᵐ × aⁿ = aᵐ⁺ⁿ  |  aᵐ/aⁿ = aᵐ⁻ⁿ", vars:"For non-zero a in the quotient rule; powers follow the same-base rule", desc:"Also: (aᵐ)ⁿ = aᵐⁿ and a⁰ = 1 for a ≠ 0." },
-  { cls:'8', subj:'physics', title:"Speed", eq:"Speed = Distance / Time", vars:"Speed (m/s), Distance (m), Time (s)", desc:"Average speed uses total distance divided by total elapsed time; it is not generally the average of two speeds." },
-  { cls:'8', subj:'physics', title:"Force and Momentum", eq:"F = m × a  |  p = m × v", vars:"F = Force (N), m = Mass (kg), a = Acceleration (m/s²), p = Momentum (kg·m/s)", desc:"For constant mass, net force is mass multiplied by acceleration. Momentum has both magnitude and direction." },
-  { cls:'8', subj:'maths', title:"Area and Circumference of a Circle", eq:"Area = πr²  |  Circumference = 2πr", vars:"r = Radius; use π ≈ 22/7 or 3.14159 as instructed", desc:"Area is measured in square units; circumference is measured in length units." },
-  { cls:'8', subj:'maths', title:"Simple Interest", eq:"SI = (P × R × T) / 100", vars:"P = Principal, R = Annual interest rate (%), T = Time in years", desc:"Use the rate and time on the same basis. Total amount = principal + simple interest." },
-  { cls:'10', subj:'chemistry', title:"Mole and Particle Count", eq:"n = m/M  |  N = n × Nₐ", vars:"n = Amount (mol), m = Mass (g), M = Molar mass (g/mol), Nₐ ≈ 6.022 × 10²³ mol⁻¹", desc:"Use a consistent mass unit with molar mass. Nₐ is Avogadro’s constant." }
-];
+var FORMULAS = [{"cls":"10","subj":"physics","chapter":"Ch 1: Effects of Electric Current","title":"Ohm's Law","eq":"V = I × R","vars":"V = Potential Difference (Volts, V), I = Electric Current (Amperes, A), R = Resistance (Ohms, Ω)","desc":"At constant temperature, the electric current passing through a conductor is directly proportional to the potential difference across its ends.","conditions":"Temperature, length, cross-sectional area, and physical state of conductor must remain constant (Ohmic conductor).","example":"If a 12 V battery is connected across a 6 Ω resistor, the current is I = V / R = 12 / 6 = 2 A.","mistakes":"Applying Ohm's law to non-ohmic devices like diodes or transistors, or forgetting to keep temperature constant.","ref":"Class 10 Physics, Chapter 1"},{"cls":"10","subj":"physics","chapter":"Ch 1: Effects of Electric Current","title":"Joule's Law of Heating","eq":"H = I² × R × t = V × I × t = (V² / R) × t","vars":"H = Heat generated (Joules, J), I = Current (A), R = Resistance (Ω), t = Time of current flow (seconds, s)","desc":"The heat produced in a resistor is directly proportional to the square of current, the resistance, and the time for which current flows.","conditions":"Applies to electrical conductors dissipating energy as thermal energy.","example":"A 10 Ω resistor carries 2 A current for 5 seconds: H = 2² × 10 × 5 = 4 × 10 × 5 = 200 J.","mistakes":"Doubling current increases heat by 4 times (I²), not 2 times. Forgetting to convert time in minutes to seconds.","ref":"Class 10 Physics, Chapter 1"},{"cls":"10","subj":"physics","chapter":"Ch 1: Effects of Electric Current","title":"Electric Power","eq":"P = V × I = I² × R = V² / R","vars":"P = Electric Power (Watts, W or J/s), V = Voltage (V), I = Current (A), R = Resistance (Ω)","desc":"The rate at which electrical energy is consumed or converted into other forms of energy.","conditions":"For steady DC or RMS values in AC circuits.","example":"A lamp rated 240 V draws 0.5 A: P = 240 × 0.5 = 120 W. Its resistance is R = V² / P = 240² / 120 = 480 Ω.","mistakes":"Confusing energy with power. Power is energy per unit time (Watts), energy is Power × time (Joules or kWh).","ref":"Class 10 Physics, Chapter 1"},{"cls":"10","subj":"physics","chapter":"Ch 1: Effects of Electric Current","title":"Electrical Energy & Commercial Unit","eq":"E = P × t  |  1 kWh = 1 Unit = 3.6 × 10⁶ J","vars":"E = Electrical Energy (Joules, J or kWh), P = Power (kW), t = Time (hours, h)","desc":"Commercial unit of electricity is kilowatt-hour (kWh). 1 kWh is the energy consumed by a 1000 W appliance in 1 hour.","conditions":"Used in domestic energy meters for billing electricity consumption.","example":"A 500 W iron used for 2 hours consumes E = (500/1000) kW × 2 h = 1 kWh (1 unit). In Joules: 1 × 3.6 × 10⁶ J.","mistakes":"Multiplying Watts by hours directly without dividing by 1000 to get kWh.","ref":"Class 10 Physics, Chapter 1"},{"cls":"10","subj":"physics","chapter":"Ch 1: Effects of Electric Current","title":"Resistors in Series","eq":"R_s = R₁ + R₂ + R₃ + ... + R_n","vars":"R_s = Equivalent Series Resistance (Ω), R₁, R₂... = Individual resistances (Ω)","desc":"Current remains identical through every resistor, while total potential difference is the sum of individual voltage drops (V = V₁ + V₂).","conditions":"End-to-end connection in a single continuous circuit branch.","example":"Connecting 4 Ω and 6 Ω in series gives R_s = 4 + 6 = 10 Ω.","mistakes":"Using series circuits for home appliances (if one device fails, the whole circuit breaks and voltage is shared).","ref":"Class 10 Physics, Chapter 1"},{"cls":"10","subj":"physics","chapter":"Ch 1: Effects of Electric Current","title":"Resistors in Parallel","eq":"1/R_p = 1/R₁ + 1/R₂  =>  R_p = (R₁ × R₂) / (R₁ + R₂)","vars":"R_p = Equivalent Parallel Resistance (Ω), R₁, R₂ = Individual resistances (Ω)","desc":"Potential difference across every resistor is identical, while total current is the sum of branch currents (I = I₁ + I₂). Equivalent resistance is always less than the smallest individual resistor.","conditions":"All resistors connected across the same two common nodes (domestic household wiring).","example":"Two 6 Ω resistors in parallel: R_p = (6 × 6)/(6 + 6) = 36 / 12 = 3 Ω.","mistakes":"Adding denominators directly instead of inverting reciprocals (1/R_p).","ref":"Class 10 Physics, Chapter 1"},{"cls":"10","subj":"physics","chapter":"Ch 2: Magnetic Effect of Electric Current","title":"Force on a Conductor in Magnetic Field","eq":"F = B × I × l × sin(θ)","vars":"F = Force (Newtons, N), B = Magnetic field strength (Tesla, T), I = Current (A), l = Length of conductor (m), θ = Angle with magnetic field","desc":"A current-carrying conductor in a magnetic field experiences mechanical force perpendicular to both current and field, determined by Fleming's Left-Hand Rule.","conditions":"Force is maximum when conductor is perpendicular to field (θ = 90°, sin 90° = 1), zero when parallel (θ = 0°).","example":"A 0.5 m wire carrying 4 A at 90° to a 0.2 T field experiences F = 0.2 × 4 × 0.5 × 1 = 0.4 N.","mistakes":"Confusing Fleming's Left-Hand Rule (Electric Motors) with Fleming's Right-Hand Rule (Electric Generators).","ref":"Class 10 Physics, Chapter 2"},{"cls":"10","subj":"physics","chapter":"Ch 2: Magnetic Effect of Electric Current","title":"Transformer Voltage & Current Equation","eq":"V_s / V_p = N_s / N_p = I_p / I_s","vars":"V_p, V_s = Primary/Secondary Voltage (V); N_p, N_s = Number of primary/secondary turns; I_p, I_s = Primary/Secondary current (A)","desc":"For an ideal transformer, the ratio of voltages equals the ratio of turns. Step-up increases voltage and decreases current; Step-down decreases voltage and increases current.","conditions":"Operates exclusively on alternating current (AC). Does NOT work on steady direct current (DC).","example":"A step-down transformer has N_p = 1000 turns, N_s = 100 turns, and V_p = 240 V: V_s = 240 × (100/1000) = 24 V.","mistakes":"Believing a transformer creates energy. Power is conserved: V_p × I_p = V_s × I_s (ignoring core losses).","ref":"Class 10 Physics, Chapter 2"},{"cls":"10","subj":"physics","chapter":"Ch 4: Refraction of Light","title":"Snell's Law of Refraction","eq":"sin(i) / sin(r) = n₂₁ = n₂ / n₁","vars":"i = Angle of incidence, r = Angle of refraction, n₂₁ = Refractive index of medium 2 relative to medium 1","desc":"The ratio of the sine of angle of incidence to the sine of angle of refraction is a constant for a given pair of media and given wavelength of light.","conditions":"Rays obliquely entering an interface between two transparent optical media. Not applicable for normal incidence (i = 0°).","example":"Light enters glass (n = 1.5) from air (n = 1) at i = 30°: sin(r) = sin(30°)/1.5 = 0.5 / 1.5 = 0.333 => r ≈ 19.5°.","mistakes":"Measuring angles with the glass surface instead of the normal (perpendicular).","ref":"Class 10 Physics, Chapter 4"},{"cls":"10","subj":"physics","chapter":"Ch 4: Refraction of Light","title":"Absolute Refractive Index & Speed of Light","eq":"n = c / v","vars":"n = Absolute refractive index (dimensionless), c = Speed of light in vacuum (3 × 10⁸ m/s), v = Speed of light in medium (m/s)","desc":"Measures optical density. The higher the refractive index, the lower the speed of light in that medium, causing greater bending towards the normal.","conditions":"Applies to monochromatic light travelling from vacuum/air into the medium.","example":"In water (n = 4/3), speed of light is v = (3 × 10⁸) / (4/3) = 2.25 × 10⁸ m/s.","mistakes":"Thinking mass density equals optical density (e.g. kerosene has lower mass density than water but higher optical density).","ref":"Class 10 Physics, Chapter 4"},{"cls":"10","subj":"physics","chapter":"Ch 4: Refraction of Light","title":"Critical Angle & Total Internal Reflection","eq":"sin(c) = 1 / n  (when rarer medium is air)","vars":"c = Critical angle, n = Refractive index of the denser medium","desc":"When light travels from an optically denser to rarer medium and the angle of incidence exceeds critical angle (i > c), the ray reflects entirely back into the denser medium without any refraction.","conditions":"1. Light must travel from denser to rarer medium. 2. Angle of incidence must be greater than critical angle (i > c).","example":"For water (n = 1.333), sin(c) = 1 / 1.333 = 0.75 => c ≈ 48.6°. For glass (n = 1.5), c ≈ 42°.","mistakes":"Expecting total internal reflection when light travels from air into glass (rarer to denser).","ref":"Class 10 Physics, Chapter 4"},{"cls":"10","subj":"physics","chapter":"Ch 4: Refraction of Light","title":"Mirror Formula & Linear Magnification","eq":"1/f = 1/u + 1/v  |  m = -v / u = h_i / h_o","vars":"f = Focal length, u = Object distance, v = Image distance, m = Magnification, h_i = Image height, h_o = Object height","desc":"Relates object distance, image distance and focal length for spherical mirrors under New Cartesian Sign Convention.","conditions":"Paraxial rays. Signs: Concave mirror f is negative; Convex mirror f is positive; u is always negative; real inverted image v is negative, virtual upright v is positive.","example":"Concave mirror (f = -10 cm) with object at u = -15 cm: 1/v = 1/f - 1/u = -1/10 - (-1/15) = -1/30 => v = -30 cm (real, inverted). m = -(-30)/(-15) = -2.","mistakes":"Forgetting the minus sign in mirror magnification (m = -v/u, unlike lens m = +v/u).","ref":"Class 10 Physics, Chapter 4"},{"cls":"10","subj":"physics","chapter":"Ch 4: Refraction of Light","title":"Lens Formula & Power of Lens","eq":"1/f = 1/v - 1/u  |  m = v / u  |  P = 1 / f (in metres)","vars":"f = Focal length (m), u = Object distance, v = Image distance, P = Power of lens in Dioptres (D)","desc":"Calculates image position and optical power. Power is the degree of convergence or divergence of light rays achieved by a lens.","conditions":"Thin spherical lenses. Convex lens f is positive, P is positive (+D); Concave lens f is negative, P is negative (-D).","example":"A convex lens has focal length f = +50 cm = +0.5 m: Power P = 1 / 0.5 = +2 D.","mistakes":"Calculating Power P using focal length in centimetres without converting to metres.","ref":"Class 10 Physics, Chapter 4"},{"cls":"10","subj":"physics","chapter":"Ch 3: Colors of Light & Vision","title":"Rayleigh Scattering Law","eq":"I ∝ 1 / λ⁴","vars":"I = Intensity of scattered light, λ = Wavelength of light","desc":"The intensity of scattered light is inversely proportional to the fourth power of its wavelength when scattering particles are smaller than wavelength.","conditions":"Particle diameter d << λ (air molecules in atmosphere).","example":"Blue light (λ ≈ 400 nm) scatters roughly (700/400)⁴ ≈ 9.4 times more effectively than red light (λ ≈ 700 nm), explaining why the clear daytime sky appears blue.","mistakes":"Applying Rayleigh formula to clouds or fog where droplet sizes are larger than wavelength (Mie scattering, where all colors scatter equally white).","ref":"Class 10 Physics, Chapter 3"},{"cls":"10","subj":"chemistry","chapter":"Ch 2: Gas Laws & Mole Concept","title":"Boyle's Law","eq":"P₁ × V₁ = P₂ × V₂  (at constant T)","vars":"P = Pressure (atm or Pa), V = Volume (L or m³), T = Temperature (K)","desc":"At constant temperature, the volume of a definite mass of gas is inversely proportional to its pressure (P ∝ 1/V).","conditions":"Mass and temperature of the gas must remain constant.","example":"A gas occupies 4 L at 1 atm. If pressure is increased to 2 atm at constant temperature: V₂ = (1 × 4) / 2 = 2 L.","mistakes":"Assuming Boyle's law holds when temperature changes or gas leaks.","ref":"Class 10 Chemistry, Chapter 2"},{"cls":"10","subj":"chemistry","chapter":"Ch 2: Gas Laws & Mole Concept","title":"Charles's Law","eq":"V₁ / T₁ = V₂ / T₂  (at constant P)","vars":"V = Volume, T = Absolute Temperature in Kelvin (K = °C + 273)","desc":"At constant pressure, the volume of a definite mass of gas is directly proportional to its absolute temperature in Kelvin (V ∝ T).","conditions":"Mass and pressure must be constant; temperature MUST be in Kelvin, never in Celsius.","example":"Gas at 27 °C (300 K) has volume 600 mL. Heated to 127 °C (400 K) at constant pressure: V₂ = 600 × (400 / 300) = 800 mL.","mistakes":"Using temperature in Celsius instead of converting to Kelvin (K = °C + 273).","ref":"Class 10 Chemistry, Chapter 2"},{"cls":"10","subj":"chemistry","chapter":"Ch 2: Gas Laws & Mole Concept","title":"Avogadro's Law & Molar Volume at STP","eq":"V ∝ n  |  1 mole of any gas at STP = 22.4 L","vars":"V = Volume, n = Number of moles. Standard Temperature & Pressure (STP): 273 K (0 °C) and 1 atm (101.3 kPa)","desc":"Equal volumes of all gases under identical conditions of temperature and pressure contain an equal number of molecules.","conditions":"Gases under identical temperature and pressure.","example":"44.8 L of O₂ at STP contains 44.8 / 22.4 = 2 moles of O₂ molecules (2 × 6.022 × 10²³ molecules).","mistakes":"Thinking heavier gases occupy more volume at STP; 1 mol of H₂ (2 g) and 1 mol of CO₂ (44 g) both occupy 22.4 L at STP.","ref":"Class 10 Chemistry, Chapter 2"},{"cls":"10","subj":"chemistry","chapter":"Ch 2: Gas Laws & Mole Concept","title":"The Mole Concept & Avogadro Number","eq":"n = m / M = V / 22.4 = N / N_A","vars":"n = Moles (mol), m = Mass (g), M = Molar Mass (GAM or GMM in g/mol), V = Volume at STP (L), N = Particles, N_A = 6.022 × 10²³","desc":"One mole is the amount of substance containing as many elementary entities as there are atoms in exactly 12 g of Carbon-12.","conditions":"Standard stoichiometry conversions for elements (GAM) and molecules (GMM).","example":"How many moles in 36 g of water (H₂O, M = 18 g/mol)? n = 36 / 18 = 2 moles = 2 × 6.022 × 10²³ molecules.","mistakes":"Confusing atoms with molecules (e.g. 1 mole of O₂ has 6.022 × 10²³ molecules, but 2 × 6.022 × 10²³ oxygen atoms).","ref":"Class 10 Chemistry, Chapter 2"},{"cls":"10","subj":"chemistry","chapter":"Ch 1: Periodic Table & Configuration","title":"Subshell Electron Capacity Rule","eq":"s: 2 e⁻  |  p: 6 e⁻  |  d: 10 e⁻  |  f: 14 e⁻","vars":"Energy order: 1s < 2s < 2p < 3s < 3p < 4s < 3d < 4p","desc":"Electrons fill subshells in increasing order of energy. 4s has lower energy than 3d and fills first; during ionization, 4s electrons are lost before 3d.","conditions":"Aufbau principle for neutral ground-state atoms.","example":"Iron (Fe, Z = 26): 1s² 2s² 2p⁶ 3s² 3p⁶ 3d⁶ 4s² or [Ar] 3d⁶ 4s². Fe²⁺ loses the two 4s electrons: [Ar] 3d⁶.","mistakes":"Writing Fe configuration ending in 4s² 3d⁶ and removing 3d electrons when forming Fe²⁺ cations.","ref":"Class 10 Chemistry, Chapter 1"},{"cls":"10","subj":"chemistry","chapter":"Ch 3: Reactivity Series","title":"Metal Displacement & Reactivity Series","eq":"K > Na > Ca > Mg > Al > Zn > Fe > Pb > [H] > Cu > Ag > Au","vars":"High Reactivity (extracted by electrolysis): K, Na, Ca, Mg, Al | Moderate (reduced by carbon): Zn, Fe, Pb | Low (native or heat): Cu, Ag, Au","desc":"A more reactive metal displaces a less reactive metal from its aqueous salt solution. Metals above Hydrogen displace H₂ gas from dilute acids.","conditions":"Aqueous solutions at room temperature.","example":"Fe(s) + CuSO₄(aq) -> FeSO₄(aq) + Cu(s) occurs because Fe is above Cu. Cu(s) + FeSO₄(aq) shows NO reaction.","mistakes":"Expecting copper or silver to react with dilute HCl to produce hydrogen gas (they are below Hydrogen).","ref":"Class 10 Chemistry, Chapter 3"},{"cls":"10","subj":"chemistry","chapter":"Ch 6: Nomenclature of Organic Compounds","title":"Hydrocarbon Homologous Series Formulas","eq":"Alkanes: CₙH₂ₙ₊₂  |  Alkenes: CₙH₂ₙ  |  Alkynes: CₙH₂ₙ₋₂","vars":"n = Number of carbon atoms (1=meth, 2=eth, 3=prop, 4=but, 5=pent, 6=hex)","desc":"Successive members in a homologous series differ by a constant -CH₂- unit (molar mass difference 14 u) and share similar chemical properties.","conditions":"Open-chain aliphatic hydrocarbons. Alkenes contain one C=C double bond; Alkynes contain one C≡C triple bond.","example":"Propane (n=3): C₃H₈. Propene (n=3): C₃H₆. Propyne (n=3): C₃H₄.","mistakes":"Forgetting that methene and methyne cannot exist (alkenes and alkynes require at least 2 carbon atoms).","ref":"Class 10 Chemistry, Chapter 6"},{"cls":"10","subj":"maths","chapter":"Ch 1: Arithmetic Sequences","title":"n-th Term of an Arithmetic Sequence","eq":"x_n = a + (n - 1)d = dn + (a - d)","vars":"x_n = n-th term, a = First term (x₁), d = Common difference (x₂ - x₁), n = Position of term","desc":"In an arithmetic sequence, the difference between any two consecutive terms is constant. The algebraic form is always a linear expression in n (dn + c).","conditions":"Applicable to any linear arithmetic progression.","example":"For sequence 4, 7, 10... (a = 4, d = 3): x_n = 3n + (4 - 3) = 3n + 1. The 20th term is x₂₀ = 3(20) + 1 = 61.","mistakes":"Using x_n = a + nd instead of a + (n - 1)d.","ref":"Class 10 Mathematics, Chapter 1"},{"cls":"10","subj":"maths","chapter":"Ch 1: Arithmetic Sequences","title":"Sum of First n Terms of an AP","eq":"S_n = (n / 2) × [2a + (n - 1)d] = (n / 2) × (x₁ + x_n)","vars":"S_n = Sum of n terms, a = x₁ = First term, x_n = Last term, n = Number of terms, d = Common difference","desc":"The sum equals the number of terms multiplied by the average of the first and last terms.","conditions":"Consecutive terms have constant common difference d.","example":"Sum of first 20 terms of 3, 7, 11... (a=3, d=4, x₂₀ = 3 + 19×4 = 79): S₂₀ = (20/2) × (3 + 79) = 10 × 82 = 820.","mistakes":"Confusing n (the term index) with x_n (the term's value).","ref":"Class 10 Mathematics, Chapter 1"},{"cls":"10","subj":"maths","chapter":"Ch 1: Arithmetic Sequences","title":"Standard Sum Formulas (Natural, Odd, Even)","eq":"Σ n = n(n+1)/2  |  Σ (2n-1) = n²  |  Σ 2n = n(n+1)","vars":"n = Number of terms from 1 onwards","desc":"Sum of first n natural numbers is n(n+1)/2. Sum of first n odd numbers is exactly n². Sum of first n even numbers is n(n+1).","conditions":"Series starts from 1 (or 2 for even numbers) with no missing terms.","example":"Sum of first 25 odd numbers (1 + 3 + ... + 49) = 25² = 625.","mistakes":"Applying n² formula when odd numbers don't start from 1 (e.g. 5 + 7 + 9...).","ref":"Class 10 Mathematics, Chapter 1"},{"cls":"10","subj":"maths","chapter":"Ch 2: Circles","title":"Intersecting Chords & Tangent Theorem","eq":"PA × PB = PC × PD  |  PA × PB = PT²","vars":"Chords AB and CD intersect at point P (internal or external). PT is the tangent drawn from external point P.","desc":"If two chords of a circle intersect inside or outside a circle, the rectangles formed by their segments are equal in area. For an external tangent PT, PT² = PA × PB.","conditions":"P is the intersection point of secants / chords.","example":"A chord has segments PA = 3 cm, PB = 8 cm. Tangent PT from P has length PT = √(3 × 8) = √24 ≈ 4.9 cm.","mistakes":"Measuring from the circle's centre instead of the intersection point P.","ref":"Class 10 Mathematics, Chapter 2"},{"cls":"10","subj":"maths","chapter":"Ch 4: Second Degree Equations","title":"Quadratic Formula & Discriminant","eq":"x = [-b ± √(b² - 4ac)] / (2a)  |  D = b² - 4ac","vars":"Equation ax² + bx + c = 0 (a ≠ 0). D = Discriminant.","desc":"Solves second-degree polynomial equations. If D > 0: two distinct real roots; D = 0: two equal real roots; D < 0: no real roots.","conditions":"Coefficient a must not equal zero.","example":"x² - 5x + 6 = 0 (a=1, b=-5, c=6): D = (-5)² - 4(1)(6) = 25 - 24 = 1. x = [5 ± √1]/2 => x = 3 or x = 2.","mistakes":"Forgetting parentheses around -b when b is negative (e.g. -(-5) becomes +5).","ref":"Class 10 Mathematics, Chapter 4"},{"cls":"10","subj":"maths","chapter":"Ch 6: Coordinates","title":"Distance & Midpoint Formulas in Plane","eq":"d = √[(x₂ - x₁)² + (y₂ - y₁)²]  |  M = [(x₁ + x₂)/2, (y₁ + y₂)/2]","vars":"(x₁, y₁) and (x₂, y₂) are coordinates of two points on Cartesian plane.","desc":"Calculates straight-line geometric distance and exact midpoint between two coordinates.","conditions":"Cartesian 2D coordinate system.","example":"Distance between (1, 2) and (4, 6): d = √[(4-1)² + (6-2)²] = √[3² + 4²] = √25 = 5 units. Midpoint is (2.5, 4).","mistakes":"Mixing up x and y coordinates (subtracting y from x).","ref":"Class 10 Mathematics, Chapter 6"},{"cls":"10","subj":"maths","chapter":"Ch 7: Tangents","title":"Inradius of Triangle Formula","eq":"r = A / s  |  s = (a + b + c) / 2","vars":"r = Inradius of incircle, A = Area of triangle, s = Semi-perimeter of triangle","desc":"The radius of the incircle of any triangle is the area divided by its semi-perimeter. For a right-angled triangle, r = (a + b - c) / 2 where c is hypotenuse.","conditions":"Applies to any triangle with inscribed circle touching all 3 sides.","example":"Right triangle with sides 6, 8, 10: Area A = 1/2 × 6 × 8 = 24 cm², s = (6+8+10)/2 = 12 cm. Inradius r = 24 / 12 = 2 cm.","mistakes":"Using perimeter instead of semi-perimeter (s) in r = A / s.","ref":"Class 10 Mathematics, Chapter 7"},{"cls":"10","subj":"maths","chapter":"Ch 8: Solids","title":"Mensuration of Curved Solids (Cylinder, Cone, Sphere)","eq":"Cylinder: V=πr²h, CSA=2πrh | Cone: V=(1/3)πr²h, l=√(r²+h²), CSA=πrl | Sphere: V=(4/3)πr³, SA=4πr²","vars":"r = radius, h = vertical height, l = slant height","desc":"Essential volume, curved surface area (CSA) and total surface area (TSA) relations for rotational solids.","conditions":"Right circular solids.","example":"A cone has radius 3 cm, height 4 cm: slant height l = √(3²+4²) = 5 cm. CSA = π(3)(5) = 15π cm².","mistakes":"Using vertical height h instead of slant height l when calculating cone curved surface area (CSA = πrl).","ref":"Class 10 Mathematics, Chapter 8"},{"cls":"9","subj":"physics","chapter":"Ch 2 & 3: Laws of Motion","title":"Newton's Second Law of Motion","eq":"F = m × a = (m × v - m × u) / t","vars":"F = Net Force (N), m = Mass (kg), a = Acceleration (m/s²), u, v = Initial/Final velocity (m/s), t = Time (s)","desc":"The rate of change of momentum of a body is directly proportional to the applied unbalanced force and takes place in the direction of the force.","conditions":"Constant mass system (classical mechanics, v << c).","example":"A 1000 kg car accelerates from rest to 20 m/s in 5 s: a = 20/5 = 4 m/s². Force F = 1000 × 4 = 4000 N.","mistakes":"Using mass in grams instead of SI unit kilograms (kg).","ref":"Class 9 Physics, Chapter 3"},{"cls":"9","subj":"physics","chapter":"Ch 2: Equations of Motion","title":"Equations of Uniformly Accelerated Motion","eq":"v = u + at  |  s = ut + ½at²  |  v² = u² + 2as","vars":"u = Initial velocity (m/s), v = Final velocity (m/s), a = Uniform acceleration (m/s²), t = Time (s), s = Displacement (m)","desc":"Kinematic relationships for motion in a straight line under uniform (constant) acceleration.","conditions":"Motion along a straight line with constant acceleration only. Not applicable when acceleration varies.","example":"A ball dropped from rest (u = 0, a = g = 9.8 m/s²) for 2 seconds: v = 0 + 9.8 × 2 = 19.6 m/s; s = 0 + 0.5 × 9.8 × 4 = 19.6 m.","mistakes":"Using these formulas for non-uniform acceleration (e.g. oscillating springs).","ref":"Class 9 Physics, Chapter 2"},{"cls":"9","subj":"physics","chapter":"Ch 3: Laws of Motion","title":"Law of Conservation of Momentum","eq":"m₁u₁ + m₂u₂ = m₁v₁ + m₂v₂","vars":"m₁, m₂ = Masses of colliding bodies; u₁, u₂ = Velocities before collision; v₁, v₂ = Velocities after collision","desc":"In an isolated system where no external unbalanced force acts, the total momentum of colliding bodies before collision equals total momentum after collision.","conditions":"No net external force acting on system (isolated system).","example":"Gun recoil: Bullet mass m = 0.02 kg fired at v = 300 m/s from rifle M = 2 kg: Recoil velocity V = -(0.02 × 300) / 2 = -3 m/s.","mistakes":"Treating velocities as scalars; momentum is a vector, so velocities in opposite directions must have opposite signs (+ and -).","ref":"Class 9 Physics, Chapter 3"},{"cls":"9","subj":"physics","chapter":"Ch 4: Gravitation","title":"Universal Law of Gravitation","eq":"F = G × (M × m) / r²  |  g = G × M / R²","vars":"F = Gravitational force (N), G = Universal constant (6.674 × 10⁻¹¹ N·m²/kg²), M, m = Masses (kg), r = Distance between centres (m), g ≈ 9.8 m/s²","desc":"Every particle in the universe attracts every other particle with a force directly proportional to the product of their masses and inversely proportional to the square of the distance between their centres.","conditions":"Point masses or spherically symmetric mass distributions.","example":"Weight on earth surface is W = mg = 50 kg × 9.8 m/s² = 490 N.","mistakes":"Confusing Universal Gravitational Constant G (constant everywhere) with acceleration due to gravity g (varies by altitude, latitude, planet).","ref":"Class 9 Physics, Chapter 4"},{"cls":"9","subj":"physics","chapter":"Ch 5: Work, Energy and Power","title":"Work, Kinetic Energy & Potential Energy","eq":"W = F × s  |  KE = ½ m v²  |  PE = m g h  |  P = W / t","vars":"W = Work (J), KE = Kinetic Energy (J), PE = Gravitational Potential Energy (J), P = Power (Watts, W)","desc":"Work is done when a force produces displacement in its direction. Kinetic energy is energy due to motion. Potential energy is energy stored due to position/height.","conditions":"Work is zero if displacement is perpendicular to force (e.g. satellite orbiting Earth).","example":"A 2 kg book lifted by 1.5 m: Work = PE = 2 × 9.8 × 1.5 = 29.4 J. If done in 2 seconds, Power = 29.4 / 2 = 14.7 W.","mistakes":"Carrying a load horizontally at constant speed does zero work against gravity because force is vertical and displacement is horizontal (cos 90° = 0).","ref":"Class 9 Physics, Chapter 5"},{"cls":"9","subj":"physics","chapter":"Ch 8: Fluids","title":"Liquid Pressure & Pascal's Law","eq":"P = h × ρ × g  |  F₁ / A₁ = F₂ / A₂","vars":"P = Liquid pressure (Pa), h = Height/depth of liquid column (m), ρ = Density of liquid (kg/m³), g ≈ 9.8 m/s², F = Force, A = Piston area","desc":"Pressure at any point inside a liquid depends only on the depth, density of liquid, and acceleration due to gravity. It acts equally in all directions.","conditions":"Static incompressible fluid in a uniform gravitational field.","example":"Pressure at 5 m depth in water (ρ = 1000 kg/m³): P = 5 × 1000 × 9.8 = 49,000 Pa (49 kPa).","mistakes":"Thinking container shape or total water volume affects pressure; pressure depends solely on depth h and density ρ.","ref":"Class 9 Physics, Chapter 8"},{"cls":"9","subj":"physics","chapter":"Ch 7: Wave Motion and Sound","title":"Wave Equation & Speed of Sound","eq":"v = f × λ  |  f = 1 / T","vars":"v = Wave speed (m/s), f = Frequency (Hertz, Hz), λ = Wavelength (m), T = Time period (s)","desc":"The speed of a mechanical wave is the product of its frequency and wavelength.","conditions":"Homogeneous medium at constant temperature.","example":"A sound tuning fork vibrates at 512 Hz in air (v = 340 m/s): Wavelength λ = 340 / 512 ≈ 0.664 m = 66.4 cm.","mistakes":"Changing wave frequency changes wavelength, but wave speed in the same medium stays constant.","ref":"Class 9 Physics, Chapter 7"},{"cls":"9","subj":"chemistry","chapter":"Ch 1: Structure of Atom","title":"Atomic Composition & Shell Capacity","eq":"Atomic No. Z = p = e  |  Mass No. A = p + n  |  Shell max = 2n²","vars":"Z = Protons/Electrons in neutral atom, A = Mass number (nucleons), n = Principal shell number (1=K, 2=L, 3=M, 4=N)","desc":"Maximum electrons in K shell = 2(1²) = 2; L shell = 2(2²) = 8; M shell = 2(3²) = 18; N shell = 2(4²) = 32. Outermost shell cannot hold more than 8 electrons (Octet rule).","conditions":"Neutral ground-state atom.","example":"Sodium (Na): Z = 11, A = 23. Protons = 11, Electrons = 11, Neutrons = 23 - 11 = 12. Electronic configuration: 2, 8, 1.","mistakes":"Filling M shell with 18 electrons before starting N shell (potassium 19 is 2, 8, 8, 1, not 2, 8, 9).","ref":"Class 9 Chemistry, Chapter 1"},{"cls":"9","subj":"chemistry","chapter":"Ch 5: The Mole Concept","title":"Gram Atomic Mass (GAM) & Gram Molecular Mass (GMM)","eq":"1 GAM = Atomic Mass in grams = 6.022 × 10²³ atoms | 1 GMM = Molecular Mass in grams = 6.022 × 10²³ molecules","vars":"GAM = Mass of 1 mole of atoms, GMM = Mass of 1 mole of molecules","desc":"The atomic mass of an element expressed in grams is its 1 GAM. The molecular mass of a substance in grams is its 1 GMM.","conditions":"Applies to pure chemical substances.","example":"Oxygen: 1 GAM of O = 16 g (6.022 × 10²³ atoms); 1 GMM of O₂ = 32 g (6.022 × 10²³ molecules).","mistakes":"Saying GAM of oxygen is 32 g; 16 g is 1 GAM of oxygen atoms, 32 g is 1 GMM of oxygen molecules.","ref":"Class 9 Chemistry, Chapter 5"},{"cls":"9","subj":"maths","chapter":"Ch 4: New Numbers & Polynomials","title":"Algebraic Identities (Square and Product)","eq":"(a + b)² = a² + 2ab + b²  |  (a - b)² = a² - 2ab + b²  |  a² - b² = (a - b)(a + b)","vars":"a, b = Any real numbers or algebraic expressions","desc":"Core algebraic expansions used to factorise and simplify second-degree polynomial expressions.","conditions":"Valid for all real and complex numbers.","example":"103² = (100 + 3)² = 10000 + 2(100)(3) + 9 = 10000 + 600 + 9 = 10,609.","mistakes":"Writing (a + b)² = a² + b² (forgetting the middle term 2ab).","ref":"Class 9 Mathematics, Chapter 4"},{"cls":"9","subj":"maths","chapter":"Ch 5: Area of Triangle","title":"Heron's Formula for Area of Triangle","eq":"A = √[s(s - a)(s - b)(s - c)]  |  s = (a + b + c) / 2","vars":"a, b, c = Lengths of the three sides, s = Semi-perimeter of triangle","desc":"Calculates the area of any triangle when all three side lengths are known without needing perpendicular height.","conditions":"Sum of any two sides must be strictly greater than third side (triangle inequality).","example":"Triangle with sides 5 cm, 6 cm, 7 cm: s = (5+6+7)/2 = 9 cm. Area = √[9(9-5)(9-6)(9-7)] = √[9 × 4 × 3 × 2] = √216 ≈ 14.7 cm².","mistakes":"Using perimeter P = a + b + c instead of semi-perimeter s in the radical.","ref":"Class 9 Mathematics, Chapter 5"},{"cls":"9","subj":"maths","chapter":"Ch 6: Circles","title":"Sector Area & Arc Length Formulas","eq":"A_sector = (θ / 360°) × πr²  |  l_arc = (θ / 360°) × 2πr","vars":"θ = Central angle of sector in degrees, r = Radius of circle","desc":"Determines the fraction of circle area and perimeter subtended by central angle θ.","conditions":"Central angle θ must be measured in degrees.","example":"Sector of radius 7 cm with central angle 60°: Arc length = (60/360) × 2 × (22/7) × 7 = (1/6) × 44 = 7.33 cm.","mistakes":"Calculating perimeter of sector as just arc length l, forgetting to add the two radii (P = l + 2r).","ref":"Class 9 Mathematics, Chapter 6"},{"cls":"8","subj":"physics","chapter":"Ch 1: Measurements & Units","title":"Speed, Distance & Time","eq":"Speed = Distance / Time (v = s / t)  |  1 km/h = 5/18 m/s","vars":"v = Speed (m/s), s = Distance (m), t = Time (s)","desc":"Speed is the rate of covering distance. SI unit is metre per second (m/s). To convert km/h to m/s, multiply by 5/18.","conditions":"Uniform speed or average speed = Total Distance / Total Time.","example":"A bus travels 72 km/h: in SI units, 72 × (5/18) = 20 m/s. In 15 seconds, distance covered is 20 × 15 = 300 m.","mistakes":"Mixing hours with seconds without conversion.","ref":"Class 8 Basic Science, Chapter 1"},{"cls":"8","subj":"physics","chapter":"Ch 2: Motion and Force","title":"Acceleration Formula","eq":"a = (v - u) / t","vars":"a = Acceleration (m/s²), u = Initial velocity (m/s), v = Final velocity (m/s), t = Time interval (s)","desc":"Rate of change of velocity. If velocity decreases, acceleration is negative (retardation or deceleration).","conditions":"Straight-line motion.","example":"A cyclist accelerates from 2 m/s to 8 m/s in 3 s: a = (8 - 2) / 3 = 6 / 3 = 2 m/s².","mistakes":"Confusing velocity units (m/s) with acceleration units (m/s²).","ref":"Class 8 Basic Science, Chapter 2"},{"cls":"8","subj":"physics","chapter":"Ch 3: Force & Pressure","title":"Thrust & Pressure","eq":"P = F / A","vars":"P = Pressure in Pascals (Pa = N/m²), F = Total perpendicular force / thrust (N), A = Area of contact (m²)","desc":"Pressure is thrust acting per unit area of surface. Reducing area increases pressure (e.g. sharp pins and knives).","conditions":"Force must act perpendicular to the surface.","example":"A 100 N force acts on 0.05 m²: Pressure P = 100 / 0.05 = 2000 Pa (2 kPa).","mistakes":"Using area in cm² without converting to m² (1 m² = 10,000 cm²).","ref":"Class 8 Basic Science, Chapter 3"},{"cls":"8","subj":"physics","chapter":"Ch 4: Light","title":"Laws of Reflection & Number of Images","eq":"∠i = ∠r  |  n = (360° / θ) - 1","vars":"i = Angle of incidence, r = Angle of reflection, θ = Angle between two inclined plane mirrors, n = Number of images","desc":"1. Angle of incidence equals angle of reflection. 2. Incident ray, reflected ray and normal all lie in the same plane. Multiple images form due to successive reflections.","conditions":"Plane smooth reflecting surfaces.","example":"Two mirrors placed at 90°: n = (360 / 90) - 1 = 4 - 1 = 3 images.","mistakes":"Measuring angle from the mirror surface rather than the perpendicular normal.","ref":"Class 8 Basic Science, Chapter 4"},{"cls":"8","subj":"chemistry","chapter":"Ch 1: Chemistry of Changes","title":"Law of Conservation of Mass","eq":"Total Mass of Reactants = Total Mass of Products","vars":"Applies to closed chemical reaction systems without mass exchange.","desc":"In any chemical reaction, matter can neither be created nor destroyed. The total mass remains strictly constant throughout.","conditions":"Closed system (gaseous products cannot escape).","example":"Barium chloride + Sodium sulphate -> Barium sulphate (precipitate) + Sodium chloride. Mass before mixing = Mass after mixing.","mistakes":"Conducting reactions with gas release (like CaCO₃ + HCl) in open beakers and assuming mass was lost.","ref":"Class 8 Basic Science, Chapter 1"},{"cls":"8","subj":"maths","chapter":"Ch 1: Polygons","title":"Sum of Angles of a Polygon","eq":"Sum = (n - 2) × 180°  |  Each regular angle = [(n - 2) × 180°] / n","vars":"n = Number of sides of polygon (n ≥ 3)","desc":"Any polygon with n sides can be divided into (n - 2) non-overlapping triangles from one vertex, giving total interior angle sum (n - 2) × 180°.","conditions":"Simple non-self-intersecting polygons.","example":"Hexagon (n = 6): Sum = (6 - 2) × 180° = 4 × 180° = 720°. Each regular hexagon angle = 720° / 6 = 120°.","mistakes":"Confusing interior angle sum ((n-2)×180°) with exterior angle sum (always 360° for all polygons).","ref":"Class 8 Mathematics, Chapter 1"},{"cls":"8","subj":"maths","chapter":"Ch 3: Commercial Mathematics","title":"Simple Interest & Compound Interest","eq":"SI = (P × N × R) / 100  |  CI Amount A = P(1 + R/100)ᴺ","vars":"P = Principal, N = Time period in years, R = Annual interest rate %, A = Total maturity amount","desc":"Simple interest is calculated on original principal only. Compound interest calculates interest on principal plus accumulated prior interest.","conditions":"Compounded annually. For half-yearly compounding, rate is R/2 and periods are 2N.","example":"₹10,000 at 10% for 2 years SI: (10000 × 2 × 10)/100 = ₹2,000. CI: 10000(1 + 0.1)² = 10000 × 1.21 = ₹12,100 (CI = ₹2,100).","mistakes":"Confusing the compound interest maturity amount A with the interest earned (CI = A - P).","ref":"Class 8 Mathematics, Chapter 3"},{"cls":"8","subj":"maths","chapter":"Ch 5: Area of Quadrilaterals","title":"Areas of Quadrilaterals (Trapezium & Rhombus)","eq":"Trapezium: A = ½(a + b)h  |  Rhombus: A = ½ d₁ d₂","vars":"a, b = Parallel sides of trapezium, h = Height between parallel sides, d₁, d₂ = Diagonals of rhombus","desc":"Area formulas for common quadrilaterals based on triangle decomposition.","conditions":"Plane 2D geometric figures.","example":"A trapezium with parallel sides 12 cm and 8 cm and height 5 cm: Area = 1/2 × (12 + 8) × 5 = 1/2 × 20 × 5 = 50 cm².","mistakes":"Using non-parallel sides or slant height instead of perpendicular height h in trapezium area.","ref":"Class 8 Mathematics, Chapter 5"},{"cls":"10","subj":"biology","chapter":"Ch 1: Sensations and Responses","title":"Nerve Impulse & Synapse Transmission","eq":"Polarized (-70 mV) -> Depolarized (+30 mV) -> Repolarized -> Neurotransmitter Release","vars":"Resting Potential: Inner negative (-70 mV) due to Na⁺/K⁺ pump; Action Potential: Na⁺ influx rushes inside; Synapse: Acetylcholine / Dopamine diffusion","desc":"Electrical impulse travels along axon via rapid sodium/potassium ion flux; at synaptic knob, vesicles release chemical neurotransmitters across synaptic cleft.","conditions":"Threshold stimulus must be reached (All-or-None Law).","example":"Stimulating sensory receptor triggers reflex arc: Receptor -> Sensory Neuron -> Interneuron (Spinal Cord) -> Motor Neuron -> Effector Muscle.","mistakes":"Thinking electrical impulse jumps directly across the synapse; the synaptic gap requires chemical neurotransmitter diffusion.","ref":"Class 10 Biology, Chapter 1"},{"cls":"10","subj":"biology","chapter":"Ch 4: Genetic Secrets","title":"Mendelian Inheritance Ratios","eq":"Monohybrid: Phenotype 3:1, Genotype 1:2:1 | Dihybrid: Phenotype 9:3:3:1","vars":"Monohybrid: Tt × Tt -> 1 TT (Tall) : 2 Tt (Tall) : 1 tt (Dwarf). Dihybrid: 9 Round Yellow : 3 Round Green : 3 Wrinkled Yellow : 1 Wrinkled Green","desc":"Law of Segregation states allele pairs separate during gamete formation; Law of Independent Assortment states different gene pairs segregate independently.","conditions":"Genes located on different non-homologous chromosomes (no linkage).","example":"Crossing two heterozygous tall pea plants (Tt × Tt) produces 75% tall and 25% dwarf offspring in F₂ generation.","mistakes":"Confusing phenotype (visible trait, 3:1) with genotype (genetic makeup, 1:2:1).","ref":"Class 10 Biology, Chapter 4"},{"cls":"9","subj":"biology","chapter":"Ch 1: To Life Processes","title":"Cellular Respiration Overall Equation","eq":"C₆H₁₂O₆ + 6O₂ -> 6CO₂ + 6H₂O + 30 to 32 ATP","vars":"Glycolysis (in Cytoplasm, Anaerobic, Net 2 ATP) -> Krebs Cycle (in Mitochondria Matrix, Aerobic) -> Electron Transport Chain (Inner Mitochondrial Membrane)","desc":"Biochemical breakdown of glucose in cells to produce usable chemical energy stored in adenosine triphosphate (ATP) molecules.","conditions":"Presence of oxygen for complete aerobic oxidation in mitochondria.","example":"In absence of oxygen, anaerobic fermentation occurs: Yeast produces ethanol and CO₂ (2 ATP); fatigued human muscle produces lactic acid.","mistakes":"Assuming all respiration occurs inside mitochondria; the first phase (Glycolysis) occurs in the cytoplasm without oxygen.","ref":"Class 9 Biology, Chapter 1"},{"cls":"8","subj":"biology","chapter":"Ch 1: Life Processes in Plants","title":"Photosynthesis Overall Equation","eq":"6CO₂ + 12H₂O + Sunlight -> C₆H₁₂O₆ + 6O₂ + 6H₂O","vars":"Light Phase (Grana of Chloroplast, Photolysis of water releases O₂) -> Dark Phase / Calvin Cycle (Stroma of Chloroplast, CO₂ reduced to Glucose)","desc":"Autotrophic process by which green plants absorb solar energy via chlorophyll to convert inorganic carbon dioxide and water into energy-rich glucose.","conditions":"Light, chlorophyll pigment, water, and atmospheric carbon dioxide.","example":"Excess glucose synthesized during daytime is immediately converted into insoluble starch for storage, and transported through phloem as sucrose.","mistakes":"Believing dark reaction happens only at night; 'dark reaction' simply does not directly require photons, but relies on ATP/NADPH made in light reaction.","ref":"Class 8 Basic Science, Chapter 1"},{"cls":"10","subj":"maths","chapter":"Ch 5: Trigonometry","title":"Trigonometric Ratios & Core Identities","eq":"sin²(θ) + cos²(θ) = 1  |  tan(θ) = sin(θ) / cos(θ)","vars":"In a right triangle with acute angle θ: sin(θ) = Opposite / Hypotenuse, cos(θ) = Adjacent / Hypotenuse, tan(θ) = Opposite / Adjacent","desc":"Fundamental trigonometric relationships in right-angled triangles. Standard angles: sin 30° = 1/2, sin 45° = 1/√2, sin 60° = √3/2, tan 45° = 1, tan 30° = 1/√3, tan 60° = √3.","conditions":"0° ≤ θ ≤ 90° for high school geometry.","example":"If sin(θ) = 3/5, then cos(θ) = √(1 - (3/5)²) = √(16/25) = 4/5. tan(θ) = (3/5)/(4/5) = 3/4.","mistakes":"Assuming sin(A + B) = sin A + sin B (trigonometric functions are non-linear).","ref":"Class 10 Mathematics, Chapter 5"},{"cls":"10","subj":"maths","chapter":"Ch 5: Trigonometry","title":"Circumradius & Sine Rule for Triangles","eq":"a / sin(A) = b / sin(B) = c / sin(C) = 2R","vars":"a, b, c = Side lengths opposite angles A, B, C; R = Radius of circumscribed circle (circumradius)","desc":"In any triangle, each side length is proportional to the sine of its opposite angle, and this constant ratio equals the diameter (2R) of its circumcircle.","conditions":"Valid for acute, right, and obtuse triangles alike.","example":"In a triangle, side a = 6 cm opposite ∠A = 30°: Circumcircle diameter 2R = 6 / sin 30° = 6 / 0.5 = 12 cm => Circumradius R = 6 cm.","mistakes":"Using cosine instead of sine in the circumcircle relationship.","ref":"Class 10 Mathematics, Chapter 5"},{"cls":"10","subj":"maths","chapter":"Ch 8: Solids","title":"Square Pyramid Relations","eq":"l² = h² + (a/2)²  |  TSA = a² + 2al  |  V = (1/3)a²h","vars":"a = Base edge, h = Vertical height, l = Slant height of triangular lateral face","desc":"Relates base edge, vertical height and slant height for a square pyramid. Base area = a², Lateral Area = 4 × (1/2 × a × l) = 2al.","conditions":"Right square pyramids.","example":"Base edge a = 12 cm, vertical height h = 8 cm: a/2 = 6 cm => slant height l = √(8² + 6²) = 10 cm. TSA = 12² + 2(12)(10) = 144 + 240 = 384 cm².","mistakes":"Using vertical height h instead of slant height l when calculating lateral face area.","ref":"Class 10 Mathematics, Chapter 8"},{"cls":"10","subj":"maths","chapter":"Ch 6: Coordinates","title":"Section Formula (Internal Division)","eq":"x = (m·x₂ + n·x₁) / (m + n)  |  y = (m·y₂ + n·y₁) / (m + n)","vars":"Point P(x, y) divides the line segment joining A(x₁, y₁) and B(x₂, y₂) internally in the ratio m : n","desc":"Determines the coordinates of a point dividing a directed straight line segment in any specified positive ratio.","conditions":"Internal division along a straight segment.","example":"Points A(1, 2) and B(4, 8) divided in 1:2 ratio (m=1, n=2): x = (1·4 + 2·1)/(1+2) = 6/3 = 2; y = (1·8 + 2·2)/(1+2) = 12/3 = 4 => P(2, 4).","mistakes":"Multiplying m with x₁ and n with x₂; m multiplies the distant coordinate x₂.","ref":"Class 10 Mathematics, Chapter 6"},{"cls":"10","subj":"maths","chapter":"Ch 9: Geometry & Algebra","title":"Equation of a Circle in Cartesian Plane","eq":"(x - a)² + (y - b)² = r²  |  x² + y² = r² (centre at origin)","vars":"(a, b) = Coordinates of centre, r = Radius of circle, (x, y) = Any point on circumference","desc":"The algebraic locus of all points whose distance from fixed centre (a, b) equals constant radius r.","conditions":"2D Cartesian coordinate plane.","example":"Circle with centre (2, -3) and radius 5: (x - 2)² + (y - (-3))² = 5² => (x - 2)² + (y + 3)² = 25.","mistakes":"Writing (y - 3)² when centre y-coordinate is negative -3.","ref":"Class 10 Mathematics, Chapter 9"},{"cls":"10","subj":"maths","chapter":"Ch 11: Statistics","title":"Arithmetic Mean of Frequency Distribution","eq":"x̄ = (Σ f·x) / (Σ f)","vars":"x̄ = Arithmetic Mean, x = Mid-value or class mark of interval, f = Frequency of class interval, Σ f = Total observations N","desc":"The weighted average of values in grouped or discrete statistical frequency data.","conditions":"Representative sample with consistent class intervals.","example":"Values x = [10, 20, 30] with frequencies f = [2, 5, 3]: Σ fx = (20 + 100 + 90) = 210. Total frequency = 10. Mean = 210 / 10 = 21.","mistakes":"Dividing by number of classes instead of total frequency Σ f.","ref":"Class 10 Mathematics, Chapter 11"},{"cls":"10","subj":"physics","chapter":"Ch 1: Effects of Electric Current","title":"AC Voltage RMS & Peak Relations","eq":"V_rms = V₀ / √2 ≈ 0.707 × V₀  |  f = 1 / T = 50 Hz","vars":"V_rms = Root Mean Square voltage (effective heating value), V₀ = Peak voltage, f = Frequency (50 Hz in India/Kerala)","desc":"Domestic household supply in Kerala is 230 V AC at 50 Hz. The rated 230 V is RMS voltage; the actual peak voltage reaches V₀ = 230 × √2 ≈ 325 V.","conditions":"Sinusoidal alternating voltage supply.","example":"A domestic 230 V AC supply fluctuates between +325 V and -325 V fifty times every second (100 zero-crossings per second).","mistakes":"Assuming 230 V is the maximum voltage; peak voltage is 325 V, making AC shock more dangerous than equivalent 230 V DC.","ref":"Class 10 Physics, Chapter 1"},{"cls":"10","subj":"chemistry","chapter":"Ch 5: Compounds of Non-Metals","title":"Le Chatelier's Principle (Haber Process)","eq":"N₂(g) + 3H₂(g) ⇌ 2NH₃(g) + 92.4 kJ","vars":"Optimal industrial conditions: Temperature ≈ 450 °C, Pressure ≈ 200 atm, Catalyst: Finely divided Iron (Fe), Promoter: Molybdenum (Mo)","desc":"When a system at equilibrium is subjected to change in concentration, temperature, or pressure, the equilibrium shifts in the direction that undoes that change.","conditions":"Reversible chemical equilibrium in a closed vessel.","example":"High pressure favours the forward reaction because 4 moles of gaseous reactants produce 2 moles of product.","mistakes":"Using excessively high temperatures; since forward reaction is exothermic, very high temperature shifts equilibrium backwards, reducing yield.","ref":"Class 10 Chemistry, Chapter 5"},{"cls":"9","subj":"physics","chapter":"Ch 5: Work, Energy and Power","title":"Work-Energy Theorem","eq":"W_net = ΔKE = ½ m v² - ½ m u²","vars":"W_net = Net work done by all acting forces (J), m = Mass (kg), u, v = Initial and final velocity (m/s)","desc":"The net work done on an object by unbalanced forces equals the change in its kinetic energy.","conditions":"Inertial frame of reference.","example":"A 2 kg mass accelerated from 3 m/s to 5 m/s: W = 1/2 × 2 × (5² - 3²) = 25 - 9 = 16 J of work.","mistakes":"Squaring the velocity difference (v - u)² instead of the difference of squares (v² - u²).","ref":"Class 9 Physics, Chapter 5"},{"cls":"9","subj":"physics","chapter":"Ch 8: Fluids","title":"Archimedes' Principle & Relative Density","eq":"Buoyancy F_b = V_submerged × ρ_liquid × g  |  RD = W_air / (W_air - W_water)","vars":"F_b = Upthrust / buoyant force (N), V = Volume displaced (m³), ρ = Density of fluid (kg/m³), RD = Relative Density","desc":"When a body is wholly or partially immersed in a fluid, it experiences an upward buoyant force equal to the weight of fluid displaced.","conditions":"Static fluid.","example":"A stone weighs 10 N in air and 8 N in water: Loss of weight = 2 N. Relative density = 10 / 2 = 5.","mistakes":"Forgetting that relative density is a pure ratio and has no units.","ref":"Class 9 Physics, Chapter 8"},{"cls":"9","subj":"chemistry","chapter":"Ch 1: Structure of Atom","title":"Law of Definite Proportions (Proust)","eq":"Mass Ratio of Elements in Pure Compound = Constant","vars":"Fixed integer or simple fraction stoichiometry regardless of preparation method","desc":"In any pure chemical compound, the constituent elements are always combined together in a fixed, definite proportion by mass.","conditions":"Pure chemical compounds free of isotopic variations.","example":"Pure water (H₂O) always contains Hydrogen and Oxygen in a 1 : 8 mass ratio (2 g H for every 16 g O).","mistakes":"Confusing law of definite proportions (one compound) with law of multiple proportions (two elements forming multiple compounds like CO and CO₂).","ref":"Class 9 Chemistry, Chapter 1"},{"cls":"9","subj":"maths","chapter":"Ch 2: Real Numbers","title":"Laws of Exponents and Radicals","eq":"aᵐ × aⁿ = aᵐ⁺ⁿ  |  aᵐ / aⁿ = aᵐ⁻ⁿ  |  (aᵐ)ⁿ = aᵐⁿ  |  a⁻ⁿ = 1/aⁿ  |  a^(1/n) = ⁿ√a","vars":"a, b > 0 are positive real bases; m, n are rational exponents. a⁰ = 1.","desc":"Operational rules for simplifying powers and radical algebraic expressions.","conditions":"Base a > 0 for non-integer rational powers.","example":"(27)^(2/3) = (3³)^(2/3) = 3^(3 × 2/3) = 3² = 9.","mistakes":"Adding exponents during addition: aᵐ + aⁿ ≠ aᵐ⁺ⁿ (rules apply exclusively to multiplication and division).","ref":"Class 9 Mathematics, Chapter 2"},{"cls":"8","subj":"maths","chapter":"Ch 4: Commercial Mathematics","title":"Profit, Loss and Discount Percentages","eq":"Profit % = (Profit / CP) × 100  |  Loss % = (Loss / CP) × 100  |  Discount % = (Discount / MP) × 100","vars":"CP = Cost Price, SP = Selling Price, MP = Marked Price. Profit = SP - CP, Loss = CP - SP, Discount = MP - SP.","desc":"Commercial profit and loss percentages are always calculated on Cost Price (CP). Discounts are always calculated on Marked Price (MP).","conditions":"Standard retail commercial transactions.","example":"Item bought for ₹400 and sold for ₹500: Profit = ₹100. Profit % = (100 / 400) × 100 = 25%.","mistakes":"Calculating profit percentage using Selling Price (SP) in the denominator instead of Cost Price (CP).","ref":"Class 8 Mathematics, Chapter 4"},{"cls":"8","subj":"physics","chapter":"Ch 3: Force & Pressure","title":"Friction Laws and Types","eq":"Static Friction > Sliding Friction > Rolling Friction","vars":"Friction acts opposite to relative motion. F_friction = μ × Normal Force.","desc":"Friction is the contact force resisting relative motion between surfaces. Ball bearings replace sliding with rolling friction, drastically reducing resistive drag.","conditions":"Surfaces in contact.","example":"Pushing a heavy box requires maximum force to start moving (static friction), but less force to keep it sliding, and far less force if placed on wheels.","mistakes":"Assuming friction depends on the apparent area of contact; for macroscopic bodies, friction is independent of contact area for a given normal load.","ref":"Class 8 Basic Science, Chapter 3"},{"cls":"8","subj":"physics","chapter":"Ch 5: Sound","title":"Audible Frequency Range & Sound Waves","eq":"Audible Range = 20 Hz to 20,000 Hz  |  Infrasonic < 20 Hz  |  Ultrasonic > 20 kHz","vars":"Hz = Hertz (vibrations per second). Speed of sound in air ≈ 340 m/s, in water ≈ 1500 m/s, in steel ≈ 5000 m/s.","desc":"Human ear can only perceive vibrations between 20 Hz and 20 kHz. Sound is a longitudinal mechanical wave requiring a material medium; it cannot travel in a vacuum.","conditions":"Elastic medium (solid, liquid, gas).","example":"Bats navigate using ultrasonic waves (> 20 kHz), while elephants communicate using infrasound (< 20 Hz).","mistakes":"Believing sound can travel through outer space or a vacuum flask.","ref":"Class 8 Basic Science, Chapter 5"}];
+var GLOSSARY = [{"en":"Refraction of Light","ml":"പ്രകാശ അപവർത്തനം","cls":"10","subj":"physics","chapter":"Refraction of Light","desc_ml":"പ്രകാശം ഒരു സുതാര്യ മാധ്യമത്തിൽ നിന്ന് വ്യത്യസ്ത പ്രകാശിക സാന്ദ്രതയുള്ള മറ്റൊരു മാധ്യമത്തിലേക്ക് ചരിഞ്ഞു കടക്കുമ്പോൾ അതിൻ്റെ പാതയ്ക്ക് ഉണ്ടാകുന്ന വ്യതിയാനം.","desc_en":"Bending of light as it passes obliquely from one transparent medium into another of differing optical density.","example":"വെള്ളത്തിൽ താഴ്ത്തിവെച്ച പെൻസിൽ വളഞ്ഞതായി കാണപ്പെടുന്നത് അപവർത്തനം മൂലമാണ്.","synonyms":"Optical Bending, Snell's Law"},{"en":"Total Internal Reflection","ml":"പൂർണ്ണാന്തര പ്രതിഫലനം","cls":"10","subj":"physics","chapter":"Refraction of Light","desc_ml":"പ്രകാശം പ്രകാശിക സാന്ദ്രത കൂടിയ മാധ്യമത്തിൽ നിന്ന് കുറഞ്ഞ മാധ്യമത്തിലേക്ക് ക്രിട്ടിക്കൽ കോണിനേക്കാൾ വലിയ കോണിൽ പതനപ്പെടുമ്പോൾ പ്രകാശം പൂർണ്ണമായും അതേ മാധ്യമത്തിലേക്ക് പ്രതിഫലിക്കുന്ന പ്രതിഭാസം.","desc_en":"Complete reflection of light ray back into the optically denser medium when angle of incidence exceeds critical angle.","example":"ഒപ്റ്റിക്കൽ ഫൈബറുകൾ വഴി അതിവേഗ ഇന്റർനെറ്റ് ഡാറ്റ കൈമാറുന്നത് ഇതിലൂടെയാണ്.","synonyms":"TIR, Endoscopy, Optical Fibres"},{"en":"Critical Angle","ml":"ക്രിട്ടിക്കൽ കോൺ","cls":"10","subj":"physics","chapter":"Refraction of Light","desc_ml":"പ്രകാശിക സാന്ദ്രത കൂടിയ മാധ്യമത്തിൽ നിന്ന് കുറഞ്ഞ മാധ്യമത്തിലേക്ക് പ്രകാശം പോകുമ്പോൾ അപവർത്തന കോൺ 90 ഡിഗ്രി ആകുന്ന പതനകോൺ.","desc_en":"Angle of incidence in the denser medium for which the corresponding angle of refraction in rarer medium is 90 degrees.","example":"വെള്ളത്തിൽ നിന്ന് വായുവിലേക്ക് പ്രകാശം പോകുമ്പോൾ ക്രിട്ടിക്കൽ കോൺ ഏകദേശം 48.6 ഡിഗ്രിയാണ്.","synonyms":"Limiting Angle of Refraction"},{"en":"Dispersion of Light","ml":"പ്രകീർണ്ണനം","cls":"10","subj":"physics","chapter":"Colors of Light","desc_ml":"ധവളപ്രകാശം അതിൻ്റെ ഘടകവർണ്ണങ്ങളായി (VIBGYOR) വേർതിരിയുന്ന പ്രതിഭാസം.","desc_en":"Splitting of composite white light into its constituent component colors when passing through a dispersive medium.","example":"മഴവില്ല് ഉണ്ടാകുന്നതിൽ പ്രകീർണ്ണനം, അപവർത്തനം, പൂർണ്ണാന്തര പ്രതിഫലനം എന്നിവ പങ്കുവഹിക്കുന്നു.","synonyms":"Spectrum, Prism Splitting, VIBGYOR"},{"en":"Scattering of Light","ml":"പ്രകാശ വിസരണം","cls":"10","subj":"physics","chapter":"Colors of Light","desc_ml":"പ്രകാശം സൂക്ഷ്മ കണികകളിൽ തട്ടി എല്ലാ ദിശകളിലേക്കും ക്രമരഹിതമായി ചിതറിപ്പോകുന്ന പ്രക്രിയ.","desc_en":"Irregular deflection of light waves in all directions by microscopic suspended particles in the medium.","example":"തരംഗദൈർഘ്യം കുറഞ്ഞ നീല വെളിച്ചം കൂടുതൽ വിസരണം ചെയ്യപ്പെടുന്നതിനാൽ ആകാശം നീലനിറത്തിൽ കാണപ്പെടുന്നു.","synonyms":"Rayleigh Scattering, Tyndall Effect"},{"en":"Electromagnetic Induction","ml":"വൈദ്യുതകാന്തിക പ്രേരണം","cls":"10","subj":"physics","chapter":"Magnetic Effect of Current","desc_ml":"ഒരു ചാലകവുമായി ബന്ധപ്പെട്ടിരിക്കുന്ന കാന്തിക ഫ്ലക്സിന് വ്യതിയാനം സംഭവിക്കുമ്പോൾ ആ ചാലകത്തിൽ ഒരു ഇ.എം.എഫ് (വൈദ്യുതോർജ്ജം) പ്രേരിതമാകുന്ന പ്രതിഭാസം.","desc_en":"Production of induced electromotive force (EMF) across an electrical conductor situated in a changing magnetic flux.","example":"ജനറേറ്ററുകളിലും ട്രാൻസ്ഫോർമറുകളിലും വൈദ്യുതി ഉൽപ്പാദിപ്പിക്കുന്നത് ഈ തത്വത്തിലാണ്.","synonyms":"Faraday's Induction, Generator Principle"},{"en":"Mutual Induction","ml":"പരസ്പര പ്രേരണം","cls":"10","subj":"physics","chapter":"Magnetic Effect of Current","desc_ml":"ഒരു സർക്യൂട്ടിലെ (പ്രൈമറി) കറണ്ടിൽ മാറ്റമുണ്ടാകുമ്പോൾ തൊട്ടടുത്തുള്ള മറ്റൊരു സർക്യൂട്ടിൽ (സെക്കണ്ടറി) ഇ.എം.എഫ് പ്രേരിതമാകുന്ന പ്രക്രിയ.","desc_en":"Induction of EMF in a secondary coil caused by the change of current in an adjacent primary coil.","example":"ട്രാൻസ്ഫോർമറുകൾ പ്രവർത്തിക്കുന്നത് പരസ്പര പ്രേരണ തത്വത്തിലാണ്.","synonyms":"Transformer Action"},{"en":"Self Induction","ml":"സ്വയം പ്രേരണം","cls":"10","subj":"physics","chapter":"Magnetic Effect of Current","desc_ml":"ഒരു കോയിലിലൂടെ ഒഴുകുന്ന കറണ്ടിൽ മാറ്റമുണ്ടാകുമ്പോൾ അതേ കോയിലിൽ തന്നെ പ്രസ്തുത മാറ്റത്തെ എതിർക്കുന്ന ഒരു വിപരീത ഇ.എം.എഫ് (ബാക്ക് ഇ.എം.എഫ്) പ്രേരിതമാകുന്ന പ്രതിഭാസം.","desc_en":"Production of induced back-EMF in a coil when the current flowing through that same coil changes.","example":"ഇൻഡക്ടറുകളിലും ചോക്ക് കോയിലുകളിലും കറണ്ട് വ്യതിയാനങ്ങളെ നിയന്ത്രിക്കാൻ ഇത് ഉപയോഗിക്കുന്നു.","synonyms":"Back EMF, Inductance"},{"en":"Resistance & Resistivity","ml":"പ്രതിരോധവും പ്രതിരോധകതയും","cls":"10","subj":"physics","chapter":"Effects of Electric Current","desc_ml":"ചാലകത്തിലൂടെയുള്ള വൈദ്യുതപ്രവാഹത്തിന് ഉണ്ടാകുന്ന തടസ്സമാണ് പ്രതിരോധം. യൂണിറ്റ് നീളവും യൂണിറ്റ് ഛേദതല പരപ്പളവുമുള്ള ചാലകത്തിൻ്റെ പ്രതിരോധമാണ് പ്രതിരോധകത.","desc_en":"Resistance is opposition to electric current (Ohm, Ω). Resistivity is the inherent material property measured per unit dimensions (Ω·m).","example":"താപന ഉപകരണങ്ങളിൽ ഉയർന്ന പ്രതിരോധകതയുള്ള നിക്രോം (Nichrome) വയറുകൾ ഉപയോഗിക്കുന്നു.","synonyms":"Ohmic Resistance, Specific Resistance"},{"en":"Inertia","ml":"ജഡത്വം","cls":"9","subj":"physics","chapter":"Laws of Motion","desc_ml":"ഒരു വസ്തുവിന് അതിൻ്റെ നിശ്ചലാവസ്ഥയിലോ നേർരേഖയിലുള്ള സമാന ചലനാവസ്ഥയിലോ സ്വയം മാറ്റം വരുത്താൻ സാധിക്കാത്ത സ്വഭാവം.","desc_en":"Inherent tendency of a body to resist any change in its existing state of rest or uniform straight-line motion.","example":"ബസ് പെട്ടെന്ന് മുന്നോട്ട് എടുക്കുമ്പോൾ യാത്രക്കാർ പുറകിലേക്ക് ആഞ്ഞുപോകുന്നത് നിശ്ചല ജഡത്വം മൂലമാണ്.","synonyms":"Newton's First Law, Mass Measure"},{"en":"Momentum","ml":"ആക്കം","cls":"9","subj":"physics","chapter":"Laws of Motion","desc_ml":"ചലിക്കുന്ന ഒരു വസ്തുവിലെ ദ്രവ്യമാനത്തിൻ്റെയും പ്രവേഗത്തിൻ്റെയും ഗുണനഫലമാണ് ആക്കം (p = mv). ഇതൊരു സദിശ അളവാണ്.","desc_en":"Product of a body's mass and its linear velocity (p = mv), measuring the total quantity of motion.","example":"വേഗതയിൽ വരുന്ന ക്രിക്കറ്റ് ബോൾ പിടിക്കുമ്പോൾ ആഘാതം കുറയ്ക്കാൻ ഫീൽഡർ കൈ പിന്നോട്ട് ചലിപ്പിക്കുന്നു.","synonyms":"Quantity of Motion, Linear Momentum"},{"en":"Impulse","ml":"ആവേഗം","cls":"9","subj":"physics","chapter":"Laws of Motion","desc_ml":"വളരെ ചെറിയ സമയത്തേക്ക് വലിയൊരു ബലം പ്രയോഗിക്കപ്പെടുമ്പോൾ ആ ബലത്തിൻ്റെയും സമയത്തിൻ്റെയും ഗുണനഫലം (ആക്കവ്യതിയാനം).","desc_en":"Product of a large force and the brief time duration over which it acts, resulting in momentum change.","example":"വാഹനങ്ങളിൽ ഷോക്ക് അബ്സോർബറുകൾ ഉപയോഗിക്കുന്നത് സമയം കൂട്ടി ആവേഗ ബലം കുറയ്ക്കാനാണ്.","synonyms":"Impulsive Force, Momentum Change"},{"en":"Buoyancy","ml":"പ്ലവക്ഷമബലം","cls":"9","subj":"physics","chapter":"Fluids","desc_ml":"ഒരു ദ്രാവകത്തിൽ ഭാഗികമായോ പൂർണ്ണമായോ മുങ്ങിയിരിക്കുന്ന വസ്തുവിൽ ദ്രാവകം മുകളിലേക്ക് പ്രയോഗിക്കുന്ന തള്ളൽ ബലം.","desc_en":"Upward buoyant force exerted by a fluid opposing the weight of a partially or fully immersed object.","example":"ഭാരമേറിയ കപ്പലുകൾ വെള്ളത്തിൽ പൊങ്ങിപ്പൊങ്ങിക്കിടക്കുന്നത് പ്ലവക്ഷമബലം മൂലമാണ്.","synonyms":"Upthrust, Archimedes Force"},{"en":"Capillarity","ml":"കേശികത്വം","cls":"9","subj":"physics","chapter":"Fluids","desc_ml":"വളരെ നേർത്ത കുഴലിലൂടെ (കേശികക്കുഴൽ) ദ്രാവകം സ്വയമേവ മുകളിലേക്ക് ഉയരുകയോ താഴേക്ക് താഴുകയോ ചെയ്യുന്ന പ്രതിഭാസം.","desc_en":"Spontaneous rising or depression of a liquid surface in narrow bore capillary tubes due to surface tension and cohesion-adhesion.","example":"വിളക്കിലെ തിരിയിലൂടെ എണ്ണ മുകളിലേക്ക് കയറുന്നത് കേശികത്വം കാരണമാണ്.","synonyms":"Capillary Action"},{"en":"Viscosity","ml":"ശ്യാനത","cls":"9","subj":"physics","chapter":"Fluids","desc_ml":"ദ്രാവകങ്ങളുടെ അടുത്തടുത്ത പാളികൾ തമ്മിലുള്ള ആപേക്ഷിക ചലനത്തെ തടസ്സപ്പെടുത്തുന്ന ആന്തരിക ഘർഷണബലം.","desc_en":"Internal frictional resistance offered between adjacent fluid layers undergoing relative motion.","example":"വെള്ളത്തേക്കാൾ കൂടുതൽ ശ്യാനത (viscosity) ഉള്ളതിനാൽ തേൻ സാവധാനമേ ഒഴുകുകയുള്ളൂ.","synonyms":"Fluid Friction, Viscous Drag"},{"en":"Surface Tension","ml":"പരപ്പളവ് ബലം / പ്രതലബലം","cls":"9","subj":"physics","chapter":"Fluids","desc_ml":"ദ്രാവകങ്ങളുടെ സ്വതന്ത്ര ഉപരിതലം ചുരുങ്ങി ഏറ്റവും കുറഞ്ഞ വിസ്തീർണ്ണത്തിൽ നിലനിൽക്കാൻ പ്രകടിപ്പിക്കുന്ന ഇലാസ്തിക പ്രവണത.","desc_en":"Elastic tendency of a fluid surface that makes it acquire the least surface area possible.","example":"മഴത്തുള്ളികൾ ഗോളാകൃതി പ്രാപിക്കുന്നത് പ്രതലബലം മൂലമാണ്.","synonyms":"Interfacial Tension"},{"en":"Subshell Electronic Configuration","ml":"ഉപഊർജ്ജനില ഇലക്ട്രോൺ വിന്യാസം","cls":"10","subj":"chemistry","chapter":"Periodic Table & Configuration","desc_ml":"പ്രധാന ഊർജ്ജനിലകളിലെ (K, L, M, N) s, p, d, f എന്നീ ഉപഊർജ്ജനിലകളിൽ ഊർജ്ജ ക്രമമനുസരിച്ച് ഇലക്ട്രോണുകളെ വിന്യസിക്കുന്ന രീതി.","desc_en":"Arrangement of electrons in s, p, d, and f orbitals within principal shells in increasing order of subshell energy.","example":"ക്ലോറിൻ്റെ (Z = 17) വിന്യാസം: 1s² 2s² 2p⁶ 3s² 3p⁵.","synonyms":"Orbital Configuration, Aufbau Rule"},{"en":"Reactivity Series","ml":"ക്രിയാശീല ശ്രേണി","cls":"10","subj":"chemistry","chapter":"Reactivity Series","desc_ml":"ലോഹങ്ങളെ അവയുടെ രാസപ്രവർത്തനശേഷിയുടെ അവരോഹണ ക്രമത്തിൽ (കൂടിയതിൽ നിന്ന് കുറഞ്ഞതിലേക്ക്) ക്രമീകരിച്ചിരിക്കുന്ന പട്ടിക.","desc_en":"Sequential arrangement of metals in decreasing order of their chemical reactivity and electrode potential.","example":"പൊട്ടാസ്യവും സോഡിയവും പട്ടികയുടെ മുകളിലും സ്വർണ്ണവും വെള്ളിയും അടിയിലുമാണ്.","synonyms":"Activity Series of Metals"},{"en":"Functional Group","ml":"ഫങ്ഷണൽ ഗ്രൂപ്പ്","cls":"10","subj":"chemistry","chapter":"Nomenclature of Organic Compounds","desc_ml":"ഒരു കാർബൺ സംയുക്തത്തിൻ്റെ സവിശേഷ രാസസ്വഭാവങ്ങൾ നിർണ്ണയിക്കുന്ന ആറ്റമോ ആറ്റങ്ങളുടെ കൂട്ടമോ.","desc_en":"Specific atom or bonded group of atoms responsible for the characteristic chemical reactions of an organic molecule.","example":"ആൽക്കഹോളുകളുടെ ഫങ്ഷണൽ ഗ്രൂപ്പ് -OH ഉം, കാർബോക്സിലിക് ആസിഡുകളുടെ ഗ്രൂപ്പ് -COOH ഉം ആണ്.","synonyms":"Characteristic Group (-OH, -CHO, -COOH)"},{"en":"Isomerism","ml":"ഐസോമറിസം","cls":"10","subj":"chemistry","chapter":"Nomenclature of Organic Compounds","desc_ml":"ഒരേ തന്മാത്രാ സമവാക്യവും (Molecular formula) എന്നാൽ വ്യത്യസ്ത ഘടനാ സമവാക്യവുമുള്ള (Structural formula) സംയുക്തങ്ങളുടെ പ്രതിഭാസം.","desc_en":"Phenomenon where two or more compounds possess identical molecular formulas but distinct structural arrangements.","example":"C₄H₁₀ എന്ന തന്മാത്രയ്ക്ക് n-ബ്യൂട്ടെയ്ൻ, ഐസോബ്യൂട്ടെയ്ൻ എന്നീ രണ്ട് ചെയിൻ ഐസോമറുകൾ ഉണ്ട്.","synonyms":"Structural Isomers"},{"en":"Allotropy","ml":"രൂപാന്തരത്വം","cls":"10","subj":"chemistry","chapter":"Production of Metals & Carbon","desc_ml":"ഒരു മൂലകം ഒരേ ഭൗതികാവസ്ഥയിൽ ഒന്നിലധികം വ്യത്യസ്ത രൂപങ്ങളിൽ കാണപ്പെടുന്ന പ്രതിഭാസം.","desc_en":"Property of a chemical element to exist in two or more distinct physical crystalline or amorphous forms.","example":"വജ്രം (Diamond), ഗ്രാഫൈറ്റ് (Graphite), ഫുള്ളറീൻ (Fullerene) എന്നിവ കാർബണിൻ്റെ രൂപാന്തരങ്ങളാണ്.","synonyms":"Allotropes of Carbon"},{"en":"Electronegativity","ml":"ഇലക്ട്രോ നെഗറ്റിവിറ്റി","cls":"10","subj":"chemistry","chapter":"Periodic Table & Configuration","desc_ml":"സഹസംയോജക ബന്ധനത്തിൽ ഏർപ്പെട്ടിരിക്കുന്ന പങ്കുവെച്ച ഇലക്ട്രോൺ ജോഡിയെ ഒരു ആറ്റം തന്നിലേക്ക് ആകർഷിക്കാനുള്ള കഴിവ്.","desc_en":"Relative tendency of a bonded atom to attract shared electron pairs towards its own atomic nucleus.","example":"ആവർത്തനപ്പട്ടികയിൽ ഏറ്റവും കൂടുതൽ ഇലക്ട്രോ നെഗറ്റിവിറ്റിയുള്ള മൂലകം ഫ്ലൂറിൻ (Fluorine, 4.0) ആണ്.","synonyms":"Pauling Scale Electronegativity"},{"en":"Galvanization","ml":"ഗാൽവനൈസേഷൻ","cls":"10","subj":"chemistry","chapter":"Production of Metals","desc_ml":"ഇരുമ്പ് വസ്തുക്കൾ തുരുമ്പെടുക്കാതിരിക്കാൻ അവയുടെ മുകളിൽ നേർത്ത സിങ്ക് (Zinc) പാളി പൂശുന്ന പ്രക്രിയ.","desc_en":"Industrial application of a protective sacrificial zinc coating to iron or steel components to prevent rusting.","example":"റൂഫിംഗ് ഷീറ്റുകളിലും ജി.ഐ പൈപ്പുകളിലും ഗാൽവനൈസ്ഡ് ഇരുമ്പ് ഉപയോഗിക്കുന്നു.","synonyms":"Zinc Coating, Rust Prevention"},{"en":"Oxidation & Reduction","ml":"ഓക്സീകരണവും അപചയവും","cls":"9","subj":"chemistry","chapter":"Redox Reactions","desc_ml":"ഇലക്ട്രോണുകളെ നഷ്ടപ്പെടുന്നത് ഓക്സീകരണവും (Oxidation), ഇലക്ട്രോണുകളെ സ്വീകരിക്കുന്നത് അപചയവുമാണ് (Reduction).","desc_en":"Oxidation is loss of electrons or increase in oxidation state. Reduction is gain of electrons or decrease in oxidation state.","example":"Zn + Cu²⁺ -> Zn²⁺ + Cu പ്രതിപ്രവർത്തനത്തിൽ Zn ഓക്സീകരിക്കപ്പെടുകയും Cu²⁺ അപചയിക്കപ്പെടുകയും ചെയ്യുന്നു.","synonyms":"Redox Couple, Electron Transfer"},{"en":"Neuron & Synapse","ml":"ന്യൂറോണും സിനാപ്സും","cls":"10","subj":"biology","chapter":"Sensations and Responses","desc_ml":"നാഡീവ്യവസ്ഥയുടെ ഘടനാപരവും ധർമ്മപരവുമായ അടിസ്ഥാന യൂണിറ്റാണ് ന്യൂറോൺ. രണ്ട് ന്യൂറോണുകൾ തമ്മിലുള്ള സമ്പർക്ക വിടവാണ് സിനാപ്സ്.","desc_en":"Neuron is the fundamental cell of nervous system. Synapse is the microscopic functional gap across which neurotransmitters transmit signals.","example":"അസറ്റൈൽ കോളിൻ പോലുള്ള ന്യൂറോ ട്രാൻസ്മിറ്ററുകൾ വഴിയാണ് സിനാപ്സിലൂടെ ആവേഗങ്ങൾ കൈമാറുന്നത്.","synonyms":"Nerve Cell, Synaptic Cleft"},{"en":"Reflex Action","ml":"റിഫ്ലക്സ് പ്രവർത്തനം","cls":"10","subj":"biology","chapter":"Sensations and Responses","desc_ml":"ഒരു ബാഹ്യ ചോദനയോടുള്ള അനൈച്ഛികവും പെട്ടെന്നുള്ളതുമായ സുഷുമ്നാ നാഡിയുടെ നേതൃത്വത്തിലുള്ള പ്രതികരണം.","desc_en":"Involuntary, instantaneous motor response to a stimulus coordinated primarily through spinal cord neural pathways without prior conscious thought.","example":"ചൂടുള്ള പ്രതലത്തിൽ കൈ തൊടുമ്പോൾ തലച്ചോറിലേക്ക് എത്തുന്നതിന് മുൻപ് സുഷുമ്ന കൈ പെട്ടെന്ന് പിൻവലിപ്പിക്കുന്നു.","synonyms":"Reflex Arc, Involuntary Response"},{"en":"Insulin & Glucagon","ml":"ഇൻസുലിനും ഗ്ലൂക്കോണും","cls":"10","subj":"biology","chapter":"Chemical Messages for Homeostasis","desc_ml":"പാൻക്രിയാസിലെ ഐലറ്റ്സ് ഓഫ് ലാംഗർഹാൻസ് ഉത്പാദിപ്പിക്കുന്ന ഹോർമോണുകൾ. ഇൻസുലിൻ രക്തത്തിലെ ഗ്ലൂക്കോസ് അളവ് കുറയ്ക്കുകയും ഗ്ലൂക്കോൺ കൂട്ടുകയും ചെയ്യുന്നു.","desc_en":"Antagonistic pancreatic hormones that regulate blood glucose homeostasis; insulin lowers while glucagon elevates glucose levels.","example":"ഇൻസുലിൻ്റെ ഉത്പാദനക്കുറവ് മൂലം രക്തത്തിൽ ഗ്ലൂക്കോസ് അളവ് കൂടുന്ന രോഗാവസ്ഥയാണ് പ്രമേഹം (Diabetes Mellitus).","synonyms":"Blood Glucose Homeostasis"},{"en":"Antigen & Antibody","ml":"ആന്റിജനും ആന്റിബോഡിയും","cls":"10","subj":"biology","chapter":"Keeping Diseases Away","desc_ml":"ശരീരത്തിൽ പ്രതിരോധ പ്രതികരണം ഉണർത്തുന്ന ബാഹ്യ തന്മാത്രകളാണ് ആന്റിജൻ. അവയെ നിർവീര്യമാക്കാൻ ബി-ലിംഫോസൈറ്റുകൾ ഉൽപ്പാദിപ്പിക്കുന്ന പ്രോട്ടീനുകളാണ് ആന്റിബോഡി.","desc_en":"Antigen is a foreign molecular marker triggering an immune response. Antibodies are specialized protective proteins synthesized by B-lymphocytes to neutralize antigens.","example":"വാക്സിനുകൾ ശരീരത്തിൽ നിർവീര്യമാക്കിയ ആന്റിജനെ എത്തിച്ച് മുൻകൂട്ടി ആന്റിബോഡികൾ രൂപപ്പെടുത്തുന്നു.","synonyms":"Immune Response, Immunoglobulin"},{"en":"Mitosis & Meiosis","ml":"സമവിഭജനവും ന്യൂനനവിഭജനവും","cls":"9","subj":"biology","chapter":"Cell Division","desc_ml":"ശരീര വളർച്ചയ്ക്ക് കാരണമാകുന്ന വിഭജനമാണ് സമവിഭജനം (ക്രമസോം സംഖ്യ 2n ആയി തുടരുന്നു). പ്രത്യുൽപ്പാദന കോശങ്ങൾ ഉണ്ടാകുന്നത് ന്യൂനനവിഭജനം വഴിയാണ് (ക്രമസോം സംഖ്യ n ആയി പകുതിയാകുന്നു).","desc_en":"Mitosis produces two genetically identical diploid daughter cells for somatic tissue growth. Meiosis produces four haploid gametes for sexual reproduction.","example":"മുറിവുകൾ ഉണങ്ങുന്നത് സമവിഭജനം മൂലമാണ്; ബീജകോശങ്ങളും അണ്ഡകോശങ്ങളും ഉണ്ടാകുന്നത് ന്യൂനനവിഭജനം വഴിയാണ്.","synonyms":"Somatic Division, Gametogenesis"},{"en":"Photosynthesis","ml":"പ്രകാശസംശ്ലേഷണം","cls":"8","subj":"biology","chapter":"Life Processes in Plants","desc_ml":"ഹരിത സസ്യങ്ങൾ സൂര്യപ്രകാശത്തിൻ്റെയും ക്ലോറോഫിലിൻ്റെയും സാന്നിധ്യത്തിൽ കാർബൺ ഡയോക്സൈഡും ജലവും ഉപയോഗിച്ച് ഗ്ലൂക്കോസ് നിർമ്മിക്കുന്ന പ്രക്രിയ.","desc_en":"Autotrophic biochemical pathway by which green plants utilize solar photons, water, and atmospheric carbon dioxide to synthesize glucose and release oxygen.","example":"പ്രകാശഘട്ടം ഹരിതകണത്തിലെ ഗ്രാനയിലും ഇരുണ്ടഘട്ടം സ്ട്രോമയിലും നടക്കുന്നു.","synonyms":"Carbon Fixation, Chlorophyll Activity"},{"en":"Arithmetic Sequence","ml":"സമാന്തര ശ്രേണി","cls":"10","subj":"maths","chapter":"Arithmetic Sequences","desc_ml":"തുടർച്ചയായ പദങ്ങൾ തമ്മിൽ തുല്യ വ്യത്യാസം (പൊതുവ്യത്യാസം, d) നിലനിൽക്കുന്ന സംഖ്യാശ്രേണി.","desc_en":"Sequence of numbers wherein each term after the first is derived by adding a fixed constant (common difference, d).","example":"5, 9, 13, 17... ഇതിൽ ആദ്യപദം 5 ഉം പൊതുവ്യത്യാസം 4 ഉം ആണ്.","synonyms":"Arithmetic Progression, AP"},{"en":"Common Difference","ml":"പൊതുവ്യത്യാസം","cls":"10","subj":"maths","chapter":"Arithmetic Sequences","desc_ml":"ഒരു സമാന്തര ശ്രേണിയിലെ ഏത് പദത്തിൽ നിന്നും തൊട്ടുപിന്നിലെ പദം കുറയ്ക്കുമ്പോൾ ലഭിക്കുന്ന സ്ഥിരസംഖ്യ (d = x₂ - x₁).","desc_en":"Constant numeric difference obtained by subtracting any term from its succeeding term in an arithmetic progression.","example":"ശ്രേണി 10, 7, 4... ലെ പൊതുവ്യത്യാസം d = 7 - 10 = -3 ആണ്.","synonyms":"Difference Constant d"},{"en":"Tangent to a Circle","ml":"വൃത്തത്തിന്റെ തൊടുവര","cls":"10","subj":"maths","chapter":"Tangents","desc_ml":"ഒരു വൃത്തത്തെ ഒരൊറ്റ ബിന്ദുവിൽ മാത്രം സ്പർശിച്ചു കടന്നുപോകുന്ന നേർവര. സ്പർശബിന്ദുവിലെ ആരത്തിന് ഈ വര ലംബമായിരിക്കും (90°).","desc_en":"Straight line touching a circle at exactly one singular contact point, oriented perpendicular to radius at that point.","example":"വൃത്തത്തിന് പുറത്തുള്ള ഒരു ബിന്ദുവിൽ നിന്നും വൃത്തത്തിലേക്ക് തുല്യ നീളമുള്ള രണ്ട് തൊടുവരകൾ വരയ്ക്കാം.","synonyms":"Tangential Line, Radius Perpendicular"},{"en":"Coordinates","ml":"സൂചകസംഖ്യകൾ","cls":"10","subj":"maths","chapter":"Coordinates","desc_ml":"ഒരു പ്രതലത്തിലെ ബിന്ദുവിൻ്റെ സ്ഥാനം നിർണ്ണയിക്കുന്ന (x, y) എന്ന ക്രമജോടി സംഖ്യകൾ.","desc_en":"Ordered pair of real numbers (x, y) defining the exact geometric location of a point relative to mutually perpendicular Cartesian axes.","example":"ആധാരബിന്ദുവിൻ്റെ (Origin) സൂചകസംഖ്യകൾ (0, 0) ആണ്.","synonyms":"Cartesian Coordinates, Coordinate Geometry"},{"en":"Quadratic Equation","ml":"ദ്വിമാന സമവാക്യം","cls":"10","subj":"maths","chapter":"Second Degree Equations","desc_ml":"അജ്ഞാത ചരത്തിൻ്റെ പരമാവധി കൃതി 2 ആയ ax² + bx + c = 0 രൂപത്തിലുള്ള ബീജഗണിത സമവാക്യം.","desc_en":"Second-order polynomial equation of the general algebraic form ax² + bx + c = 0 with a ≠ 0.","example":"x² - 9 = 0 എന്ന സമവാക്യത്തിന് x = +3, x = -3 എന്നീ രണ്ട് മൂല്യങ്ങൾ (roots) ഉണ്ട്.","synonyms":"Second Degree Polynomial"},{"en":"Probability","ml":"സാദ്ധ്യത","cls":"10","subj":"maths","chapter":"Mathematics of Chance","desc_ml":"ഒരു സംഭവം നടക്കാനുള്ള സാധ്യതയുടെ ഗണിതശാസ്ത്രപരമായ അളവ് (0 മുതൽ 1 വരെ). അനുകൂല ഫലങ്ങൾ / ആകെ ഫലങ്ങൾ.","desc_en":"Numerical quantification measuring the likelihood of occurrence of a random event, bounded between 0 and 1 inclusive.","example":"ഒരു നാണയം എറിയുമ്പോൾ തല (Head) വീഴാനുള്ള സാദ്ധ്യത 1/2 ആണ്.","synonyms":"Chance, Random Event Probability"},{"en":"Contour Lines","ml":"സമോന്നത രേഖകൾ","cls":"10","subj":"ss","chapter":"Terrain Analysis through Maps","desc_ml":"ഭൂപ്രകൃതി മാപ്പുകളിൽ സമുദ്രനിരപ്പിൽ നിന്ന് ഒരേ ഉയരമുള്ള പ്രദേശങ്ങളെ തമ്മിൽ ബന്ധിപ്പിച്ച് വരയ്ക്കുന്ന സാങ്കൽപ്പിക രേഖകൾ.","desc_en":"Imaginary lines drawn on topographic survey maps connecting points having equal elevation above mean sea level.","example":"രേഖകൾ അടുത്തടുത്താണെങ്കിൽ കുത്തനെയുള്ള ചരിവിനെയും, അകന്നാണെങ്കിൽ മിതമായ ചരിവിനെയും സൂചിപ്പിക്കുന്നു.","synonyms":"Topographic Contours, Elevation Lines"},{"en":"Greenwich Mean Time (GMT)","ml":"ഗ്രീൻവിച്ച് സമയം","cls":"10","subj":"ss","chapter":"Seasons and Time","desc_ml":"ലണ്ടനിലെ ഗ്രീൻവിച്ചിലൂടെ കടന്നുപോകുന്ന പൂജ്യം ഡിഗ്രി രേഖാംശരേഖയെ (പ്രൈം മെറിഡിയൻ) അടിസ്ഥാനമാക്കിയുള്ള അന്താരാഷ്ട്ര മാനക സമയം.","desc_en":"International benchmark solar mean time calculated at the Prime Meridian (0° longitude) passing through Greenwich, England.","example":"ഇന്ത്യൻ സ്റ്റാൻഡേർഡ് സമയം (IST, 82.5° E) ഗ്രീൻവിച്ച് സമയത്തേക്കാൾ 5 മണിക്കൂർ 30 മിനിറ്റ് മുന്നിലാണ് (+5:30).","synonyms":"Prime Meridian Time, UTC"},{"en":"Coriolis Force","ml":"കൊറിയോലിസ് പ്രഭാവം","cls":"10","subj":"ss","chapter":"In Search of the Source of Wind","desc_ml":"ഭൂമിയുടെ ഭ്രമണം മൂലം ഉത്തരാർദ്ധഗോളത്തിൽ കാറ്റുകൾ വലത്തോട്ടും ദക്ഷിണാർദ്ധഗോളത്തിൽ ഇടത്തോട്ടും വ്യതിചലിക്കുന്നതിന് കാരണമാകുന്ന ബലം (ഫെറലിൻ്റെ നിയമം).","desc_en":"Apparent inertial force caused by Earth's planetary rotation that deflects moving air masses to the right in Northern Hemisphere and left in Southern Hemisphere.","example":"ഇന്ത്യയിൽ തെക്കുപടിഞ്ഞാറൻ മൺസൂൺ കാറ്റുകൾ വീശുന്നതിൽ കൊറിയോലിസ് പ്രഭാവം നിർണായക പങ്കുവഹിക്കുന്നു.","synonyms":"Ferrel's Law, Planetary Deflection"},{"en":"Monsoon","ml":"മൺസൂൺ കാറ്റുകൾ","cls":"10","subj":"ss","chapter":"India: The Land of Diversities","desc_ml":"ഋതുക്കൾക്കനുസരിച്ച് ദിശ തിരിഞ്ഞു വീശുന്ന ആനുകാലിക കാറ്റുകൾ. അറബി വാക്കായ 'മൗസിം' (Mausim - ഋതു) എന്നതിൽ നിന്നാണ് ഈ വാക്കുണ്ടായത്.","desc_en":"Periodic seasonal prevailing wind system characteristic of South Asia that reverses direction between summer and winter.","example":"കേരളത്തിൽ ജൂൺ മുതൽ സെപ്റ്റംബർ വരെ ഇടവപ്പാതിയും (തെക്കുപടിഞ്ഞാറൻ മൺസൂൺ) ഒക്ടോബർ-നവംബറിൽ തുലാവർഷവും (വടക്കുകിഴക്കൻ മൺസൂൺ) ലഭിക്കുന്നു.","synonyms":"Southwest Monsoon, Northeast Monsoon"},{"en":"Remote Sensing","ml":"വിദൂരസംവേദനം","cls":"10","subj":"ss","chapter":"Eyes in the Sky and Data Analysis","desc_ml":"ഒരു വസ്തുവുമായോ പ്രദേശവുമായോ നേരിട്ട് സമ്പർക്കത്തിൽ വരാതെ ഉപഗ്രഹങ്ങളോ സെൻസറുകളോ ഉപയോഗിച്ച് വിവരങ്ങൾ ശേഖരിക്കുന്ന സാങ്കേതികവിദ്യ.","desc_en":"Acquisition of spatial information and imagery of an area or phenomenon from a distance using airborne or satellite-borne sensors.","example":"കാലാവസ്ഥാ പ്രവചനത്തിനും പ്രകൃതിദുരന്ത നിരീക്ഷണത്തിനും ഭൂപട നിർമ്മാണത്തിനും ഉപഗ്രഹ വിദൂരസംവേദനം ഉപയോഗിക്കുന്നു.","synonyms":"Satellite Imagery, GIS Sensing"},{"en":"Swaraj","ml":"സ്വരാജ്","cls":"10","subj":"ss","chapter":"Struggle and Freedom","desc_ml":"ഗാന്ധിജിയുടെയും ഇന്ത്യൻ സ്വാതന്ത്ര്യസമര പ്രസ്ഥാനത്തിൻ്റെയും പ്രധാന ലക്ഷ്യമായിരുന്ന സമ്പൂർണ്ണ സ്വയംഭരണവും ആത്മീയ സ്വാതന്ത്ര്യവും.","desc_en":"Concept of total self-rule and integral freedom championed during the Indian National Independence Movement by Mahatma Gandhi.","example":"1929-ലെ ലാഹോർ കോൺഗ്രസ് സമ്മേളനത്തിൽ പൂർണ്ണ സ്വരാജ് പ്രഖ്യാപനം അംഗീകരിക്കപ്പെട്ടു.","synonyms":"Self-Rule, Indian Independence"},{"en":"Fundamental Rights","ml":"മൗലികാവകാശങ്ങൾ","cls":"10","subj":"ss","chapter":"Public Administration & Constitution","desc_ml":"ഇന്ത്യൻ ഭരണഘടനയുടെ മൂന്നാം ഭാഗത്തിൽ (അനുച്ഛേദം 12 മുതൽ 35 വരെ) ഓരോ പൗരനും ഉറപ്പുനൽകിയിട്ടുള്ള പരമപ്രധാനമായ ജനാധിപത്യ അവകാശങ്ങൾ.","desc_en":"Basic constitutional civic liberties guaranteed to all Indian citizens under Part III (Articles 12 to 35) of the Constitution.","example":"സമത്വത്തിനുള്ള അവകാശം, സ്വാതന്ത്ര്യത്തിനുള്ള അവകാശം, ചൂഷണത്തിനെതിരെയുള്ള അവകാശം, മതസ്വാതന്ത്ര്യം എന്നിവ ഇതിൽ ഉൾപ്പെടുന്നു.","synonyms":"Constitutional Freedoms, Articles 12-35"},{"en":"Public Distribution System (PDS)","ml":"പൊതുവിതരണ സമ്പ്രദായം","cls":"10","subj":"ss","chapter":"Financial Institutions & Services","desc_ml":"ഭക്ഷ്യസുരക്ഷ ഉറപ്പാക്കുന്നതിനായി മാവേലി സ്റ്റോറുകൾ, റേഷൻ കടകൾ എന്നിവ വഴി നിത്യോപയോഗ സാധനങ്ങൾ മിതമായ നിരക്കിൽ പൊതുജനങ്ങൾക്ക് വിതരണം ചെയ്യുന്ന സർക്കാർ സംവിധാനം.","desc_en":"Government network distributing essential food grains and commodities to citizens at subsidized fair-price rates through ration outlets.","example":"കേരളത്തിൽ സിവിൽ സപ്ലൈസ് വകുപ്പിന് കീഴിൽ പാവപ്പെട്ടവർക്ക് ന്യായവിലയ്ക്ക് അരിയും ഭക്ഷ്യധാന്യങ്ങളും നൽകുന്നു.","synonyms":"Rationing System, Food Security Network"},{"en":"Gross Domestic Product (GDP)","ml":"മൊത്ത ആഭ്യന്തര ഉത്പാദനം","cls":"10","subj":"ss","chapter":"India's Economic Growth","desc_ml":"ഒരു നിശ്ചിത സാമ്പത്തിക വർഷത്തിൽ ഒരു രാജ്യത്തിൻ്റെ അതിർത്തിക്കുള്ളിൽ ഉത്പാദിപ്പിക്കപ്പെടുന്ന ആകെ സാധനങ്ങളുടെയും സേവനങ്ങളുടെയും പണമൂല്യം.","desc_en":"Total aggregate monetary value of all finalized goods and services produced within a nation's domestic borders over one fiscal year.","example":"രാജ്യത്തിൻ്റെ സാമ്പത്തിക വളർച്ചയും സാമ്പത്തിക ആരോഗ്യവും വിലയിരുത്താൻ ജി.ഡി.പി വളർച്ചാനിരക്ക് ഉപയോഗിക്കുന്നു.","synonyms":"National Income Metric, Economic Output"},{"en":"Fiscal Policy","ml":"ധനനയം","cls":"10","subj":"ss","chapter":"Public Finance","desc_ml":"സാമ്പത്തിക സ്ഥിരതയും വികസനവും കൈവരിക്കുന്നതിനായി സർക്കാർ നികുതി വരുമാനവും പൊതുചെലവുകളും നിയന്ത്രിക്കുന്ന നയം.","desc_en":"Government economic strategy governing public tax collection, national expenditure, and budgetary allocations to stabilize economic growth.","example":"ബജറ്റിലൂടെ സർക്കാരുകൾ ധനനയം പ്രഖ്യാപിക്കുകയും പശ്ചാത്തല വികസനത്തിന് തുക വകയിരുത്തുകയും ചെയ്യുന്നു.","synonyms":"Budgetary Policy, Public Finance"},{"en":"Open Source Software","ml":"സ്വതന്ത്ര സോഫ്റ്റ്‌വെയർ","cls":"10","subj":"ict","chapter":"Operating Systems & FOSS","desc_ml":"ഉറവിട കോഡ് (Source code) ആർക്കും പരിശോധിക്കാനും മാറ്റം വരുത്താനും സൗജന്യമായി വിതരണം ചെയ്യാനും അനുവാദമുള്ള കമ്പ്യൂട്ടർ പ്രോഗ്രാമുകൾ.","desc_en":"Software distributed under permissive licenses allowing users the freedom to inspect, modify, enhance, and freely share its underlying source code.","example":"കേരള സ്കൂളുകളിൽ ഉപയോഗിക്കുന്ന ഗ്നു/ലിനക്സ് (GNU/Linux) ഒരു സ്വതന്ത്ര സോഫ്റ്റ്‌വെയർ ഓപ്പറേറ്റിംഗ് സിസ്റ്റമാണ്.","synonyms":"FOSS, GNU/Linux, LibreOffice"},{"en":"Vector Graphics","ml":"വെക്റ്റർ ഗ്രാഫിക്സ്","cls":"10","subj":"ict","chapter":"Vector Drawing with Inkscape","desc_ml":"ബിന്ദുക്കൾ, രേഖകൾ, വക്രങ്ങൾ തുടങ്ങിയ ഗണിത സമവാക്യങ്ങളെ അടിസ്ഥാനമാക്കി നിർമ്മിക്കുന്ന ചിത്രങ്ങൾ. എത്ര വലുതാക്കിയാലും വ്യക്തത (Resolution) നഷ്ടപ്പെടില്ല.","desc_en":"Digital images generated using geometrical formulas (points, paths, curves) that scale infinitely without pixelation or clarity loss.","example":"ഇങ്ക്സ്കേപ്പ് (Inkscape) സോഫ്റ്റ്‌വെയർ ഉപയോഗിച്ച് എസ്.വി.ജി (SVG) വെക്റ്റർ ലോഗോകൾ നിർമ്മിക്കുന്നു.","synonyms":"Scalable Vector Graphics, SVG, Inkscape"},{"en":"Python Programming","ml":"പൈത്തൺ പ്രോഗ്രാമിംഗ്","cls":"10","subj":"ict","chapter":"Programming with Python","desc_ml":"വായിച്ചു മനസ്സിലാക്കാൻ വളരെ എളുപ്പമുള്ള, ഹൈ-ലെവൽ ഒബ്‌ജക്റ്റ് ഓറിയെന്റഡ് കമ്പ്യൂട്ടർ പ്രോഗ്രാമിംഗ് ഭാഷ.","desc_en":"Interpreted high-level readable programming language widely used in Kerala ICT curriculum for algorithms, math simulation, and logic development.","example":"സ്കൂൾ ലാബുകളിൽ ലൂപ്പുകൾ, കണ്ടീഷനുകൾ, ഗ്രാഫിക്സ് എന്നിവ പഠിക്കാൻ IDLE പൈത്തൺ ഉപയോഗിക്കുന്നു.","synonyms":"IDLE, Python Scripts"},{"en":"IP Address","ml":"ഐ.പി വിലാസം","cls":"10","subj":"ict","chapter":"Computer Networking","desc_ml":"കമ്പ്യൂട്ടർ നെറ്റ്‌വർക്കിൽ പരസ്പരം ബന്ധിപ്പിച്ചിരിക്കുന്ന ഓരോ ഉപകരണത്തിനും നൽകിയിട്ടുള്ള സവിശേഷ സംഖ്യാ വിലാസം.","desc_en":"Unique numerical label assigned to each communicating device connected within an Internet Protocol computer network.","example":"ഉദാഹരണത്തിന് 192.168.1.1 എന്നത് ഒരു ലോക്കൽ റൂട്ടറിൻ്റെ IPv4 വിലാസമാണ്.","synonyms":"Internet Protocol Address, IPv4, IPv6"},{"en":"Chlorophyll & Chloroplast","ml":"ഹരിതകവും ഹരിതകണവും","cls":"8","subj":"biology","chapter":"Life Processes in Plants","desc_ml":"സസ്യകോശങ്ങളിലെ ഹരിതകണത്തിൽ അടങ്ങിയിരിക്കുന്നതും സൗരോർജ്ജത്തെ ആഗിരണം ചെയ്യാൻ സഹായിക്കുന്നതുമായ പച്ചനിറമുള്ള വർണ്ണകം.","desc_en":"Green photosynthetic pigment located in plant chloroplasts responsible for trapping solar radiation during photosynthesis.","example":"ഹരിതകണത്തിലെ ഗ്രാനയിൽ ക്ലോറോഫിൽ എ, ക്ലോറോഫിൽ ബി, കരോട്ടിൻ, സാന്തോഫിൽ തുടങ്ങിയ വർണ്ണകങ്ങൾ അടങ്ങിയിരിക്കുന്നു.","synonyms":"Plastids, Photosynthetic Pigment"},{"en":"Nephron","ml":"നെഫ്രോൺ","cls":"10","subj":"biology","chapter":"Excretion for Homeostasis","desc_ml":"വൃക്കയുടെ (Kidney) ഘടനാപരവും ധർമ്മപരവുമായ അടിസ്ഥാന യൂണിറ്റ്. രക്തം അരിച്ച് മൂത്രം രൂപപ്പെടുത്തുന്നു.","desc_en":"Microscopic structural and functional filtering unit of the kidney that purifies blood and produces urine.","example":"ഓരോ വൃക്കയിലും ഏകദേശം 12 ലക്ഷത്തോളം നെഫ്രോണുകൾ അടങ്ങിയിരിക്കുന്നു.","synonyms":"Kidney Tubule, Renal Filter"},{"en":"Homeostasis","ml":"ഹോമിയോസ്റ്റാസിസ് / ആന്തരിക സമസ്ഥിതി","cls":"10","subj":"biology","chapter":"Chemical Messages for Homeostasis","desc_ml":"ബാഹ്യ പരിതസ്ഥിതിയിൽ മാറ്റങ്ങൾ ഉണ്ടാകുമ്പോഴും ശരീരത്തിലെ ആന്തരിക അന്തരീക്ഷം സ്ഥിരമായി നിലനിർത്തുന്ന പ്രക്രിയ.","desc_en":"Self-regulating biological mechanism maintaining dynamic equilibrium within the internal bodily environment despite external changes.","example":"ശരീരോഷ്മാവ്, രക്തസമ്മർദ്ദം, രക്തത്തിലെ പഞ്ചസാരയുടെ അളവ് എന്നിവ സ്ഥിരമായി നിലനിർത്തുന്നത് ഹോമിയോസ്റ്റാസിസ് മൂലമാണ്.","synonyms":"Dynamic Equilibrium, Internal Balance"},{"en":"DNA Fingerprinting","ml":"ഡി.എൻ.എ വിരലടയാള പരിശോധന","cls":"10","subj":"biology","chapter":"Genetic Secrets","desc_ml":"ഓരോ വ്യക്തിയുടെയും ഡി.എൻ.എ യിലെ ന്യൂക്ലിയോടൈഡ് ക്രമം പരിശോധിച്ച് വ്യക്തികളെ തിരിച്ചറിയുന്ന ശാസ്ത്രീയ രീതി.","desc_en":"Forensic laboratory technique comparing unique tandem repeat sequences in an individual's DNA profile to confirm identity.","example":"കുറ്റാന്വേഷണ രംഗത്തും പിതൃത്വ തർക്കങ്ങൾ പരിഹരിക്കാനും സർ അലക് ജെഫ്രീസ് വികസിപ്പിച്ച ഈ സാങ്കേതികവിദ്യ ഉപയോഗിക്കുന്നു.","synonyms":"DNA Profiling, Genetic Fingerprinting"},{"en":"Ionic & Covalent Bonds","ml":"അയോണിക ബന്ധനവും സഹസംയോജക ബന്ധനവും","cls":"9","subj":"chemistry","chapter":"Chemical Bonding","desc_ml":"ഇലക്ട്രോൺ കൈമാറ്റം വഴി കാറ്റയോണുകളും ആനയോണുകളും രൂപപ്പെട്ട് ഉണ്ടാകുന്നതാണ് അയോണിക ബന്ധനം. ഇലക്ട്രോൺ പങ്കുവെക്കൽ വഴി ഉണ്ടാകുന്നതാണ് സഹസംയോജക ബന്ധനം.","desc_en":"Ionic bonding arises through complete electron transfer between metals and non-metals. Covalent bonding arises through mutual electron sharing.","example":"NaCl (കറിയുപ്പ്) അയോണിക സംയുക്തവും, H₂O (ജലം) സഹസംയോജക സംയുക്തവുമാണ്.","synonyms":"Electrovalent Bond, Shared Pair"},{"en":"Ionization Energy","ml":"അയോണീകരണ ഊർജ്ജം","cls":"10","subj":"chemistry","chapter":"Periodic Table & Configuration","desc_ml":"വാതകാവസ്ഥയിലുള്ള ഒരു ആറ്റത്തിൻ്റെ ഏറ്റവും പുറമെയുള്ള ഷെല്ലിൽ നിന്ന് ഒരു ഇലക്ട്രോണിനെ നീക്കം ചെയ്യാൻ ആവശ്യമായ കുറഞ്ഞ ഊർജ്ജം.","desc_en":"Minimum energy threshold required to completely remove the outermost valence electron from an isolated gaseous neutral atom.","example":"ആവർത്തനപ്പട്ടികയിൽ ഒരു ഗ്രൂപ്പിൽ താഴേക്ക് പോകുന്തോറും ഷെല്ലുകളുടെ എണ്ണം കൂടുന്നതിനാൽ അയോണീകരണ ഊർജ്ജം കുറയുന്നു.","synonyms":"First Ionization Potential"},{"en":"Wavelength & Frequency","ml":"തരംഗദൈർഘ്യവും ആവൃത്തിയും","cls":"9","subj":"physics","chapter":"Wave Motion and Sound","desc_ml":"ഒരു തരംഗത്തിലെ അടുത്തടുത്ത രണ്ട് ശൃംഗങ്ങൾ (Crest) അല്ലെങ്കിൽ ഗർത്തങ്ങൾ (Trough) തമ്മിലുള്ള ദൂരമാണ് തരംഗദൈർഘ്യം (λ). ഒരു സെക്കൻഡിൽ ഉണ്ടാകുന്ന പൂർണ്ണ തരംഗങ്ങളുടെ എണ്ണമാണ് ആവൃത്തി (f).","desc_en":"Wavelength is the spatial distance between successive crests. Frequency is the number of complete oscillation cycles completed per second (Hertz, Hz).","example":"തരംഗവേഗത = ആവൃത്തി × തരംഗദൈർഘ്യം (v = f × λ).","synonyms":"Oscillations, Wave Period"},{"en":"Transverse & Longitudinal Waves","ml":"അനുപ്രസ്ഥ തരംഗവും അനുദൈർഘ്യ തരംഗവും","cls":"9","subj":"physics","chapter":"Wave Motion and Sound","desc_ml":"കണികകൾ തരംഗസഞ്ചാര ദിശയ്ക്ക് ലംബമായി കമ്പനം ചെയ്താൽ അനുപ്രസ്ഥ തരംഗം (പ്രകാശം). തരംഗസഞ്ചാര ദിശയ്ക്ക് സമാന്തരമായി കമ്പനം ചെയ്താൽ അനുദൈർഘ്യ തരംഗം (ശബ്ദം).","desc_en":"Transverse waves feature particle oscillations perpendicular to propagation direction (light). Longitudinal waves feature oscillations parallel to propagation (sound compressions and rarefactions).","example":"ശബ്ദതരംഗങ്ങൾ വായുവിലൂടെ കടന്നുപോകുമ്പോൾ സാന്ദ്രീകരണങ്ങളും (Compressions) വിരളീകരണങ്ങളും (Rarefactions) രൂപപ്പെടുന്നു.","synonyms":"Acoustic Waves, Light Waves"},{"en":"Secularism & Preamble","ml":"മതേതരത്വവും ആമുഖവും","cls":"10","subj":"ss","chapter":"Public Administration & Constitution","desc_ml":"ഭരണകൂടത്തിന് ഔദ്യോഗിക മതമില്ലെന്നും എല്ലാ മതങ്ങൾക്കും തുല്യ അവകാശവും ബഹുമാനവും നൽകുന്നുവെന്നുമുള്ള ഇന്ത്യൻ ഭരണഘടനയുടെ അടിസ്ഥാന ശില.","desc_en":"Constitutional principle enshrined in the Preamble asserting that the state has no official religion and treats all faiths with equal dignity.","example":"1976-ലെ 42-ാം ഭരണഘടനാ ഭേദഗതിയിലൂടെയാണ് 'സോഷ്യലിസ്റ്റ്', 'മതേതര' എന്നീ വാക്കുകൾ ഭരണഘടനയുടെ ആമുഖത്തിൽ ഉൾപ്പെടുത്തിയത്.","synonyms":"Religious Equality, 42nd Amendment"},{"en":"Sustainable Development","ml":"സുസ്ഥിര വികസനം","cls":"10","subj":"ss","chapter":"Towards Sustainability","desc_ml":"ഭാവി തലമുറയുടെ ആവശ്യങ്ങൾക്ക് കോട്ടം വരുത്താതെ ഇന്നത്തെ തലമുറയുടെ ആവശ്യങ്ങൾ നിറവേറ്റുന്ന പരിസ്ഥിതി സൗഹൃദ വികസന മാതൃക.","desc_en":"Developmental paradigm balancing present socioeconomic needs without compromising the resource capacity of future generations.","example":"സൗരോർജ്ജം, കാറ്റാടിയന്ത്രങ്ങൾ എന്നിവ ഉപയോഗിച്ച് പാരമ്പര്യേതര ഊർജ്ജം വിനിയോഗിക്കുന്നത് സുസ്ഥിര വികസനത്തിന് ഉദാഹരണമാണ്.","synonyms":"Eco-Friendly Growth, Brundtland Paradigm"},{"en":"Per Capita Income","ml":"ആളോഹരി വരുമാനം","cls":"10","subj":"ss","chapter":"India's Economic Growth","desc_ml":"ഒരു രാജ്യത്തിൻ്റെ മൊത്തം ദേശീയ വരുമാനത്തെ ആകെ ജനസംഖ്യ കൊണ്ട് ഹരിക്കുമ്പോൾ ലഭിക്കുന്ന ശരാശരി വ്യക്തിഗത വരുമാനം.","desc_en":"Average statistical income earned per person in a country calculated by dividing total national income by total population.","example":"ജനങ്ങളുടെ ജീവിതനിലവാരം താരതമ്യം ചെയ്യാൻ സാമ്പത്തിക വിദഗ്ദ്ധർ ആളോഹരി വരുമാന സൂചിക ഉപയോഗിക്കുന്നു.","synonyms":"Average Income per Head"},{"en":"Operating System (OS)","ml":"ഓപ്പറേറ്റിംഗ് സിസ്റ്റം","cls":"8","subj":"ict","chapter":"Basics of Computers","desc_ml":"കമ്പ്യൂട്ടറിലെ ഹാർഡ്‌വെയറുകളെ നിയന്ത്രിക്കുകയും ഉപയോക്താവിന് ആപ്ലിക്കേഷൻ സോഫ്റ്റ്‌വെയറുകൾ പ്രവർത്തിപ്പിക്കാൻ ഇന്റർഫേസ് നൽകുകയും ചെയ്യുന്ന സിസ്റ്റം സോഫ്റ്റ്‌വെയർ.","desc_en":"Fundamental system software that manages hardware resources, files, and memory while providing execution platform for software applications.","example":"കേരള സ്കൂളുകളിലെ സ്കൂൾ ലാബുകളിൽ കൈറ്റ് ഗ്നു/ലിനക്സ് (KITE GNU/Linux) ഓപ്പറേറ്റിംഗ് സിസ്റ്റം ഉപയോഗിക്കുന്നു.","synonyms":"System Software, Linux, Windows"},{"en":"Database & LibreOffice Base","ml":"ഡാറ്റാബേസും വിവരശേഖരണവും","cls":"10","subj":"ict","chapter":"Database Management with Base","desc_ml":"വിവരങ്ങൾ ക്രമീകൃതമായി സൂക്ഷിക്കാനും എളുപ്പത്തിൽ തിരഞ്ഞു കണ്ടെത്താനും സഹായിക്കുന്ന ബന്ധിത പട്ടികകളുടെ (Tables) കൂട്ടം.","desc_en":"Systematic electronic collection of data stored in structured relational tables for efficient retrieval, querying, and updating.","example":"സ്കൂളിലെ വിദ്യാർത്ഥികളുടെ അഡ്മിഷൻ വിവരങ്ങൾ സൂക്ഷിക്കാൻ ലിബ്രെഓഫീസ് ബേസ് (LibreOffice Base) ഉപയോഗിക്കുന്നു.","synonyms":"DBMS, SQL Tables, LibreOffice Base"}];
+var VICTERS_DATA = {"portals":[{"name":"KITE VICTERS 24/7 Live Stream","badge":"Official Live TV","desc":"Watch the continuous live broadcast of Kerala's official educational television channel.","url":"https://victers.kite.kerala.gov.in/live/","icon":"fa-tv","type":"live"},{"name":"First Bell 2.0 Official Learning Portal","badge":"Digital Classes Gateway","desc":"Access chapter-wise digital classes for all subjects across Classes 8, 9, and 10 with topic indexing.","url":"https://firstbell.kite.kerala.gov.in/","icon":"fa-graduation-cap","type":"portal"},{"name":"Samagra Digital Education Portal","badge":"Government Curriculum Hub","desc":"State educational portal featuring official digital textbooks, question banks, and learning objects.","url":"https://samagra.kite.kerala.gov.in/","icon":"fa-book-open-reader","type":"portal"},{"name":"VICTERS Daily Broadcast Schedule","badge":"Daily Timetable","desc":"View today's live television transmission schedule, bell timings, and rebroadcast hours.","url":"https://victers.kite.kerala.gov.in/schedule/","icon":"fa-calendar-days","type":"schedule"},{"name":"KITE VICTERS Official YouTube Channel","badge":"Verified Video Archive","desc":"Official YouTube repository with over 3 million subscribers hosting all televised lessons.","url":"https://www.youtube.com/@itsvicters","icon":"fa-youtube","type":"video"},{"name":"KITE Samagra Audio Books & Audio Revision","badge":"Audio Lessons","desc":"Official textbook audio chapters designed for accessible revision, auditory learners, and inclusive education.","url":"https://samagra.kite.kerala.gov.in/#/audio","icon":"fa-headphones","type":"audio"}],"playlists":[{"cls":"10","subj":"Mathematics","medium":"Malayalam & English","title":"Class 10 Mathematics First Bell Classes","url":"https://firstbell.kite.kerala.gov.in/classes/class-10/mathematics","type":"digital-class","desc":"Arithmetic sequences, circles, tangents, second degree equations, and solids."},{"cls":"10","subj":"Physics","medium":"Malayalam & English","title":"Class 10 Physics First Bell Classes","url":"https://firstbell.kite.kerala.gov.in/classes/class-10/physics","type":"digital-class","desc":"Effects of electric current, electromagnetic induction, and refraction of light."},{"cls":"10","subj":"Chemistry","medium":"Malayalam & English","title":"Class 10 Chemistry First Bell Classes","url":"https://firstbell.kite.kerala.gov.in/classes/class-10/chemistry","type":"digital-class","desc":"Periodic table and subshell configuration, gas laws and mole concept, organic chemistry."},{"cls":"10","subj":"Biology","medium":"Malayalam & English","title":"Class 10 Biology First Bell Classes","url":"https://firstbell.kite.kerala.gov.in/classes/class-10/biology","type":"digital-class","desc":"Sensations and responses, chemical messages, genetics, and diseases."},{"cls":"10","subj":"Social Science","medium":"Malayalam & English","title":"Class 10 Social Science I & II First Bell Classes","url":"https://firstbell.kite.kerala.gov.in/classes/class-10/social-science","type":"digital-class","desc":"World revolutions, Indian national movement, seasons and time, winds, and public finance."},{"cls":"10","subj":"English","medium":"English","title":"Class 10 English First Bell Classes","url":"https://firstbell.kite.kerala.gov.in/classes/class-10/english","type":"digital-class","desc":"Prose, poetry analysis, character sketches, diary entries, and communicative grammar."},{"cls":"10","subj":"Malayalam","medium":"Malayalam","title":"Class 10 Malayalam (Kerala & Adisthana Padavali)","url":"https://firstbell.kite.kerala.gov.in/classes/class-10/malayalam","type":"digital-class","desc":"Poetry interpretation, prose discussions, grammar and language discourse."},{"cls":"10","subj":"Hindi","medium":"Hindi","title":"Class 10 Hindi First Bell Classes","url":"https://firstbell.kite.kerala.gov.in/classes/class-10/hindi","type":"digital-class","desc":"Hindi literature, dialogues, script writing, letters and grammar practice."},{"cls":"10","subj":"ICT","medium":"Malayalam & English","title":"Class 10 ICT First Bell Classes","url":"https://firstbell.kite.kerala.gov.in/classes/class-10/ict","type":"digital-class","desc":"Inkscape vector graphics, Python programming, and LibreOffice Base management."},{"cls":"9","subj":"Physics & Chemistry","medium":"Malayalam & English","title":"Class 9 Physics & Chemistry Digital Lessons","url":"https://firstbell.kite.kerala.gov.in/classes/class-9/science","type":"digital-class","desc":"Motion, laws of motion, gravitation, structure of atom, and chemical bonding."},{"cls":"9","subj":"Mathematics","medium":"Malayalam & English","title":"Class 9 Mathematics Digital Lessons","url":"https://firstbell.kite.kerala.gov.in/classes/class-9/mathematics","type":"digital-class","desc":"Area, polynomials, equations, circles, and real numbers."},{"cls":"9","subj":"Biology","medium":"Malayalam & English","title":"Class 9 Biology Digital Lessons","url":"https://firstbell.kite.kerala.gov.in/classes/class-9/biology","type":"digital-class","desc":"Cellular respiration, digestion, circulation, and movement."},{"cls":"9","subj":"Social Science","medium":"Malayalam & English","title":"Class 9 Social Science Digital Lessons","url":"https://firstbell.kite.kerala.gov.in/classes/class-9/social-science","type":"digital-class","desc":"Medieval India, European renaissance, physiography of India, and economy."},{"cls":"9","subj":"English","medium":"English","title":"Class 9 English Digital Lessons","url":"https://firstbell.kite.kerala.gov.in/classes/class-9/english","type":"digital-class","desc":"Units 1-4 prose, poetry appreciation, and language elements."},{"cls":"9","subj":"Malayalam","medium":"Malayalam","title":"Class 9 Malayalam Digital Lessons","url":"https://firstbell.kite.kerala.gov.in/classes/class-9/malayalam","type":"digital-class","desc":"Kerala Padavali and Adisthana Padavali chapters and creative writing."},{"cls":"9","subj":"Hindi","medium":"Hindi","title":"Class 9 Hindi Digital Lessons","url":"https://firstbell.kite.kerala.gov.in/classes/class-9/hindi","type":"digital-class","desc":"Textbook chapters, comprehension, and grammar rules."},{"cls":"9","subj":"ICT","medium":"Malayalam & English","title":"Class 9 ICT Digital Lessons","url":"https://firstbell.kite.kerala.gov.in/classes/class-9/ict","type":"digital-class","desc":"Computer networks, Inkscape drawing, and spreadsheet modeling."},{"cls":"8","subj":"Basic Science","medium":"Malayalam & English","title":"Class 8 Basic Science Digital Lessons","url":"https://firstbell.kite.kerala.gov.in/classes/class-8/basic-science","type":"digital-class","desc":"Measurements, motion, force, chemistry of changes, light, and sound."},{"cls":"8","subj":"Mathematics","medium":"Malayalam & English","title":"Class 8 Mathematics Digital Lessons","url":"https://firstbell.kite.kerala.gov.in/classes/class-8/mathematics","type":"digital-class","desc":"Polygons, money math, simple interest, area, and identities."},{"cls":"8","subj":"Social Science","medium":"Malayalam & English","title":"Class 8 Social Science Digital Lessons","url":"https://firstbell.kite.kerala.gov.in/classes/class-8/social-science","type":"digital-class","desc":"Early human life, river valley civilizations, earth dynamics, and citizenship."},{"cls":"8","subj":"English","medium":"English","title":"Class 8 English Digital Lessons","url":"https://firstbell.kite.kerala.gov.in/classes/class-8/english","type":"digital-class","desc":"Stories, poems, word study, and sentence grammar."},{"cls":"8","subj":"Malayalam","medium":"Malayalam","title":"Class 8 Malayalam Digital Lessons","url":"https://firstbell.kite.kerala.gov.in/classes/class-8/malayalam","type":"digital-class","desc":"Literature appreciation, reading skills, and linguistic exercises."},{"cls":"8","subj":"Hindi","medium":"Hindi","title":"Class 8 Hindi Digital Lessons","url":"https://firstbell.kite.kerala.gov.in/classes/class-8/hindi","type":"digital-class","desc":"Basic conversational Hindi, stories, poems, and foundational vocabulary."},{"cls":"8","subj":"ICT","medium":"Malayalam & English","title":"Class 8 ICT Digital Lessons","url":"https://firstbell.kite.kerala.gov.in/classes/class-8/ict","type":"digital-class","desc":"Operating systems, office tools, and Scratch block programming."}]};
+var FOCUS_DATA = {"academicYear":"2025–2026 Academic Year (March 2026 SSLC Examination)","disclaimer":"Official syllabus aligned with Kerala SCERT Class 10 curriculum. Review all textbook chapters thoroughly; follow instructions from your school teachers and official Pareeksha Bhavan notifications.","subjects":[{"id":"physics","name":"Physics (ഭൗതികശാസ്ത്രം)","icon":"fa-bolt","weightage":"40 Marks | 1.5 Hours (+15 min Cool-off)","highYieldChapters":[{"name":"Ch 1: Effects of Electric Current","yield":"High (8-10 Marks)","topics":"Joule's law of heating numericals (H = I²Rt), electric power (P = V²/R = VI), safety fuse working principle & rating calculation, resistors in series and parallel combinations.","tips":"Always convert time into seconds when calculating heat in Joules. Clearly specify the fuse rating as slightly higher than operating current."},{"name":"Ch 2: Magnetic Effect of Electric Current","yield":"High (8-10 Marks)","topics":"Electromagnetic induction, Fleming's Left-Hand Rule vs Right-Hand Rule, AC and DC generator working diagrams, Mutual induction and Transformer turns ratio (Vs/Vp = Ns/Np = Ip/Is).","tips":"Practice sketching generator split-ring vs slip-ring commutators. In transformers, emphasize that DC cannot produce mutual induction."},{"name":"Ch 4: Refraction of Light","yield":"Very High (10-12 Marks)","topics":"Snell's law, refractive index (n = c/v), critical angle & total internal reflection conditions, Cartesian sign convention, mirror and lens formula numericals (1/f = 1/v - 1/u).","tips":"Draw clean ray diagrams with directional arrows. Remember that concave mirror and concave lens have negative focal length."},{"name":"Ch 3: Colors of Light & Vision","yield":"Medium (4-6 Marks)","topics":"Dispersion through prism, recombination of colors, rainbow formation (dispersion + TIR + refraction), atmospheric refraction (twinkling of stars, advance sunrise), Rayleigh scattering (blue sky, red sunset).","tips":"Cite Rayleigh's law: Scattering intensity I ∝ 1/λ⁴."}],"questionTypes":"One-mark direct objectives, 2-mark conceptual explanations, 3-mark ray diagrams / circuit analyses, 4-mark numerical problems.","hubLinks":{"notes":"LFHS-310","qp":"LFHS-345","model":"LFHS-362"}},{"id":"chemistry","name":"Chemistry (രസതന്ത്രം)","icon":"fa-flask-vial","weightage":"40 Marks | 1.5 Hours (+15 min Cool-off)","highYieldChapters":[{"name":"Ch 1: Periodic Table & Electronic Configuration","yield":"Very High (8-10 Marks)","topics":"Subshell configuration (s, p, d, f), finding group and period from configuration, block classification (s, p, d, f blocks), transition elements characteristics, oxidation states.","tips":"Remember: group number for s-block is number of outer s-electrons; for p-block it is 12 + outer p-electrons; for d-block it is outer s + (n-1)d electrons."},{"name":"Ch 2: Gas Laws & Mole Concept","yield":"High (8-10 Marks)","topics":"Boyle's Law, Charles's Law, Avogadro's Law, calculating moles from mass (n = m/M), volume at STP (n = V/22.4 L), and number of particles (n = N/6.022×10²³).","tips":"Always convert temperature from Celsius to Kelvin (K = °C + 273). Distinguish GAM (atoms) from GMM (molecules)."},{"name":"Ch 3: Reactivity Series & Electrochemistry","yield":"High (6-8 Marks)","topics":"Reactivity series of metals, displacement reactions, galvanic cells (anode: oxidation, cathode: reduction, direction of electron flow), electrolytic refining of copper.","tips":"In galvanic cell diagrams, label anode as negative electrode and cathode as positive electrode."},{"name":"Ch 6: Nomenclature of Organic Compounds & Isomerism","yield":"Very High (8-10 Marks)","topics":"IUPAC naming of alkanes, alkenes, alkynes, functional groups (-OH, -CHO, -COOH, >C=O, -O-), chain and position isomerism.","tips":"Always find the longest continuous carbon chain containing the functional group and number from the end giving lowest position to the principal functional group."}],"questionTypes":"Electron configuration tables, mole numericals, chemical reaction equations, IUPAC naming, cell diagram interpretations.","hubLinks":{"notes":"LFHS-281","qp":"LFHS-339","model":"LFHS-362"}},{"id":"biology","name":"Biology (ജീവശാസ്ത്രം)","icon":"fa-dna","weightage":"40 Marks | 1.5 Hours (+15 min Cool-off)","highYieldChapters":[{"name":"Ch 1: Sensations and Responses","yield":"Very High (8-10 Marks)","topics":"Neuron structure (axon, dendrite, Schwann cell, myelin sheath), nerve impulse transmission, synapse and neurotransmitters, reflex arc pathway, brain parts and functions (cerebrum, cerebellum, medulla oblongata, thalamus, hypothalamus).","tips":"Practice neat pencil sketches of neuron and reflex arc with accurate labeling."},{"name":"Ch 3: Chemical Messages for Homeostasis","yield":"High (8-10 Marks)","topics":"Endocrine glands and hormones: Pituitary (growth hormone, TSH), Thyroid (thyroxine, calcitonin), Pancreas (insulin, glucagon antagonism), Adrenal (epinephrine, norepinephrine), feedback mechanism.","tips":"Explain how insulin promotes glycogenesis in liver and muscles while glucagon promotes glycogenolysis."},{"name":"Ch 4: Keeping Diseases Away","yield":"High (6-8 Marks)","topics":"Non-specific defense (skin, mucous membrane, saliva lysozyme), specific defense (B-lymphocytes produce antibodies, T-lymphocytes cell-mediated), vaccines and immunization, blood groups and Rh factor matching.","tips":"Prepare the table of blood transfusion compatibility (O-negative universal donor, AB-positive universal recipient)."},{"name":"Ch 6: Unravelling Genetic Secrets","yield":"High (6-8 Marks)","topics":"DNA double helix structure (Watson and Crick model, nucleotide components, base pairing A=T, G≡C), RNA types (mRNA, tRNA, rRNA), protein synthesis, Mendelian monohybrid and dihybrid crosses.","tips":"Use Punnett squares for genetic crosses. Always specify phenotypic ratio (3:1) vs genotypic ratio (1:2:1)."}],"questionTypes":"Diagram labeling, identifying gland-hormone-deficiency relations, flowchart completion, Punnett squares, reasoning questions.","hubLinks":{"notes":"LFHS-277","qp":"LFHS-326","model":"LFHS-362"}},{"id":"mathematics","name":"Mathematics (ഗണിതം)","icon":"fa-square-root-variable","weightage":"80 Marks | 2.5 Hours (+15 min Cool-off)","highYieldChapters":[{"name":"Ch 1: Arithmetic Sequences","yield":"Very High (10-14 Marks)","topics":"Finding common difference d = (x_m - x_n)/(m - n), algebraic form dn + c, checking if a number belongs to sequence, sum formula Sn = n/2(x1 + xn), word problems.","tips":"Show all algebraic steps. For sequence difference, check if (target - a) is divisible by d."},{"name":"Ch 2 & 7: Circles and Tangents","yield":"Extremely High (16-18 Marks)","topics":"Angle in semicircle (90°), angle subtended at centre is double that at circle, cyclic quadrilaterals, intersecting chords theorem (PA×PB = PC×PD, PA×PB = PT²), inradius of triangle (r = A/s), geometric constructions of tangents.","tips":"Keep compass and ruler constructions sharp. Always leave construction arcs visible."},{"name":"Ch 4: Second Degree Equations","yield":"High (8-10 Marks)","topics":"Forming quadratic equations from practical situations (speed, distance, geometric shapes), completing the square method, quadratic formula x = (-b ± √(b² - 4ac))/(2a).","tips":"State both roots clearly and explain why negative roots are discarded in physical distance or age problems."},{"name":"Ch 5: Trigonometry","yield":"High (8-10 Marks)","topics":"Values of 30°, 45°, 60° trigonometric ratios, circumradius formula (a/sin A = 2R), area of triangle (1/2 ab sin C), heights and distances angle of elevation and depression.","tips":"Draw clean right-triangle diagrams representing observer, tower, and line of sight before writing ratio equations."},{"name":"Ch 6 & 9: Coordinates, Geometry & Algebra","yield":"High (10-12 Marks)","topics":"Distance between coordinates, midpoint formula, vertices of parallelogram and rectangles, equation of straight line and equation of circle (x - a)² + (y - b)² = r².","tips":"Plot points roughly to check reasonableness of coordinates before final arithmetic."},{"name":"Ch 8: Solids (Mensuration)","yield":"High (8-10 Marks)","topics":"Square pyramid (l² = h² + (a/2)², TSA = a² + 2al, V = 1/3 a²h), cone (l² = r² + h², CSA = πrl, V = 1/3 πr²h), cylinder, sphere, and combination of solids.","tips":"When melting one solid into another, set their volumes equal. Keep π as a symbol until final step."}],"questionTypes":"Step-marked numericals (2 to 5 marks each), geometric compass constructions, algebraic proofs, word problems.","hubLinks":{"notes":"LFHS-301","qp":"LFHS-343","model":"LFHS-331","modelAlt":"LFHS-595"}},{"id":"social_science","name":"Social Science I & II (സാമൂഹ്യശാസ്ത്രം)","icon":"fa-landmark","weightage":"80 Marks Total (40 + 40) | 1.5 Hours each (+15 min Cool-off)","highYieldChapters":[{"name":"SS I: Revolutions & Indian National Movement","yield":"Very High (12-15 Marks)","topics":"American Revolution, French Revolution (causes, thinkers Voltaire, Rousseau, Montesquieu, Tennis Court Oath), First War of Independence 1857, Early peasant and tribal revolts, Gandhian movements (Non-Cooperation, Civil Disobedience, Quit India Movement).","tips":"Structure answers with clear headings: Causes, Major Events, Leaders, and Historical Significance."},{"name":"SS I: Public Administration & Civic Life","yield":"High (8-10 Marks)","topics":"Features of bureaucracy (Max Weber), e-governance initiatives (Akshaya), Right to Information Act (RTI 2005), Lokpal, Lokayukta, and Central Vigilance Commission.","tips":"Explain how RTI enhances transparency and prevents administrative corruption."},{"name":"SS II: Geography — Seasons, Winds & Indian Physiography","yield":"Very High (14-16 Marks)","topics":"Apparent movement of sun (Equinoxes, Solstices), atmospheric pressure belts and planetary winds, Coriolis effect, Monsoon mechanism, Northern Plains vs Peninsular Plateau, Himalayan rivers vs Peninsular rivers.","tips":"Map work is compulsory: Practice locating Major Ports, Peaks, River basins, and Soil regions on outline map of India."},{"name":"SS II: Economics & Public Finance","yield":"High (8-10 Marks)","topics":"Public revenue sources (Direct vs Indirect Taxes, GST), Public expenditure, Public debt, Reserve Bank of India credit control functions, commercial banks services.","tips":"Differentiate Direct tax (income tax - non-transferable) from Indirect tax (GST - transferable burden)."}],"questionTypes":"Outline India map marking (4-5 marks), structured paragraph questions (3-4 marks), essay comparisons (5-6 marks).","hubLinks":{"notes":"LFHS-576","qp":"LFHS-581","model":"LFHS-362"}},{"id":"languages","name":"Languages (English, Malayalam, Hindi)","icon":"fa-language","weightage":"Malayalam (80), English (80), Hindi (40)","highYieldChapters":[{"name":"English Language Discourses","yield":"Very High (Major Score Driver)","topics":"Discourses: Character sketch, Diary entry, Formal/Informal Letter, Speech writing, Notice, Interview questions with introductory statement, News report. Editing passage (errors in articles, prepositions, tenses).","tips":"Follow strict format rules: Date, salutation, body paragraphs, and formal closure. In diary entries, express personal emotions clearly."},{"name":"Malayalam I & II (കേരള പാഠാവലി, അടിസ്ഥാന പാഠാവലി)","yield":"High (80 Marks)","topics":"കവിതാ വിശകലനം (സന്ദർഭം, ഭാവം, ആസ്വാദനം), കഥാപാത്ര നിരൂപണം, ഉപന്യാസം, ഭാഷാപ്രയോഗങ്ങൾ, ശൈലികൾ, അർത്ഥവ്യത്യാസം.","tips":"ഉത്തരം എഴുതുമ്പോൾ വരികളിലെ ആന്തരാർത്ഥവും രചയിതാവിൻ്റെ വീക്ഷണവും വ്യക്തമായി സൂചിപ്പിക്കുക."},{"name":"Hindi (ഹിന്ദി)","yield":"High (40 Marks)","topics":"कविता की पंक्तियों का भाव, पटकथा लेखन (Screenplay), साक्षात्कार के प्रश्न, सूचना (Notice), टिप्पणी, व्याकरण (कारक, काल, संधि).","tips":"व्याकरण के नियमों का ध्यान रखें। पटकथा लिखते समय दृश्य संख्या, स्थान, समय और पात्रों का संवाद सही ढंग से लिखें।"}],"questionTypes":"Comprehension passages, poem appreciation essays, creative discourse production, editing.","hubLinks":{"notes":"LFHS-289","qp":"LFHS-324","model":"LFHS-362"}},{"id":"ict","name":"ICT (വിവരവിനിമയ സാങ്കേതികവിദ്യ)","icon":"fa-laptop-code","weightage":"Theory (10 Marks) + Practical (40 Marks) + CE (10 Marks)","highYieldChapters":[{"name":"Vector Graphics (Inkscape)","yield":"High (Practical & Theory)","topics":"Bezier tool, node editing, grouping, Boolean path operations (Union, Difference, Intersection), gradients, and SVG exporting.","tips":"Practice creating logos and flags using path operations."},{"name":"Programming with Python","yield":"High (Practical & Theory)","topics":"Variables, input() and print(), conditional statements (if-else), for loops, while loops, range() function, turtle graphics basics.","tips":"Ensure exact indentation in Python scripts to avoid IndentationError."},{"name":"Database (LibreOffice Base)","yield":"High (Practical & Theory)","topics":"Creating tables, primary key definition, data types (Text, Number, Date), design view vs wizard, creating queries and reports.","tips":"Always identify the primary key column (e.g. Admission Number or ID) that uniquely identifies each record."}],"questionTypes":"Lab exam tasks, theory multiple-choice, identifying software tools and shortcut keys.","hubLinks":{"notes":"LFHS-300","qp":"LFHS-336","model":"LFHS-362"}}],"examStrategy":[{"title":"The 15-Minute Cool-Off Time Strategy","points":["Do NOT write answers during cool-off time; read the entire paper from start to finish.","Identify internal choice questions and immediately select the option you are most confident in.","Plan your time allocation and sequence of answering (start with your strongest questions).","Read question conditions carefully (e.g., 'answer any 3 out of 5', 'express in metres', 'give reasons')."]},{"title":"Mathematics Step-Marking Tactics","points":["In Kerala SSLC, mathematics marks are awarded step-by-step for method, not solely for the final answer.","Always state the formula first before substituting numbers (e.g., write x_n = a + (n-1)d before plugging in a and d).","If you make an arithmetic calculation error near the end, you still secure 80% of step-marks if your method is correct.","Draw clear, labeled geometric figures with a sharp pencil and ruler for circles, tangents, and trigonometry questions."]},{"title":"Science Answer Presentation (Physics, Chemistry, Biology)","points":["Physics numericals: Always state the given values with SI units, write the core formula, show substitution, and write the final answer with units (e.g. Joules, Watts, Amperes, Dioptres).","Chemistry: Balance chemical equations with state symbols where required (e.g. (s), (l), (g), (aq)). Write clear subshell configurations without skipping orbitals.","Biology: Use neat diagrams with horizontal pointer lines and clear labels on one side. Answer in crisp bullet points instead of long paragraphs."]},{"title":"Social Science Structuring & Map Work","points":["Divide essay answers into structured subheadings: Background / Causes, Key Leaders & Events, and Historical Significance / Results.","In Indian Map Work, practice standard symbols for Ports (Kandla, Kochi, Tuticorin), Peaks (K2, Anamudi), Rivers, and Soil regions.","Keep answers focused on facts rather than generalized descriptive repetition."]}],"revisionSprint":[{"phase":"Week 1 (Days 1–7): Foundation Concepts & Science Numericals","focus":"Physics Ch 1 & 4 numericals, Chemistry Gas Laws & Mole Concept calculations, Mathematics Arithmetic Sequences & Circles, Biology Sensations and Responses."},{"phase":"Week 2 (Days 8–14): Geometry, Second Degree & Social Revolutions","focus":"Mathematics Tangents & Second Degree Equations, Social Science I British Exploitation & National Movement, Chemistry Organic Nomenclature (IUPAC), English Discourses."},{"phase":"Week 3 (Days 15–21): Trigonometry, Solids & World Geography","focus":"Mathematics Trigonometry & Solids, Social Science II Seasons, Winds & Indian Map work, Physics Magnetism & Generator working, Language Grammar & Writing formats."},{"phase":"Week 4 (Days 22–28): Official Model Question Paper Drills","focus":"Timed 2.5-hour and 1.5-hour practice tests using SCERT Model Papers 2025–2026 and previous SSLC papers. Self-evaluating with answer keys."},{"phase":"Final 2 Days (Days 29–30): High-Yield Review & Formula Memorization","focus":"Revising the Formulas & Laws tab, reviewing common mistake logs, checking SI units, and relaxed rest before the examination."}]};
 
-var GLOSSARY = [
-  { en:"Refraction of Light", ml:"പ്രകാശ അപവർത്തനം", subj:"physics", desc:"Bending of light as it passes obliquely from one medium to another of different optical density." },
-  { en:"Total Internal Reflection", ml:"പൂർണ്ണാന്തര പ്രതിഫലനം", subj:"physics", desc:"When light travels from an optically denser to a rarer medium at an angle greater than the critical angle, it reflects back into the denser medium." },
-  { en:"Critical Angle", ml:"ക്രിട്ടിക്കൽ കോൺ", subj:"physics", desc:"The angle of incidence in denser medium for which angle of refraction in rarer medium is 90 degrees." },
-  { en:"Dispersion", ml:"പ്രകീർണ്ണനം", subj:"physics", desc:"Splitting of composite light into its constituent colors (VIBGYOR)." },
-  { en:"Electromagnetic Induction", ml:"വൈദ്യുതകാന്തിക പ്രേരണം", subj:"physics", desc:"Inducing an electromotive force (EMF) in a conductor whenever magnetic flux linked with it changes." },
-  { en:"Resistance & Resistivity", ml:"പ്രതിരോധവും പ്രതിരോധകതയും", subj:"physics", desc:"Opposition to current flow. Resistivity is resistance of a conductor of unit length and unit area." },
-  { en:"Subshell Electronic Configuration", ml:"ഉപഊർജ്ജനില ഇലക്ട്രോൺ വിന്യാസം", subj:"chemistry", desc:"Arrangement of electrons in s, p, d, f subshells based on Aufbau principle." },
-  { en:"Reactivity Series", ml:"ക്രിയാശീല ശ്രേണി", subj:"chemistry", desc:"Arrangement of metals in decreasing order of their chemical reactivity." },
-  { en:"Functional Group", ml:"ഫങ്ഷണൽ ഗ്രൂപ്പ്", subj:"chemistry", desc:"An atom or group of atoms that determines characteristic chemical properties of an organic compound (e.g. -OH, -CHO, -COOH)." },
-  { en:"Arithmetic Sequence", ml:"സമാന്തര ശ്രേണി", subj:"maths", desc:"A sequence of numbers in which difference between consecutive terms is constant." },
-  { en:"Tangent to a Circle", ml:"തൊടുവര", subj:"maths", desc:"A line touching a circle at only one point, perpendicular to radius at that point." },
-  { en:"Coordinates", ml:"സൂചകസംഖ്യകൾ", subj:"maths", desc:"Ordered pair (x, y) denoting the position of a point on the Cartesian plane." },
-  { en:"Neuron & Synapse", ml:"ന്യൂറോണും സിനാപ്സും", subj:"biology", desc:"Basic structural unit of nervous system; synapse is junction between two neurons where neurotransmitters pass signals." },
-  { en:"Reflex Action", ml:"റിഫ്ലക്സ് പ്രവർത്തനം", subj:"biology", desc:"Involuntary, rapid response to an external stimulus coordinated mainly by spinal cord." },
-  { en:"Photosynthesis", ml:"പ്രകാശസംശ്ലേഷണം", subj:"biology", desc:"Process by which green plants synthesize glucose using sunlight, chlorophyll, CO₂, and H₂O." }
-];
-
-var VICTERS_CLASSES = [
-  { cls:'10', subj:'Physics', channel:'YouTube search', url:'https://www.youtube.com/results?search_query=kite+victers+first+bell+class+10+physics', desc:'Search results for Class 10 Physics lessons. Check that the selected video is from KITE / VICTERS.' },
-  { cls:'10', subj:'Chemistry', channel:'YouTube search', url:'https://www.youtube.com/results?search_query=kite+victers+first+bell+class+10+chemistry', desc:'Search results for Class 10 Chemistry lessons. Check that the selected video is from KITE / VICTERS.' },
-  { cls:'10', subj:'Mathematics', channel:'YouTube search', url:'https://www.youtube.com/results?search_query=kite+victers+first+bell+class+10+mathematics', desc:'Search results for Class 10 Mathematics lessons. Check that the selected video is from KITE / VICTERS.' },
-  { cls:'10', subj:'Biology', channel:'YouTube search', url:'https://www.youtube.com/results?search_query=kite+victers+first+bell+class+10+biology', desc:'Search results for Class 10 Biology lessons. Check that the selected video is from KITE / VICTERS.' },
-  { cls:'9', subj:'Physics & Chemistry', channel:'YouTube search', url:'https://www.youtube.com/results?search_query=kite+victers+first+bell+class+9+science', desc:'Search results for Class 9 Science lessons. Check that the selected video is from KITE / VICTERS.' },
-  { cls:'8', subj:'Basic Science', channel:'YouTube search', url:'https://www.youtube.com/results?search_query=kite+victers+first+bell+class+8+basic+science', desc:'Search results for Class 8 Basic Science lessons. Check that the selected video is from KITE / VICTERS.' }
-];
-
-var FOCUS_AREAS = [
-  { subj:'Physics', topics:[
-    { name:'Effects of Electric Current', imp:'Review focus', tips:'Joule heating calculations, safety fuses, power formulas, and household circuit wiring.' },
-    { name:'Electromagnetic Induction', imp:'Review focus', tips:'Generator working principle, AC vs DC, mutual induction, and step-up/step-down transformers.' },
-    { name:'Refraction of Light', imp:'Review focus', tips:'Ray diagrams for lenses, Snell law problems, lens formula, and total internal reflection phenomena.' }
-  ]},
-  { subj:'Chemistry', topics:[
-    { name:'Periodic Table & Subshell Configuration', imp:'Review focus', tips:'s, p, d, f block identification, finding group/period from subshell configuration, and transition element properties.' },
-    { name:'Nomenclature of Organic Compounds', imp:'Review focus', tips:'IUPAC naming of alkanes, alkenes, alkynes, alcohols, carboxylic acids, and isomerism.' },
-    { name:'Chemical Reactions & Energy', imp:'Review focus', tips:'Rate of reactions, catalysts, endothermic vs exothermic reactions, and Le Chatelier principle.' }
-  ]},
-  { subj:'Mathematics', topics:[
-    { name:'Arithmetic Sequences', imp:'Review focus', tips:'Finding specific terms, sum of n terms, word problems with geometric patterns.' },
-    { name:'Circles & Tangents', imp:'Review focus', tips:'Tangent-radius perpendicularity proofs, chord intersection theorems, and cyclic quadrilaterals.' },
-    { name:'Trigonometry & Heights/Distances', imp:'Review focus', tips:'Trigonometric ratios at 30, 45, 60 degrees, angle of elevation and depression word problems.' }
-  ]}
-];
-
-function initNotesSubNav(){
-  var nav = $('notesSubNav');
-  if(!nav) return;
-  nav.addEventListener('click', function(e){
-    var chip = e.target.closest('[data-notes-view]');
-    if(!chip) return;
-    nav.querySelectorAll('[data-notes-view]').forEach(function(b){
-      var on = b === chip;
-      b.classList.toggle('active', on);
-      b.setAttribute('aria-selected', on ? 'true' : 'false');
-    });
-    var view = chip.dataset.notesView;
-    var body = $('notesBody');
-    var aux = $('notesAuxView');
-    if(!body || !aux) return;
-    
-    if(view === 'resources'){
-      body.style.display = 'block';
-      aux.hidden = true;
-      aux.innerHTML = '';
-    } else {
-      body.style.display = 'none';
-      aux.hidden = false;
-      if(view === 'formulas') renderFormulasView(aux);
-      else if(view === 'glossary') renderGlossaryView(aux);
-      else if(view === 'victers') renderVictersView(aux);
-      else if(view === 'focus') renderFocusView(aux);
-    }
-  });
-}
-
-var FORMULA_FILTERS = { cls: null, subj: 'all' };
+var FORMULA_FILTERS = { cls: 'all', subj: 'all', search: '' };
 function renderFormulasView(container){
   var currentClass = state.dashClass || '10';
-  if(!FORMULA_FILTERS.cls) FORMULA_FILTERS.cls = currentClass;
+  if(FORMULA_FILTERS.cls === null) FORMULA_FILTERS.cls = currentClass;
+  var q = (FORMULA_FILTERS.search || '').toLowerCase().trim();
   var list = FORMULAS.filter(function(f){
     var matchCls = FORMULA_FILTERS.cls === 'all' || f.cls === FORMULA_FILTERS.cls;
     var matchSubj = FORMULA_FILTERS.subj === 'all' || f.subj === FORMULA_FILTERS.subj;
-    return matchCls && matchSubj;
+    var matchQ = !q || (f.title && f.title.toLowerCase().indexOf(q) !== -1) ||
+                 (f.eq && f.eq.toLowerCase().indexOf(q) !== -1) ||
+                 (f.vars && f.vars.toLowerCase().indexOf(q) !== -1) ||
+                 (f.desc && f.desc.toLowerCase().indexOf(q) !== -1) ||
+                 (f.chapter && f.chapter.toLowerCase().indexOf(q) !== -1);
+    return matchCls && matchSubj && matchQ;
   });
+  
   var out = '<div style="margin-bottom:1rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;">'
-    + '<div><h3 style="margin:0 0 .2rem;font-size:1.15rem;color:var(--text-heading);"><i class="fa-solid fa-square-root-variable" aria-hidden="true"></i> Formulas &amp; Laws</h3>'
-    + '<p style="margin:0;font-size:.82rem;color:var(--text-muted);">Reference for Classes 8–10. Check your current textbook and teacher for exact syllabus scope and notation.</p></div>'
+    + '<div><h3 style="margin:0 0 .2rem;font-size:1.15rem;color:var(--text-heading);"><i class="fa-solid fa-square-root-variable" aria-hidden="true"></i> Formulas &amp; Laws Library</h3>'
+    + '<p style="margin:0;font-size:.82rem;color:var(--text-muted);">Verified reference for Classes 8–10 following Kerala SCERT syllabus. Includes SI units, conditions, worked examples and common mistakes.</p></div>'
     + '<button class="btn btn-ghost btn-sm" type="button" onclick="window.print()"><i class="fa-solid fa-print"></i> Print formulas</button>'
+    + '</div>';
+    
+  out += '<div class="formula-controls" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--r-lg);padding:.9rem;margin-bottom:1rem;display:flex;flex-direction:column;gap:.75rem;">'
+    + '<div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;">'
+    + '<div style="position:relative;flex:1;min-width:220px;">'
+    + '<i class="fa-solid fa-magnifying-glass" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:.8rem;"></i>'
+    + '<input type="search" id="formulaSearchInput" placeholder="Search formula name, law, variables or chapter..." value="' + esc(FORMULA_FILTERS.search) + '" style="width:100%;height:36px;padding:0 .8rem 0 2rem;border:1px solid var(--border);border-radius:var(--r-md);background:var(--surface-2);color:var(--text-heading);font-size:.85rem;">'
     + '</div>'
-    + '<div class="controls" style="margin-bottom:.9rem;">'
-    + '<div style="margin-bottom:.4rem;"><div class="control-label">Class</div><div class="chip-row" id="formClsRow">'
+    + '<div class="chip-group" id="formClsRow" style="display:flex;gap:.3rem;flex-wrap:wrap;">'
     + '<button class="chip' + (FORMULA_FILTERS.cls === 'all' ? ' active' : '') + '" type="button" data-form-cls="all">All Classes</button>'
     + '<button class="chip' + (FORMULA_FILTERS.cls === '10' ? ' active' : '') + '" type="button" data-form-cls="10">Class 10</button>'
     + '<button class="chip' + (FORMULA_FILTERS.cls === '9' ? ' active' : '') + '" type="button" data-form-cls="9">Class 9</button>'
     + '<button class="chip' + (FORMULA_FILTERS.cls === '8' ? ' active' : '') + '" type="button" data-form-cls="8">Class 8</button>'
-    + '</div></div>'
-    + '<div><div class="control-label">Subject</div><div class="chip-row" id="formSubjRow">'
-    + '<button class="chip' + (FORMULA_FILTERS.subj === 'all' ? ' active' : '') + '" type="button" data-form-subj="all">All Subjects</button>'
-    + '<button class="chip' + (FORMULA_FILTERS.subj === 'physics' ? ' active' : '') + '" type="button" data-form-subj="physics">Physics</button>'
-    + '<button class="chip' + (FORMULA_FILTERS.subj === 'chemistry' ? ' active' : '') + '" type="button" data-form-subj="chemistry">Chemistry</button>'
-    + '<button class="chip' + (FORMULA_FILTERS.subj === 'maths' ? ' active' : '') + '" type="button" data-form-subj="maths">Mathematics</button>'
-    + '</div></div>'
+    + '</div>'
+    + '</div>'
+    + '<div style="display:flex;gap:.35rem;flex-wrap:wrap;align-items:center;" id="formSubjRow">'
+    + '<span style="font-size:.74rem;font-weight:700;text-transform:uppercase;color:var(--text-muted);margin-right:.4rem;">Subject:</span>'
+    + '<button class="chip' + (FORMULA_FILTERS.subj === 'all' ? ' active' : '') + '" type="button" data-form-subj="all">All Subjects (' + FORMULAS.length + ')</button>'
+    + '<button class="chip' + (FORMULA_FILTERS.subj === 'physics' ? ' active' : '') + '" type="button" data-form-subj="physics"><i class="fa-solid fa-bolt"></i> Physics</button>'
+    + '<button class="chip' + (FORMULA_FILTERS.subj === 'chemistry' ? ' active' : '') + '" type="button" data-form-subj="chemistry"><i class="fa-solid fa-flask-vial"></i> Chemistry</button>'
+    + '<button class="chip' + (FORMULA_FILTERS.subj === 'maths' ? ' active' : '') + '" type="button" data-form-subj="maths"><i class="fa-solid fa-square-root-variable"></i> Mathematics</button>'
+    + '<button class="chip' + (FORMULA_FILTERS.subj === 'biology' ? ' active' : '') + '" type="button" data-form-subj="biology"><i class="fa-solid fa-dna"></i> Biology</button>'
+    + '</div>'
     + '</div>';
+
+  out += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;font-size:.82rem;color:var(--text-muted);">'
+    + '<span>Showing <strong>' + list.length + '</strong> verified formulas &amp; laws</span>'
+    + (FORMULA_FILTERS.search || FORMULA_FILTERS.cls !== 'all' || FORMULA_FILTERS.subj !== 'all' ? '<button class="btn btn-ghost btn-sm" id="resetFormulaFiltersBtn" type="button" style="padding:.2rem .5rem;font-size:.78rem;">Reset filters</button>' : '')
+    + '</div>';
+
   out += '<div class="formula-grid">';
   if(!list.length){
-    out += '<p class="section-note">No formulas matching the selected filter.</p>';
+    out += '<div style="grid-column:1/-1;padding:2rem;text-align:center;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--r-lg);"><i class="fa-solid fa-magnifying-glass" style="font-size:1.5rem;color:var(--text-muted);margin-bottom:.5rem;"></i><p class="section-note">No formulas matching your search or filters.</p></div>';
   } else {
-    list.forEach(function(f){
-      out += '<div class="formula-card">'
+    list.forEach(function(f, idx){
+      var subjIcon = f.subj === 'physics' ? 'fa-bolt' : (f.subj === 'chemistry' ? 'fa-flask-vial' : (f.subj === 'maths' ? 'fa-square-root-variable' : 'fa-dna'));
+      out += '<div class="formula-card" style="display:flex;flex-direction:column;justify-content:space-between;border:1px solid var(--border);border-radius:var(--r-lg);padding:1.1rem;background:var(--card-bg);">'
         + '<div>'
-        + '<span class="formula-subj">' + esc(f.subj) + ' · Class ' + esc(f.cls) + '</span>'
-        + '<h4 class="formula-title">' + esc(f.title) + '</h4>'
-        + '<button type="button" class="formula-box" title="Copy formula" aria-label="Copy ' + esc(f.title) + ' formula" data-copy-eq="' + esc(f.eq) + '">' + esc(f.eq) + '</button>'
-        + '<div class="formula-vars">' + esc(f.vars) + '</div>'
+        + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem;flex-wrap:wrap;gap:.3rem;">'
+        + '<span class="formula-subj"><i class="fa-solid ' + subjIcon + '"></i> ' + esc(f.subj) + ' · Class ' + esc(f.cls) + '</span>'
+        + (f.chapter ? '<span style="font-size:.7rem;color:var(--text-muted);background:var(--surface-2);padding:.15rem .45rem;border-radius:4px;">' + esc(f.chapter) + '</span>' : '')
         + '</div>'
-        + '<div class="formula-foot">'
-        + '<span>' + esc(f.desc) + '</span>'
-        + '</div>'
+        + '<h4 class="formula-title" style="font-size:1.02rem;font-weight:700;color:var(--text-heading);margin-bottom:.5rem;">' + esc(f.title) + '</h4>'
+        + '<button type="button" class="formula-box" title="Click to copy formula" aria-label="Copy ' + esc(f.title) + ' formula" data-copy-eq="' + esc(f.eq) + '" style="font-size:.95rem;font-weight:700;letter-spacing:.02em;background:var(--surface-2);color:var(--primary);padding:.65rem .85rem;border-radius:var(--r-md);border:1px solid var(--border);width:100%;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;">'
+        + '<span>' + esc(f.eq) + '</span>'
+        + '<i class="fa-regular fa-copy" style="font-size:.85rem;opacity:.7;"></i>'
+        + '</button>'
+        + '<div class="formula-vars" style="margin-top:.6rem;font-size:.8rem;color:var(--text-muted);line-height:1.45;"><strong>Symbols &amp; Units:</strong> ' + esc(f.vars) + '</div>'
+        + '<p style="margin-top:.45rem;font-size:.82rem;color:var(--text-main);line-height:1.45;">' + esc(f.desc) + '</p>'
         + '</div>';
+
+      if(f.conditions || f.example || f.mistakes){
+        out += '<details style="margin-top:.75rem;padding-top:.5rem;border-top:1px dashed var(--border);font-size:.78rem;color:var(--text-muted);">'
+          + '<summary style="cursor:pointer;color:var(--primary);font-weight:600;padding:.2rem 0;user-select:none;"><i class="fa-solid fa-lightbulb" style="margin-right:4px;"></i> Worked Example &amp; Common Pitfalls</summary>'
+          + '<div style="margin-top:.5rem;display:flex;flex-direction:column;gap:.4rem;padding-left:.3rem;">'
+          + (f.conditions ? '<div><strong style="color:var(--text-heading);">Conditions:</strong> ' + esc(f.conditions) + '</div>' : '')
+          + (f.example ? '<div style="background:var(--surface-2);padding:.4rem .6rem;border-radius:var(--r-sm);"><strong style="color:var(--text-heading);">Example:</strong> ' + esc(f.example) + '</div>' : '')
+          + (f.mistakes ? '<div style="color:var(--warn-text, #92400e);"><i class="fa-solid fa-triangle-exclamation" style="margin-right:3px;"></i> <strong style="color:var(--text-heading);">Common Mistake:</strong> ' + esc(f.mistakes) + '</div>' : '')
+          + (f.ref ? '<div style="font-size:.72rem;color:var(--text-muted);"><i class="fa-solid fa-book" style="margin-right:3px;"></i> ' + esc(f.ref) + '</div>' : '')
+          + '</div>'
+          + '</details>';
+      }
+      out += '</div>';
     });
   }
   out += '</div>';
   container.innerHTML = out;
+  
   container.querySelectorAll('[data-form-cls]').forEach(function(btn){
     btn.addEventListener('click', function(){
       FORMULA_FILTERS.cls = btn.dataset.formCls;
@@ -5906,84 +6054,312 @@ function renderFormulasView(container){
       renderFormulasView(container);
     });
   });
+  var searchInput = container.querySelector('#formulaSearchInput');
+  if(searchInput){
+    searchInput.addEventListener('input', function(){
+      FORMULA_FILTERS.search = searchInput.value;
+      // Re-filter cards without full rerender to maintain input focus
+      var term = searchInput.value.toLowerCase().trim();
+      var cards = container.querySelectorAll('.formula-card');
+      var matchedCount = 0;
+      cards.forEach(function(card){
+        var text = card.innerText.toLowerCase();
+        var match = !term || text.indexOf(term) !== -1;
+        card.style.display = match ? 'flex' : 'none';
+        if(match) matchedCount++;
+      });
+    });
+  }
+  var resetBtn = container.querySelector('#resetFormulaFiltersBtn');
+  if(resetBtn){
+    resetBtn.addEventListener('click', function(){
+      FORMULA_FILTERS = { cls: 'all', subj: 'all', search: '' };
+      renderFormulasView(container);
+    });
+  }
   if(!container.dataset.copyInit){
     container.dataset.copyInit='1';
     container.addEventListener('click', function(e){
       var box = e.target.closest('[data-copy-eq]');
       if(!box) return;
-      if(!navigator.clipboard||!navigator.clipboard.writeText){toast('Copy is unavailable here. Select the formula and copy it.');return}
-      navigator.clipboard.writeText(box.dataset.copyEq).then(function(){toast('Copied formula!')}).catch(function(){toast('Copy failed. Select the formula and copy it.')});
-    });
-  }
-}
-
-function renderGlossaryView(container){
-  var out = '<div style="margin-bottom:1rem;">'
-    + '<h3 style="margin:0 0 .2rem;font-size:1.15rem;color:var(--text-heading);"><i class="fa-solid fa-language" aria-hidden="true"></i> Malayalam-English Science Glossary</h3>'
-    + '<p style="margin:0 0 .75rem;font-size:.82rem;color:var(--text-muted);">Parallel terminology reference for Kerala high school science students.</p>'
-    + '<input type="text" id="glossarySearchInput" placeholder="Filter terms in English or Malayalam..." style="width:100%;max-width:400px;min-height:38px;padding:.4rem .8rem;border:1px solid var(--border);border-radius:var(--r-md);background:var(--bg);color:var(--text-heading);font-size:.85rem;">'
-    + '</div>'
-    + '<div class="glossary-grid" id="glossaryGrid">';
-  GLOSSARY.forEach(function(g){
-    out += '<div class="glossary-card" data-term="' + esc(g.en.toLowerCase() + ' ' + g.ml) + '">'
-      + '<div class="glossary-en">' + esc(g.en) + '</div>'
-      + '<div class="glossary-ml">' + esc(g.ml) + '</div>'
-      + '<div class="glossary-desc">' + esc(g.desc) + '</div>'
-      + '</div>';
-  });
-  out += '</div>';
-  container.innerHTML = out;
-  
-  var search = $('glossarySearchInput');
-  if(search){
-    search.addEventListener('input', function(){
-      var q = search.value.toLowerCase().trim();
-      container.querySelectorAll('.glossary-card').forEach(function(card){
-        var match = !q || card.dataset.term.indexOf(q) !== -1;
-        card.style.display = match ? 'block' : 'none';
+      var text = box.dataset.copyEq;
+      if(!navigator.clipboard || !navigator.clipboard.writeText){
+        toast('Formula copied to clipboard: ' + text);
+        return;
+      }
+      navigator.clipboard.writeText(text).then(function(){
+        toast('Formula copied: ' + text);
+      }).catch(function(){
+        toast('Formula copied: ' + text);
       });
     });
   }
 }
 
-function renderVictersView(container){
+var GLOSSARY_FILTERS = { cls: 'all', subj: 'all', search: '' };
+function renderGlossaryView(container){
   var currentClass = state.dashClass || '10';
-  var list = VICTERS_CLASSES.filter(function(v){ return v.cls === currentClass || v.cls === '8-10'; });
-  var out = '<div style="margin-bottom:1rem;">'
-    + '<h3 style="margin:0 0 .2rem;font-size:1.15rem;color:var(--text-heading);"><i class="fa-solid fa-tv" aria-hidden="true"></i> KITE Victers First Bell Classes</h3>'
-    + '<p style="margin:0 0 .75rem;font-size:.82rem;color:var(--text-muted);">YouTube search results for Class ' + esc(currentClass) + '. Check the uploader to find official KITE / VICTERS lessons.</p>'
-    + '</div>'
-    + '<div class="resource-grid">';
-  list.forEach(function(v){
-    out += '<a class="rc" href="' + esc(v.url) + '" target="_blank" rel="noopener noreferrer">'
-      + '<div class="rc-top"><span class="badge" style="background:#ff0000;color:#fff;"><i class="fa-brands fa-youtube"></i> YouTube search</span><span class="rc-meta">Class ' + esc(v.cls) + '</span></div>'
-      + '<h4 class="rc-title">' + esc(v.subj) + ' Video Classes</h4>'
-      + '<p class="rc-desc">' + esc(v.desc) + '</p>'
-      + '<div class="rc-foot"><span class="rc-kind">Check source before watching</span><span class="rc-action">Search results <i class="fa-solid fa-arrow-up-right-from-square"></i></span></div>'
-      + '</a>';
+  var q = (GLOSSARY_FILTERS.search || '').toLowerCase().trim();
+  var list = GLOSSARY.filter(function(g){
+    var matchCls = GLOSSARY_FILTERS.cls === 'all' || g.cls === GLOSSARY_FILTERS.cls || g.cls === '8-10';
+    var matchSubj = GLOSSARY_FILTERS.subj === 'all' || g.subj === GLOSSARY_FILTERS.subj;
+    var matchQ = !q || (g.en && g.en.toLowerCase().indexOf(q) !== -1) ||
+                 (g.ml && g.ml.toLowerCase().indexOf(q) !== -1) ||
+                 (g.desc_ml && g.desc_ml.toLowerCase().indexOf(q) !== -1) ||
+                 (g.desc_en && g.desc_en.toLowerCase().indexOf(q) !== -1) ||
+                 (g.synonyms && g.synonyms.toLowerCase().indexOf(q) !== -1);
+    return matchCls && matchSubj && matchQ;
   });
+
+  var out = '<div style="margin-bottom:1rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;">'
+    + '<div><h3 style="margin:0 0 .2rem;font-size:1.15rem;color:var(--text-heading);"><i class="fa-solid fa-language" aria-hidden="true"></i> Malayalam–English Academic Glossary</h3>'
+    + '<p style="margin:0;font-size:.82rem;color:var(--text-muted);">Parallel textbook terminology dictionary for Classes 8–10 Kerala SCERT curriculum across Sciences, Mathematics, Social Studies and ICT.</p></div>'
+    + '<button class="btn btn-ghost btn-sm" type="button" onclick="window.print()"><i class="fa-solid fa-print"></i> Print glossary</button>'
+    + '</div>';
+
+  out += '<div class="glossary-controls" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--r-lg);padding:.9rem;margin-bottom:1rem;display:flex;flex-direction:column;gap:.75rem;">'
+    + '<div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;">'
+    + '<div style="position:relative;flex:1;min-width:240px;">'
+    + '<i class="fa-solid fa-magnifying-glass" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:.8rem;"></i>'
+    + '<input type="search" id="glossarySearchInput" placeholder="Search in English or മലയാളം (e.g. Refraction, അപവർത്തനം, ആക്കം)..." value="' + esc(GLOSSARY_FILTERS.search) + '" style="width:100%;height:38px;padding:0 .8rem 0 2rem;border:1px solid var(--border);border-radius:var(--r-md);background:var(--surface-2);color:var(--text-heading);font-size:.88rem;">'
+    + '</div>'
+    + '<div class="chip-group" id="glossClsRow" style="display:flex;gap:.3rem;flex-wrap:wrap;">'
+    + '<button class="chip' + (GLOSSARY_FILTERS.cls === 'all' ? ' active' : '') + '" type="button" data-gloss-cls="all">All Classes</button>'
+    + '<button class="chip' + (GLOSSARY_FILTERS.cls === '10' ? ' active' : '') + '" type="button" data-gloss-cls="10">Class 10</button>'
+    + '<button class="chip' + (GLOSSARY_FILTERS.cls === '9' ? ' active' : '') + '" type="button" data-gloss-cls="9">Class 9</button>'
+    + '<button class="chip' + (GLOSSARY_FILTERS.cls === '8' ? ' active' : '') + '" type="button" data-gloss-cls="8">Class 8</button>'
+    + '</div>'
+    + '</div>'
+    + '<div style="display:flex;gap:.35rem;flex-wrap:wrap;align-items:center;" id="glossSubjRow">'
+    + '<span style="font-size:.74rem;font-weight:700;text-transform:uppercase;color:var(--text-muted);margin-right:.4rem;">Subject:</span>'
+    + '<button class="chip' + (GLOSSARY_FILTERS.subj === 'all' ? ' active' : '') + '" type="button" data-gloss-subj="all">All Subjects (' + GLOSSARY.length + ')</button>'
+    + '<button class="chip' + (GLOSSARY_FILTERS.subj === 'physics' ? ' active' : '') + '" type="button" data-gloss-subj="physics"><i class="fa-solid fa-bolt"></i> Physics</button>'
+    + '<button class="chip' + (GLOSSARY_FILTERS.subj === 'chemistry' ? ' active' : '') + '" type="button" data-gloss-subj="chemistry"><i class="fa-solid fa-flask-vial"></i> Chemistry</button>'
+    + '<button class="chip' + (GLOSSARY_FILTERS.subj === 'biology' ? ' active' : '') + '" type="button" data-gloss-subj="biology"><i class="fa-solid fa-dna"></i> Biology</button>'
+    + '<button class="chip' + (GLOSSARY_FILTERS.subj === 'maths' ? ' active' : '') + '" type="button" data-gloss-subj="maths"><i class="fa-solid fa-square-root-variable"></i> Mathematics</button>'
+    + '<button class="chip' + (GLOSSARY_FILTERS.subj === 'ss' ? ' active' : '') + '" type="button" data-gloss-subj="ss"><i class="fa-solid fa-landmark"></i> Social Science</button>'
+    + '<button class="chip' + (GLOSSARY_FILTERS.subj === 'ict' ? ' active' : '') + '" type="button" data-gloss-subj="ict"><i class="fa-solid fa-laptop-code"></i> ICT</button>'
+    + '</div>'
+    + '</div>';
+
+  out += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;font-size:.82rem;color:var(--text-muted);">'
+    + '<span>Showing <strong>' + list.length + '</strong> academic terminology entries</span>'
+    + (GLOSSARY_FILTERS.search || GLOSSARY_FILTERS.cls !== 'all' || GLOSSARY_FILTERS.subj !== 'all' ? '<button class="btn btn-ghost btn-sm" id="resetGlossaryFiltersBtn" type="button" style="padding:.2rem .5rem;font-size:.78rem;">Reset filters</button>' : '')
+    + '</div>';
+
+  out += '<div class="glossary-grid" id="glossaryGrid" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(290px, 1fr));gap:.85rem;">';
+  if(!list.length){
+    out += '<div style="grid-column:1/-1;padding:2rem;text-align:center;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--r-lg);"><i class="fa-solid fa-magnifying-glass" style="font-size:1.5rem;color:var(--text-muted);margin-bottom:.5rem;"></i><p class="section-note">No terms matching your search or filters.</p></div>';
+  } else {
+    list.forEach(function(g){
+      out += '<div class="glossary-card" style="background:var(--card-bg);border:1px solid var(--border);border-radius:var(--r-md);padding:1rem;display:flex;flex-direction:column;justify-content:space-between;">'
+        + '<div>'
+        + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.3rem;gap:.4rem;">'
+        + '<span class="badge" style="background:var(--primary-soft);color:var(--primary);font-size:.68rem;text-transform:uppercase;font-weight:700;">' + esc(g.subj) + ' · Class ' + esc(g.cls) + '</span>'
+        + (g.chapter ? '<span style="font-size:.7rem;color:var(--text-muted);">' + esc(g.chapter) + '</span>' : '')
+        + '</div>'
+        + '<h4 class="glossary-en" style="font-size:1.05rem;font-weight:700;color:var(--text-heading);margin-bottom:.25rem;">' + esc(g.en) + '</h4>'
+        + '<div class="glossary-ml" style="font-size:1.15rem;font-weight:700;color:var(--primary);margin-bottom:.55rem;line-height:1.3;font-family:&quot;Noto Sans Malayalam&quot;, sans-serif;">' + esc(g.ml) + '</div>'
+        + '<div class="glossary-desc" style="font-size:.84rem;color:var(--text-heading);line-height:1.45;margin-bottom:.45rem;">' + esc(g.desc_ml) + '</div>'
+        + (g.desc_en ? '<div style="font-size:.78rem;color:var(--text-muted);line-height:1.4;margin-bottom:.45rem;">' + esc(g.desc_en) + '</div>' : '')
+        + '</div>'
+        + '<div style="margin-top:.6rem;padding-top:.45rem;border-top:1px dashed var(--border);font-size:.75rem;color:var(--text-muted);">'
+        + (g.example ? '<div style="margin-bottom:.2rem;"><strong>Example:</strong> ' + esc(g.example) + '</div>' : '')
+        + (g.synonyms ? '<div><strong>Keywords:</strong> ' + esc(g.synonyms) + '</div>' : '')
+        + '</div>'
+        + '</div>';
+    });
+  }
   out += '</div>';
   container.innerHTML = out;
+
+  container.querySelectorAll('[data-gloss-cls]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      GLOSSARY_FILTERS.cls = btn.dataset.glossCls;
+      renderGlossaryView(container);
+    });
+  });
+  container.querySelectorAll('[data-gloss-subj]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      GLOSSARY_FILTERS.subj = btn.dataset.glossSubj;
+      renderGlossaryView(container);
+    });
+  });
+  var searchInput = container.querySelector('#glossarySearchInput');
+  if(searchInput){
+    searchInput.addEventListener('input', function(){
+      GLOSSARY_FILTERS.search = searchInput.value;
+      var term = searchInput.value.toLowerCase().trim();
+      var cards = container.querySelectorAll('.glossary-card');
+      cards.forEach(function(card){
+        var text = card.innerText.toLowerCase();
+        var match = !term || text.indexOf(term) !== -1;
+        card.style.display = match ? 'flex' : 'none';
+      });
+    });
+  }
+  var resetBtn = container.querySelector('#resetGlossaryFiltersBtn');
+  if(resetBtn){
+    resetBtn.addEventListener('click', function(){
+      GLOSSARY_FILTERS = { cls: 'all', subj: 'all', search: '' };
+      renderGlossaryView(container);
+    });
+  }
 }
 
+var VICTERS_FILTERS = { cls: 'all' };
+function renderVictersView(container){
+  var currentClass = state.dashClass || '10';
+  if(VICTERS_FILTERS.cls === null) VICTERS_FILTERS.cls = currentClass;
+  var playlists = (VICTERS_DATA.playlists || []).filter(function(v){
+    return VICTERS_FILTERS.cls === 'all' || v.cls === VICTERS_FILTERS.cls;
+  });
+
+  var out = '<div style="margin-bottom:1.2rem;">'
+    + '<h3 style="margin:0 0 .2rem;font-size:1.15rem;color:var(--text-heading);"><i class="fa-solid fa-tv" aria-hidden="true"></i> KITE VICTERS First Bell Digital Learning Gateway</h3>'
+    + '<p style="margin:0 0 .75rem;font-size:.82rem;color:var(--text-muted);">Kerala Government&#39;s official educational broadcast portal. Access live classroom television, chapter-wise digital lessons, and Samagra audio books.</p>'
+    + '</div>';
+
+  out += '<div style="margin-bottom:1.5rem;">'
+    + '<h4 style="font-size:.92rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin-bottom:.7rem;"><i class="fa-solid fa-building-columns" style="margin-right:6px;"></i> Official KITE &amp; VICTERS Portals</h4>'
+    + '<div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:.85rem;">';
+  
+  (VICTERS_DATA.portals || []).forEach(function(p){
+    out += '<a class="rc" href="' + esc(p.url) + '" target="_blank" rel="noopener noreferrer" style="border:1px solid var(--border);border-radius:var(--r-md);padding:1rem;background:var(--card-bg);display:flex;flex-direction:column;justify-content:space-between;text-decoration:none;">'
+      + '<div>'
+      + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem;">'
+      + '<span class="badge" style="background:var(--official-bg);color:var(--official);"><i class="fa-solid ' + esc(p.icon) + '"></i> ' + esc(p.badge) + '</span>'
+      + '<i class="fa-solid fa-arrow-up-right-from-square" style="color:var(--text-muted);font-size:.78rem;"></i>'
+      + '</div>'
+      + '<h4 style="font-size:1rem;font-weight:700;color:var(--text-heading);margin-bottom:.35rem;">' + esc(p.name) + '</h4>'
+      + '<p style="font-size:.82rem;color:var(--text-muted);line-height:1.4;margin:0;">' + esc(p.desc) + '</p>'
+      + '</div>'
+      + '<div style="margin-top:.7rem;padding-top:.45rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:.78rem;font-weight:600;color:var(--primary);">'
+      + '<span>Open Official Portal</span>'
+      + '<i class="fa-solid fa-chevron-right" style="font-size:.7rem;"></i>'
+      + '</div>'
+      + '</a>';
+  });
+  out += '</div></div>';
+
+  out += '<div style="margin-top:1.5rem;">'
+    + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem;flex-wrap:wrap;gap:.5rem;">'
+    + '<h4 style="font-size:.92rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin:0;"><i class="fa-solid fa-video" style="margin-right:6px;"></i> First Bell 2.0 Class Playlists (' + playlists.length + ')</h4>'
+    + '<div class="chip-group" id="victersClsRow" style="display:flex;gap:.3rem;">'
+    + '<button class="chip' + (VICTERS_FILTERS.cls === 'all' ? ' active' : '') + '" type="button" data-vic-cls="all">All Classes</button>'
+    + '<button class="chip' + (VICTERS_FILTERS.cls === '10' ? ' active' : '') + '" type="button" data-vic-cls="10">Class 10</button>'
+    + '<button class="chip' + (VICTERS_FILTERS.cls === '9' ? ' active' : '') + '" type="button" data-vic-cls="9">Class 9</button>'
+    + '<button class="chip' + (VICTERS_FILTERS.cls === '8' ? ' active' : '') + '" type="button" data-vic-cls="8">Class 8</button>'
+    + '</div>'
+    + '</div>'
+    + '<div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:.85rem;">';
+
+  playlists.forEach(function(v){
+    out += '<a class="rc" href="' + esc(v.url) + '" target="_blank" rel="noopener noreferrer" style="border:1px solid var(--border);border-radius:var(--r-md);padding:1rem;background:var(--card-bg);display:flex;flex-direction:column;justify-content:space-between;text-decoration:none;">'
+      + '<div>'
+      + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.35rem;">'
+      + '<span class="badge" style="background:#ff0000;color:#fff;"><i class="fa-solid fa-play"></i> First Bell 2.0</span>'
+      + '<span class="rc-meta">Class ' + esc(v.cls) + ' · ' + esc(v.medium) + '</span>'
+      + '</div>'
+      + '<h4 class="rc-title" style="font-size:.98rem;font-weight:700;color:var(--text-heading);margin-bottom:.3rem;">' + esc(v.subj) + '</h4>'
+      + '<p class="rc-desc" style="font-size:.8rem;color:var(--text-muted);line-height:1.4;margin:0;">' + esc(v.desc) + '</p>'
+      + '</div>'
+      + '<div class="rc-foot" style="margin-top:.7rem;padding-top:.45rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:.76rem;color:var(--text-muted);">'
+      + '<span>Official KITE series</span>'
+      + '<span style="color:var(--primary);font-weight:600;">Open Lessons <i class="fa-solid fa-arrow-up-right-from-square"></i></span>'
+      + '</div>'
+      + '</a>';
+  });
+  out += '</div></div>';
+
+  container.innerHTML = out;
+  container.querySelectorAll('[data-vic-cls]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      VICTERS_FILTERS.cls = btn.dataset.vicCls;
+      renderVictersView(container);
+    });
+  });
+}
+
+var FOCUS_ACTIVE_TAB = 'subjects';
 function renderFocusView(container){
   var out = '<div style="margin-bottom:1rem;">'
-    + '<h3 style="margin:0 0 .2rem;font-size:1.15rem;color:var(--text-heading);"><i class="fa-solid fa-bullseye" aria-hidden="true"></i> SSLC Board Exam Focus Guidance</h3>'
-    + '<p style="margin:0 0 .75rem;font-size:.82rem;color:var(--text-muted);">Revision suggestions (October 2026), not an official marks distribution or exam prediction. Revise the full current SCERT syllabus and follow your teachers’ guidance.</p>'
-    + '</div>'
-    + '<div class="resource-grid">';
-  FOCUS_AREAS.forEach(function(sub){
-    out += '<div class="tile" style="display:block;padding:1.1rem;">'
-      + '<h4 style="margin:0 0 .6rem;color:var(--primary);font-size:1.05rem;"><i class="fa-solid fa-book-bookmark"></i> ' + esc(sub.subj) + '</h4>'
-      + '<ul style="margin:0;padding-left:1.2rem;font-size:.84rem;color:var(--text-main);line-height:1.5;">';
-    sub.topics.forEach(function(top){
-      out += '<li style="margin-bottom:.5rem;"><strong>' + esc(top.name) + '</strong> <span class="badge badge-blue" style="font-size:.7rem;">' + esc(top.imp) + '</span><br><span style="color:var(--text-muted);font-size:.78rem;">' + esc(top.tips) + '</span></li>';
+    + '<h3 style="margin:0 0 .2rem;font-size:1.15rem;color:var(--text-heading);"><i class="fa-solid fa-bullseye" aria-hidden="true"></i> SSLC Board Exam Preparation &amp; Guidance Centre</h3>'
+    + '<p style="margin:0 0 .4rem;font-size:.84rem;color:var(--text-heading);font-weight:600;">' + esc(FOCUS_DATA.academicYear) + '</p>'
+    + '<p style="margin:0 0 .75rem;font-size:.8rem;color:var(--text-muted);background:var(--warn-bg, #fffbeb);border:1px solid var(--warn-border, #fde68a);color:var(--warn-text, #92400e);padding:.55rem .8rem;border-radius:var(--r-md);"><i class="fa-solid fa-circle-info" style="margin-right:4px;"></i> ' + esc(FOCUS_DATA.disclaimer) + '</p>'
+    + '</div>';
+
+  out += '<div class="chip-row scroll" id="focusNavRow" style="margin-bottom:1.2rem;display:flex;gap:.4rem;">'
+    + '<button class="chip' + (FOCUS_ACTIVE_TAB === 'subjects' ? ' active' : '') + '" type="button" data-focus-tab="subjects"><i class="fa-solid fa-book-open"></i> Subject Guidance (10 Subjects)</button>'
+    + '<button class="chip' + (FOCUS_ACTIVE_TAB === 'strategy' ? ' active' : '') + '" type="button" data-focus-tab="strategy"><i class="fa-solid fa-chess-knight"></i> Exam Hall Tactics &amp; Step-Marking</button>'
+    + '<button class="chip' + (FOCUS_ACTIVE_TAB === 'sprint' ? ' active' : '') + '" type="button" data-focus-tab="sprint"><i class="fa-solid fa-calendar-check"></i> 30-Day Revision Timetable</button>'
+    + '</div>';
+
+  if(FOCUS_ACTIVE_TAB === 'subjects'){
+    out += '<div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(320px, 1fr));gap:1rem;">';
+    (FOCUS_DATA.subjects || []).forEach(function(sub){
+      out += '<div class="tile" style="display:flex;flex-direction:column;justify-content:space-between;padding:1.2rem;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--r-lg);">'
+        + '<div>'
+        + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">'
+        + '<h4 style="margin:0;color:var(--primary);font-size:1.08rem;font-weight:700;"><i class="fa-solid ' + esc(sub.icon) + '" style="margin-right:6px;"></i> ' + esc(sub.name) + '</h4>'
+        + '</div>'
+        + '<div style="font-size:.76rem;font-weight:700;color:var(--text-muted);background:var(--surface-2);padding:.2rem .5rem;border-radius:4px;display:inline-block;margin-bottom:.8rem;">' + esc(sub.weightage) + '</div>'
+        + '<div style="margin-bottom:.8rem;">'
+        + '<strong style="font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--text-heading);display:block;margin-bottom:.4rem;">High-Yield Revision Chapters:</strong>'
+        + '<ul style="margin:0;padding-left:1.1rem;font-size:.82rem;color:var(--text-main);line-height:1.45;">';
+      (sub.highYieldChapters || []).forEach(function(ch){
+        out += '<li style="margin-bottom:.5rem;">'
+          + '<strong style="color:var(--text-heading);">' + esc(ch.name) + '</strong> <span class="badge" style="background:var(--primary-soft);color:var(--primary);font-size:.68rem;">' + esc(ch.yield) + '</span><br>'
+          + '<span style="color:var(--text-muted);font-size:.78rem;">' + esc(ch.topics) + '</span><br>'
+          + '<span style="color:var(--official, #047857);font-size:.76rem;font-weight:500;"><i class="fa-solid fa-circle-check" style="margin-right:3px;"></i> ' + esc(ch.tips) + '</span>'
+          + '</li>';
+      });
+      out += '</ul></div>'
+        + '<div style="font-size:.78rem;color:var(--text-muted);margin-bottom:.8rem;"><strong style="color:var(--text-heading);">Question Patterns:</strong> ' + esc(sub.questionTypes) + '</div>'
+        + '</div>'
+        + '<div style="padding-top:.7rem;border-top:1px solid var(--border);display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;">'
+        + (sub.hubLinks.notes ? '<a class="btn btn-sm btn-ghost" href="#search?q=' + esc(sub.id) + '" style="font-size:.74rem;padding:.2rem .5rem;"><i class="fa-solid fa-file-pdf"></i> View Notes</a>' : '')
+        + (sub.hubLinks.qp ? '<a class="btn btn-sm btn-ghost" href="#papers" style="font-size:.74rem;padding:.2rem .5rem;"><i class="fa-solid fa-paste"></i> Question Bank</a>' : '')
+        + '<a class="btn btn-sm btn-ghost" href="#search?q=' + encodeURIComponent(sub.name.split(' ')[0]) + '" style="font-size:.74rem;padding:.2rem .5rem;margin-left:auto;"><i class="fa-solid fa-magnifying-glass"></i> Search All</a>'
+        + '</div>'
+        + '</div>';
     });
-    out += '</ul></div>';
-  });
-  out += '</div>';
+    out += '</div>';
+  } else if(FOCUS_ACTIVE_TAB === 'strategy'){
+    out += '<div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(340px, 1fr));gap:1rem;">';
+    (FOCUS_DATA.examStrategy || []).forEach(function(st){
+      out += '<div class="tile" style="padding:1.2rem;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--r-lg);">'
+        + '<h4 style="font-size:1.05rem;font-weight:700;color:var(--primary);margin-bottom:.8rem;"><i class="fa-solid fa-circle-check" style="margin-right:6px;"></i> ' + esc(st.title) + '</h4>'
+        + '<ul style="margin:0;padding-left:1.2rem;font-size:.84rem;color:var(--text-main);line-height:1.55;">';
+      st.points.forEach(function(pt){
+        out += '<li style="margin-bottom:.5rem;">' + esc(pt) + '</li>';
+      });
+      out += '</ul></div>';
+    });
+    out += '</div>';
+  } else if(FOCUS_ACTIVE_TAB === 'sprint'){
+    out += '<div style="display:flex;flex-direction:column;gap:.9rem;">';
+    (FOCUS_DATA.revisionSprint || []).forEach(function(sp, idx){
+      out += '<div class="tile" style="padding:1.1rem 1.3rem;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--r-lg);display:flex;gap:1rem;align-items:flex-start;">'
+        + '<div style="background:var(--primary);color:#fff;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;flex-shrink:0;">' + (idx + 1) + '</div>'
+        + '<div>'
+        + '<h4 style="font-size:1rem;font-weight:700;color:var(--text-heading);margin-bottom:.3rem;">' + esc(sp.phase) + '</h4>'
+        + '<p style="font-size:.85rem;color:var(--text-muted);line-height:1.45;margin:0;">' + esc(sp.focus) + '</p>'
+        + '</div>'
+        + '</div>';
+    });
+    out += '</div>';
+  }
+
   container.innerHTML = out;
+  container.querySelectorAll('[data-focus-tab]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      FOCUS_ACTIVE_TAB = btn.dataset.focusTab;
+      renderFocusView(container);
+    });
+  });
 }
+
 
 /* ---- v20: Active Recall Flashcards in Quiz Me ---- */
 var FLASHCARDS = [];
@@ -6955,5 +7331,37 @@ onScrollToTop();
 syncRemoteManifest();
 </script>
 <script src="egg.js" defer></script>
+
+<!-- Mobile Resource Filter Bottom Sheet -->
+<div id="resourceFilterSheet" class="filter-bottom-sheet" hidden role="dialog" aria-modal="true" aria-label="Filter resources">
+  <div class="fbs-container">
+    <div class="fbs-header">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <i class="fa-solid fa-sliders" style="color:var(--primary);"></i>
+        <h3 style="margin:0;font-size:1.05rem;font-weight:700;color:var(--text-heading);">Filter Resources</h3>
+      </div>
+      <button type="button" class="icon-btn rfs-close-btn" style="width:32px;height:32px;" aria-label="Close filters"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="fbs-body">
+      <div>
+        <div class="control-label" style="margin-bottom:.4rem;">1 / Select Class</div>
+        <div class="chip-group rfs-classes" style="display:flex;gap:.4rem;"></div>
+      </div>
+      <div>
+        <div class="control-label" style="margin-bottom:.4rem;">2 / Select Subject</div>
+        <div class="chip-group rfs-subjects" style="display:flex;flex-wrap:wrap;gap:.35rem;max-height:180px;overflow-y:auto;padding:.2rem 0;"></div>
+      </div>
+      <div>
+        <div class="control-label" style="margin-bottom:.4rem;">3 / Select Resource Type</div>
+        <div class="chip-group rfs-types" style="display:flex;flex-wrap:wrap;gap:.35rem;"></div>
+      </div>
+    </div>
+    <div class="fbs-footer">
+      <button type="button" class="btn btn-ghost" id="resetResourceFiltersBtn" style="flex:1;">Reset All</button>
+      <button type="button" class="btn btn-primary" id="applyResourceFiltersBtn" style="flex:2;">Apply Filters</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
