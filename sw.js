@@ -1,11 +1,12 @@
 // LFHS Academic Hub - Offline Service Worker (Cache-first for app shell, network-only for APIs & PDF streams)
-const CACHE_NAME = 'lfhs-cache-v30';
+const CACHE_NAME = 'lfhs-cache-v31';
 const APP_SHELL = [
   '/',
   '/index.html',
   '/antigravity.html',
   '/about.html',
   '/data/pdfs.js',
+  '/egg.js',
   '/pictures/campus.webp',
   '/pictures/campus-icon-192.webp',
   '/pictures/campus-icon-512.webp',
