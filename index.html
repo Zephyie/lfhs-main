@@ -1299,6 +1299,15 @@ body.is-offline .offline-banner { display: block; }
   gap: 10px;
 }
 
+
+/* Desktop Question Papers Filter visibility & defaults */
+.mobile-paper-filters { display: none !important; }
+.desktop-paper-filters { display: flex; }
+
+
+
+
+
 @media (max-width: 768px) {
   .desktop-filter-toolbar { display: none; }
   .mobile-filter-toolbar {
@@ -1313,12 +1322,15 @@ body.is-offline .offline-banner { display: block; }
   .mft-row { display: flex; justify-content: space-between; align-items: center; gap: .5rem; }
   .mft-class-pills { display: flex; gap: .3rem; }
 
+  /* Mobile Question Papers Filters visibility */
+  .desktop-paper-filters { display: none !important; }
+  .mobile-paper-filters { display: block !important; }
+
+
   
 
 
-/* Desktop Question Papers Filter visibility */
-.mobile-paper-filters { display: none !important; }
-.desktop-paper-filters { display: flex; }
+
 
 /* Desktop defaults for Phase 4 controls */
 #showMoreChaptersBtn { display: none; }
@@ -1414,7 +1426,7 @@ body.is-offline .offline-banner { display: block; }
   }
 
   /* ===== Phase 2: Mobile Tabs & Page Intro (Original Header Preserved) ===== */
-  /* Mobile header: Row 1 has brand on left, actions grouped on right in exact order: offline, account, theme */
+  /* Mobile header: Row 1 has brand on left, actions grouped on right in exact order: (1) offline, (2) account, (3) theme */
   .header-inner {
     display: flex;
     flex-wrap: wrap;
@@ -1438,41 +1450,49 @@ body.is-offline .offline-banner { display: block; }
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 15px;
+    display: block;
   }
   .brand-text small {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 11px;
+    display: block;
   }
   #offlinePrepareHeader {
     order: 2;
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
-    gap: 6px;
-    height: 40px;
-    min-height: 40px;
-    padding: 0 10px;
-    border-radius: 999px;
-    font-size: 12px;
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    font-size: 14px;
     flex-shrink: 0;
+    margin-left: auto;
     background: var(--surface-2);
     border: 1px solid var(--border);
     color: var(--text-heading);
     box-sizing: border-box;
+  }
+  #offlinePrepareHeader span[data-offline-label] {
+    display: none !important;
   }
   #accountBtn {
     order: 3;
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
-    gap: 6px;
-    height: 40px;
-    min-height: 40px;
-    padding: 0 10px;
-    border-radius: 999px;
-    font-size: 12px;
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    font-size: 14px;
     flex-shrink: 0;
     background: var(--surface-2);
     border: 1px solid var(--border);
@@ -1480,17 +1500,21 @@ body.is-offline .offline-banner { display: block; }
     box-sizing: border-box;
     margin-right: 0;
   }
+  #accountBtn span {
+    display: none !important;
+  }
   #themeBtn {
     order: 4;
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
-    min-width: 40px;
-    min-height: 40px;
-    padding: 0;
-    border-radius: 50%;
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    font-size: 14px;
     flex-shrink: 0;
     background: var(--surface-2);
     border: 1px solid var(--border);
@@ -1503,34 +1527,7 @@ body.is-offline .offline-banner { display: block; }
     width: 100%;
     max-width: 100%;
     margin-left: 0;
-    margin-top: 4px;
-  }
-  @media (max-width: 480px) {
-    #offlinePrepareHeader span[data-offline-label] {
-      max-width: 72px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    #accountBtn span {
-      display: none;
-    }
-    #accountBtn {
-      width: 40px;
-      padding: 0;
-    }
-  }
-  @media (max-width: 375px) {
-    #offlinePrepareHeader span[data-offline-label] {
-      display: none;
-    }
-    #offlinePrepareHeader {
-      width: 40px;
-      padding: 0;
-    }
-    .brand {
-      max-width: calc(100% - 132px);
-    }
+    margin-top: 6px;
   }
 
   /* Remove top segmented control in study tab on mobile as requested */
@@ -4586,6 +4583,34 @@ function openResourceFilterSheet(cls, subj, type, subjList, typeList, activeSec)
       document.body.classList.remove('sheet-open');
     }
   };
+}
+
+function centerActiveChips(){
+  document.querySelectorAll('.tab-content.active .chip-row.scroll').forEach(function(row){
+    var a=row.querySelector('.chip.active');
+    if(!a||row.scrollWidth<=row.clientWidth)return;
+    var off=a.getBoundingClientRect().left-row.getBoundingClientRect().left+row.scrollLeft;
+    row.scrollLeft=off-(row.clientWidth-a.offsetWidth)/2;
+  });
+}
+
+function paperPool(){
+  var wantPdf=(state.sourceMode==='pdfs');
+  return ALL.filter(function(r){
+    if(!!r.isPdf!==wantPdf)return false;
+    if(wantPdf){
+      if(r.cls!=='10')return false;
+      return r.types.indexOf('papers')!==-1||r.types.indexOf('model')!==-1||r.types.indexOf('previous')!==-1||r.types.indexOf('answers')!==-1||r.types.indexOf('questionbank')!==-1;
+    }
+    if(r.cls!=='10'&&r.cls!=='8-10')return false;
+    return r.types.indexOf('papers')!==-1||r.types.indexOf('model')!==-1||r.types.indexOf('previous')!==-1||r.types.indexOf('answers')!==-1;
+  });
+}
+
+function itemPaperType(r){
+  if(r.examType)return r.examType;
+  if(r.types.indexOf('questionbank')!==-1)return 'questionbank';
+  return '';
 }
 
 function renderPapers(){
