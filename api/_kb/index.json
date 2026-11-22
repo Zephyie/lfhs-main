@@ -1,22 +1,22 @@
 {
  "v": 1,
- "built": "2026-11-19T16:05:14.272Z",
+ "built": "2026-11-22T16:58:00.421Z",
  "shards": {
   "10-art.json": {
    "cls": "10",
    "subj": "art",
-   "built": "2026-11-14T07:28:34.488Z",
-   "resources": 2,
-   "chunks": 367,
-   "chars": 224723
+   "built": "2026-11-22T16:55:24.500Z",
+   "resources": 13,
+   "chunks": 1117,
+   "chars": 663412
   },
   "10-biology.json": {
    "cls": "10",
    "subj": "biology",
-   "built": "2026-11-14T07:30:04.012Z",
-   "resources": 18,
-   "chunks": 1094,
-   "chars": 439380
+   "built": "2026-11-22T16:56:07.305Z",
+   "resources": 26,
+   "chunks": 1810,
+   "chars": 885619
   },
   "10-career.json": {
    "cls": "10",
@@ -29,34 +29,34 @@
   "10-chemistry.json": {
    "cls": "10",
    "subj": "chemistry",
-   "built": "2026-11-14T07:30:04.158Z",
-   "resources": 18,
-   "chunks": 912,
-   "chars": 364455
+   "built": "2026-11-22T16:57:03.966Z",
+   "resources": 28,
+   "chunks": 1225,
+   "chars": 548849
   },
   "10-english.json": {
    "cls": "10",
    "subj": "english",
-   "built": "2026-11-14T07:30:01.848Z",
-   "resources": 31,
-   "chunks": 1604,
-   "chars": 946905
+   "built": "2026-11-22T16:57:49.848Z",
+   "resources": 42,
+   "chunks": 2128,
+   "chars": 1197095
   },
   "10-hindi.json": {
    "cls": "10",
    "subj": "hindi",
-   "built": "2026-11-19T15:28:07.884Z",
-   "resources": 1,
-   "chunks": 133,
-   "chars": 79504
+   "built": "2026-11-22T16:57:52.109Z",
+   "resources": 18,
+   "chunks": 723,
+   "chars": 451481
   },
   "10-ict.json": {
    "cls": "10",
    "subj": "ict",
-   "built": "2026-11-14T07:29:38.356Z",
-   "resources": 4,
-   "chunks": 490,
-   "chars": 303238
+   "built": "2026-11-22T16:56:06.222Z",
+   "resources": 16,
+   "chunks": 835,
+   "chars": 506923
   },
   "10-malayalam.json": {
    "cls": "10",
@@ -69,58 +69,58 @@
   "10-maths.json": {
    "cls": "10",
    "subj": "maths",
-   "built": "2026-11-14T07:30:05.021Z",
-   "resources": 22,
-   "chunks": 689,
-   "chars": 298272
+   "built": "2026-11-22T16:58:00.399Z",
+   "resources": 32,
+   "chunks": 1006,
+   "chars": 475673
   },
   "10-physics.json": {
    "cls": "10",
    "subj": "physics",
-   "built": "2026-11-14T07:30:05.249Z",
-   "resources": 22,
-   "chunks": 988,
-   "chars": 474533
+   "built": "2026-11-22T16:57:05.582Z",
+   "resources": 33,
+   "chunks": 1203,
+   "chars": 594126
   },
   "10-ss.json": {
    "cls": "10",
    "subj": "ss",
-   "built": "2026-11-14T07:30:05.663Z",
-   "resources": 29,
-   "chunks": 2789,
-   "chars": 1445884
+   "built": "2026-11-22T16:57:50.611Z",
+   "resources": 38,
+   "chunks": 3041,
+   "chars": 1595928
   },
   "8-art.json": {
    "cls": "8",
    "subj": "art",
-   "built": "2026-11-14T07:27:42.677Z",
+   "built": "2026-11-22T16:25:53.674Z",
    "resources": 10,
-   "chunks": 592,
-   "chars": 326623
+   "chunks": 643,
+   "chars": 349632
   },
   "8-english.json": {
    "cls": "8",
    "subj": "english",
-   "built": "2026-11-14T07:30:04.557Z",
-   "resources": 14,
-   "chunks": 484,
-   "chars": 272191
+   "built": "2026-11-22T16:55:46.617Z",
+   "resources": 21,
+   "chunks": 680,
+   "chars": 391706
   },
   "8-hindi.json": {
    "cls": "8",
    "subj": "hindi",
-   "built": "2026-11-19T15:27:55.234Z",
-   "resources": 1,
-   "chunks": 111,
-   "chars": 65440
+   "built": "2026-11-22T16:55:52.719Z",
+   "resources": 4,
+   "chunks": 147,
+   "chars": 88601
   },
   "8-ict.json": {
    "cls": "8",
    "subj": "ict",
-   "built": "2026-11-14T07:27:08.996Z",
-   "resources": 2,
+   "built": "2026-11-22T16:55:24.587Z",
+   "resources": 3,
    "chunks": 313,
-   "chars": 190023
+   "chars": 189993
   },
   "8-malayalam.json": {
    "cls": "8",
@@ -133,74 +133,74 @@
   "8-maths.json": {
    "cls": "8",
    "subj": "maths",
-   "built": "2026-11-14T07:27:50.134Z",
-   "resources": 14,
-   "chunks": 250,
-   "chars": 134406
+   "built": "2026-11-22T16:55:46.969Z",
+   "resources": 18,
+   "chunks": 430,
+   "chars": 235481
   },
   "8-science.json": {
    "cls": "8",
    "subj": "science",
-   "built": "2026-11-14T07:27:50.410Z",
-   "resources": 21,
-   "chunks": 392,
-   "chars": 215965
+   "built": "2026-11-22T16:55:47.583Z",
+   "resources": 28,
+   "chunks": 956,
+   "chars": 535147
   },
   "8-ss.json": {
    "cls": "8",
    "subj": "ss",
-   "built": "2026-11-14T07:27:54.122Z",
-   "resources": 26,
-   "chunks": 879,
-   "chars": 554621
+   "built": "2026-11-22T16:55:47.753Z",
+   "resources": 28,
+   "chunks": 937,
+   "chars": 593165
   },
   "9-art.json": {
    "cls": "9",
    "subj": "art",
-   "built": "2026-11-14T07:28:25.166Z",
-   "resources": 12,
-   "chunks": 440,
-   "chars": 242405
+   "built": "2026-11-22T16:56:03.736Z",
+   "resources": 13,
+   "chunks": 558,
+   "chars": 305912
   },
   "9-biology.json": {
    "cls": "9",
    "subj": "biology",
-   "built": "2026-11-14T07:28:27.529Z",
-   "resources": 20,
-   "chunks": 533,
-   "chars": 303742
+   "built": "2026-11-22T16:56:04.645Z",
+   "resources": 23,
+   "chunks": 683,
+   "chars": 396889
   },
   "9-chemistry.json": {
    "cls": "9",
    "subj": "chemistry",
-   "built": "2026-11-14T07:28:28.447Z",
+   "built": "2026-11-22T16:40:11.023Z",
    "resources": 17,
-   "chunks": 361,
-   "chars": 194821
+   "chunks": 414,
+   "chars": 222681
   },
   "9-english.json": {
    "cls": "9",
    "subj": "english",
-   "built": "2026-11-14T07:30:04.558Z",
-   "resources": 19,
-   "chunks": 609,
-   "chars": 326160
+   "built": "2026-11-22T16:56:04.151Z",
+   "resources": 23,
+   "chunks": 864,
+   "chars": 467255
   },
   "9-hindi.json": {
    "cls": "9",
    "subj": "hindi",
-   "built": "2026-11-19T16:05:14.266Z",
-   "resources": 1,
-   "chunks": 123,
-   "chars": 75139
+   "built": "2026-11-22T16:56:05.019Z",
+   "resources": 17,
+   "chunks": 261,
+   "chars": 158666
   },
   "9-ict.json": {
    "cls": "9",
    "subj": "ict",
-   "built": "2026-11-14T07:28:00.013Z",
-   "resources": 2,
-   "chunks": 331,
-   "chars": 195680
+   "built": "2026-11-22T16:56:03.798Z",
+   "resources": 3,
+   "chunks": 343,
+   "chars": 203307
   },
   "9-malayalam.json": {
    "cls": "9",
@@ -213,26 +213,26 @@
   "9-maths.json": {
    "cls": "9",
    "subj": "maths",
-   "built": "2026-11-14T07:28:29.404Z",
-   "resources": 16,
-   "chunks": 286,
-   "chars": 159387
+   "built": "2026-11-22T16:56:04.375Z",
+   "resources": 19,
+   "chunks": 538,
+   "chars": 306614
   },
   "9-physics.json": {
    "cls": "9",
    "subj": "physics",
-   "built": "2026-11-14T07:28:27.738Z",
+   "built": "2026-11-22T16:39:51.471Z",
    "resources": 17,
-   "chunks": 484,
-   "chars": 263153
+   "chunks": 580,
+   "chars": 319570
   },
   "9-ss.json": {
    "cls": "9",
    "subj": "ss",
-   "built": "2026-11-14T07:28:29.709Z",
+   "built": "2026-11-22T16:40:42.762Z",
    "resources": 26,
-   "chunks": 1110,
-   "chars": 667483
+   "chunks": 1141,
+   "chars": 686499
   }
  },
  "resources": {
@@ -248,6 +248,83 @@
    "medium": "English",
    "pages": 88,
    "chunks": 131,
+   "ocr": 0
+  },
+  "LFHS-459": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 48,
+   "chunks": 53,
+   "ocr": 0
+  },
+  "LFHS-460": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 32,
+   "chunks": 36,
+   "ocr": 0
+  },
+  "LFHS-461": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 48,
+   "chunks": 74,
+   "ocr": 0
+  },
+  "LFHS-462": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 40,
+   "chunks": 62,
+   "ocr": 0
+  },
+  "LFHS-463": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 32,
+   "chunks": 43,
+   "ocr": 0
+  },
+  "LFHS-464": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 40,
+   "chunks": 57,
+   "ocr": 0
+  },
+  "LFHS-465": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 40,
+   "chunks": 49,
+   "ocr": 0
+  },
+  "LFHS-466": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 40,
+   "chunks": 49,
+   "ocr": 0
+  },
+  "LFHS-467": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 80,
+   "chunks": 162,
+   "ocr": 0
+  },
+  "LFHS-468": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 32,
+   "chunks": 60,
+   "ocr": 0
+  },
+  "LFHS-469": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 64,
+   "chunks": 105,
    "ocr": 0
   },
   "LFHS-218": {
@@ -275,15 +352,15 @@
    "status": "ok",
    "medium": "English",
    "pages": 80,
-   "chunks": 0,
+   "chunks": 136,
    "ocr": 0
   },
   "LFHS-235": {
    "status": "ok",
    "medium": "English",
    "pages": 8,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 21,
+   "ocr": 8
   },
   "LFHS-246": {
    "status": "ok",
@@ -317,8 +394,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 5,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 15,
+   "ocr": 5
   },
   "LFHS-277": {
    "status": "ok",
@@ -359,8 +436,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 6,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 12,
+   "ocr": 6
   },
   "LFHS-337": {
    "status": "ok",
@@ -370,10 +447,66 @@
    "ocr": 0
   },
   "LFHS-357": {
-   "status": "ok",
+   "status": "no_text",
    "medium": "English",
    "pages": 19,
    "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-525": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 1,
+   "chunks": 2,
+   "ocr": 0
+  },
+  "LFHS-526": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 50,
+   "chunks": 203,
+   "ocr": 0
+  },
+  "LFHS-527": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 11,
+   "chunks": 57,
+   "ocr": 0
+  },
+  "LFHS-528": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 76,
+   "chunks": 158,
+   "ocr": 0
+  },
+  "LFHS-529": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 90,
+   "chunks": 83,
+   "ocr": 0
+  },
+  "LFHS-530": {
+   "status": "no_text",
+   "medium": "English",
+   "pages": 15,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-531": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 1,
+   "chunks": 6,
+   "ocr": 0
+  },
+  "LFHS-532": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 23,
    "ocr": 0
   },
   "LFHS-217": {
@@ -394,7 +527,7 @@
    "status": "ok",
    "medium": "English",
    "pages": 72,
-   "chunks": 0,
+   "chunks": 151,
    "ocr": 0
   },
   "LFHS-236": {
@@ -408,8 +541,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 5,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 11,
+   "ocr": 5
   },
   "LFHS-249": {
    "status": "ok",
@@ -443,8 +576,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 4,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 9,
+   "ocr": 4
   },
   "LFHS-281": {
    "status": "ok",
@@ -478,8 +611,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 4,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 8,
+   "ocr": 4
   },
   "LFHS-338": {
    "status": "ok",
@@ -492,8 +625,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 5,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 10,
+   "ocr": 5
   },
   "LFHS-351": {
    "status": "ok",
@@ -503,11 +636,81 @@
    "ocr": 0
   },
   "LFHS-358": {
-   "status": "ok",
+   "status": "no_text",
    "medium": "English",
    "pages": 24,
    "chunks": 0,
    "ocr": 0
+  },
+  "LFHS-533": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 25,
+   "chunks": 59,
+   "ocr": 0
+  },
+  "LFHS-534": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 12,
+   "chunks": 8,
+   "ocr": 0
+  },
+  "LFHS-535": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 10,
+   "chunks": 12,
+   "ocr": 0
+  },
+  "LFHS-536": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 13,
+   "ocr": 0
+  },
+  "LFHS-537": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 0,
+   "ocr": 2
+  },
+  "LFHS-538": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 3,
+   "chunks": 0,
+   "ocr": 3
+  },
+  "LFHS-539": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 6,
+   "ocr": 0
+  },
+  "LFHS-540": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 11,
+   "ocr": 0
+  },
+  "LFHS-541": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 13,
+   "ocr": 0
+  },
+  "LFHS-542": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 3,
+   "chunks": 2,
+   "ocr": 2
   },
   "LFHS-222": {
    "status": "ok",
@@ -534,8 +737,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 11,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 31,
+   "ocr": 11
   },
   "LFHS-252": {
    "status": "ok",
@@ -569,8 +772,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 7,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 24,
+   "ocr": 7
   },
   "LFHS-284": {
    "status": "ok",
@@ -695,8 +898,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 7,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 29,
+   "ocr": 6
   },
   "LFHS-340": {
    "status": "ok",
@@ -709,8 +912,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 8,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 37,
+   "ocr": 8
   },
   "LFHS-347": {
    "status": "ok",
@@ -720,10 +923,87 @@
    "ocr": 0
   },
   "LFHS-352": {
-   "status": "ok",
+   "status": "no_text",
    "medium": "English",
    "pages": 166,
    "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-563": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 14,
+   "chunks": 16,
+   "ocr": 0
+  },
+  "LFHS-564": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 41,
+   "chunks": 69,
+   "ocr": 0
+  },
+  "LFHS-565": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 16,
+   "chunks": 16,
+   "ocr": 0
+  },
+  "LFHS-566": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 8,
+   "chunks": 7,
+   "ocr": 0
+  },
+  "LFHS-567": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 12,
+   "chunks": 15,
+   "ocr": 0
+  },
+  "LFHS-568": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 8,
+   "ocr": 0
+  },
+  "LFHS-569": {
+   "status": "no_text",
+   "medium": "English",
+   "pages": 45,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-570": {
+   "status": "no_text",
+   "medium": "English",
+   "pages": 239,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-571": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 40,
+   "chunks": 128,
+   "ocr": 0
+  },
+  "LFHS-572": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 41,
+   "chunks": 124,
+   "ocr": 0
+  },
+  "LFHS-573": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 5,
+   "chunks": 20,
    "ocr": 0
   },
   "LFHS-372": {
@@ -731,6 +1011,125 @@
    "medium": "Hindi",
    "pages": 104,
    "chunks": 133,
+   "ocr": 0
+  },
+  "LFHS-373": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 3,
+   "chunks": 7,
+   "ocr": 0
+  },
+  "LFHS-381": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 4,
+   "chunks": 12,
+   "ocr": 0
+  },
+  "LFHS-382": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 4,
+   "chunks": 14,
+   "ocr": 0
+  },
+  "LFHS-383": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 4,
+   "chunks": 5,
+   "ocr": 0
+  },
+  "LFHS-390": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 4,
+   "chunks": 9,
+   "ocr": 0
+  },
+  "LFHS-393": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 6,
+   "chunks": 13,
+   "ocr": 0
+  },
+  "LFHS-394": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 4,
+   "chunks": 6,
+   "ocr": 4
+  },
+  "LFHS-406": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 97,
+   "chunks": 356,
+   "ocr": 0
+  },
+  "LFHS-407": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 4,
+   "chunks": 13,
+   "ocr": 0
+  },
+  "LFHS-408": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 4,
+   "chunks": 19,
+   "ocr": 0
+  },
+  "LFHS-409": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 4,
+   "chunks": 15,
+   "ocr": 0
+  },
+  "LFHS-583": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 2,
+   "chunks": 4,
+   "ocr": 0
+  },
+  "LFHS-584": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 2,
+   "chunks": 3,
+   "ocr": 0
+  },
+  "LFHS-585": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 2,
+   "chunks": 8,
+   "ocr": 0
+  },
+  "LFHS-586": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 2,
+   "chunks": 6,
+   "ocr": 0
+  },
+  "LFHS-587": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 23,
+   "chunks": 30,
+   "ocr": 0
+  },
+  "LFHS-588": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 36,
+   "chunks": 70,
    "ocr": 0
   },
   "LFHS-224": {
@@ -761,6 +1160,90 @@
    "chunks": 38,
    "ocr": 0
   },
+  "LFHS-513": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 11,
+   "chunks": 41,
+   "ocr": 0
+  },
+  "LFHS-514": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 13,
+   "chunks": 40,
+   "ocr": 0
+  },
+  "LFHS-515": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 11,
+   "chunks": 43,
+   "ocr": 0
+  },
+  "LFHS-516": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 57,
+   "chunks": 70,
+   "ocr": 0
+  },
+  "LFHS-517": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 42,
+   "chunks": 42,
+   "ocr": 0
+  },
+  "LFHS-518": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 34,
+   "chunks": 45,
+   "ocr": 0
+  },
+  "LFHS-519": {
+   "status": "no_text",
+   "medium": "English",
+   "pages": 8,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-520": {
+   "status": "no_text",
+   "medium": "English",
+   "pages": 8,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-521": {
+   "status": "no_text",
+   "medium": "English",
+   "pages": 10,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-522": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 3,
+   "chunks": 7,
+   "ocr": 0
+  },
+  "LFHS-523": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 24,
+   "chunks": 29,
+   "ocr": 0
+  },
+  "LFHS-524": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 28,
+   "chunks": 28,
+   "ocr": 0
+  },
   "LFHS-370": {
    "status": "ok",
    "medium": "Malayalam",
@@ -786,7 +1269,7 @@
    "status": "ok",
    "medium": "English",
    "pages": 144,
-   "chunks": 0,
+   "chunks": 215,
    "ocr": 0
   },
   "LFHS-240": {
@@ -800,8 +1283,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 8,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 16,
+   "ocr": 7
   },
   "LFHS-255": {
    "status": "ok",
@@ -835,8 +1318,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 8,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 10,
+   "ocr": 5
   },
   "LFHS-301": {
    "status": "ok",
@@ -881,7 +1364,7 @@
    "ocr": 0
   },
   "LFHS-331": {
-   "status": "ok",
+   "status": "no_text",
    "medium": "English",
    "pages": 4,
    "chunks": 0,
@@ -891,8 +1374,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 7,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 11,
+   "ocr": 7
   },
   "LFHS-342": {
    "status": "ok",
@@ -905,8 +1388,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 6,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 14,
+   "ocr": 6
   },
   "LFHS-348": {
    "status": "ok",
@@ -923,9 +1406,79 @@
    "ocr": 0
   },
   "LFHS-360": {
-   "status": "ok",
+   "status": "no_text",
    "medium": "English",
    "pages": 46,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-554": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 11,
+   "chunks": 11,
+   "ocr": 0
+  },
+  "LFHS-555": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 40,
+   "chunks": 27,
+   "ocr": 20
+  },
+  "LFHS-556": {
+   "status": "no_text",
+   "medium": "English",
+   "pages": 46,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-557": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 2,
+   "ocr": 2
+  },
+  "LFHS-558": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 2,
+   "ocr": 1
+  },
+  "LFHS-559": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 2,
+   "ocr": 0
+  },
+  "LFHS-560": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 1,
+   "chunks": 4,
+   "ocr": 0
+  },
+  "LFHS-561": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 1,
+   "chunks": 3,
+   "ocr": 0
+  },
+  "LFHS-562": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 1,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-595": {
+   "status": "no_text",
+   "medium": "English",
+   "pages": 4,
    "chunks": 0,
    "ocr": 0
   },
@@ -954,8 +1507,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 6,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 13,
+   "ocr": 6
   },
   "LFHS-258": {
    "status": "ok",
@@ -989,8 +1542,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 4,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 12,
+   "ocr": 4
   },
   "LFHS-307": {
    "status": "ok",
@@ -1024,8 +1577,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 35,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 54,
+   "ocr": 30
   },
   "LFHS-312": {
    "status": "ok",
@@ -1052,8 +1605,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 5,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 7,
+   "ocr": 4
   },
   "LFHS-344": {
    "status": "ok",
@@ -1066,8 +1619,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 6,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 1,
+   "ocr": 1
   },
   "LFHS-354": {
    "status": "ok",
@@ -1077,10 +1630,87 @@
    "ocr": 0
   },
   "LFHS-361": {
-   "status": "ok",
+   "status": "no_text",
    "medium": "English",
    "pages": 34,
    "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-543": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 4,
+   "ocr": 0
+  },
+  "LFHS-544": {
+   "status": "no_text",
+   "medium": "English",
+   "pages": 36,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-545": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 19,
+   "chunks": 8,
+   "ocr": 0
+  },
+  "LFHS-546": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 12,
+   "ocr": 0
+  },
+  "LFHS-547": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 8,
+   "chunks": 11,
+   "ocr": 0
+  },
+  "LFHS-548": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 11,
+   "chunks": 28,
+   "ocr": 0
+  },
+  "LFHS-549": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 39,
+   "chunks": 33,
+   "ocr": 0
+  },
+  "LFHS-550": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 5,
+   "chunks": 11,
+   "ocr": 0
+  },
+  "LFHS-551": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 3,
+   "chunks": 8,
+   "ocr": 0
+  },
+  "LFHS-552": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 8,
+   "chunks": 4,
+   "ocr": 0
+  },
+  "LFHS-553": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 9,
    "ocr": 0
   },
   "LFHS-230": {
@@ -1122,8 +1752,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 7,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 10,
+   "ocr": 5
   },
   "LFHS-261": {
    "status": "ok",
@@ -1157,8 +1787,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 5,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 13,
+   "ocr": 4
   },
   "LFHS-314": {
    "status": "ok",
@@ -1234,8 +1864,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 83,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 99,
+   "ocr": 71
   },
   "LFHS-335": {
    "status": "ok",
@@ -1248,15 +1878,15 @@
    "status": "ok",
    "medium": "English",
    "pages": 4,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 3,
+   "ocr": 3
   },
   "LFHS-346": {
    "status": "ok",
    "medium": "English",
    "pages": 6,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 12,
+   "ocr": 6
   },
   "LFHS-349": {
    "status": "ok",
@@ -1280,10 +1910,73 @@
    "ocr": 0
   },
   "LFHS-362": {
-   "status": "ok",
+   "status": "no_text",
    "medium": "English",
    "pages": 22,
    "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-574": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 16,
+   "ocr": 0
+  },
+  "LFHS-575": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 6,
+   "ocr": 0
+  },
+  "LFHS-576": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 9,
+   "chunks": 2,
+   "ocr": 0
+  },
+  "LFHS-577": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-578": {
+   "status": "ok",
+   "medium": "Malayalam",
+   "pages": 3,
+   "chunks": 6,
+   "ocr": 0
+  },
+  "LFHS-579": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 11,
+   "chunks": 46,
+   "ocr": 0
+  },
+  "LFHS-580": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 10,
+   "chunks": 27,
+   "ocr": 0
+  },
+  "LFHS-581": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 6,
+   "ocr": 0
+  },
+  "LFHS-582": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 6,
    "ocr": 0
   },
   "LFHS-001": {
@@ -1325,8 +2018,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 6,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 13,
+   "ocr": 6
   },
   "LFHS-027": {
    "status": "ok",
@@ -1339,8 +2032,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 8,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 21,
+   "ocr": 8
   },
   "LFHS-039": {
    "status": "ok",
@@ -1353,8 +2046,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 7,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 17,
+   "ocr": 7
   },
   "LFHS-006": {
    "status": "ok",
@@ -1388,8 +2081,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 5,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 12,
+   "ocr": 5
   },
   "LFHS-037": {
    "status": "ok",
@@ -1402,8 +2095,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 4,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 15,
+   "ocr": 4
   },
   "LFHS-047": {
    "status": "ok",
@@ -1430,8 +2123,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 3,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 12,
+   "ocr": 3
   },
   "LFHS-070": {
    "status": "ok",
@@ -1444,8 +2137,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 5,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 23,
+   "ocr": 5
   },
   "LFHS-359": {
    "status": "ok",
@@ -1454,11 +2147,81 @@
    "chunks": 42,
    "ocr": 0
   },
+  "LFHS-471": {
+   "status": "no_text",
+   "medium": "English",
+   "pages": 15,
+   "chunks": 0,
+   "ocr": 10
+  },
+  "LFHS-472": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 50,
+   "chunks": 91,
+   "ocr": 0
+  },
+  "LFHS-473": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 6,
+   "ocr": 0
+  },
+  "LFHS-474": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 5,
+   "ocr": 0
+  },
+  "LFHS-475": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 7,
+   "ocr": 0
+  },
+  "LFHS-476": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 8,
+   "chunks": 13,
+   "ocr": 0
+  },
+  "LFHS-477": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 7,
+   "chunks": 12,
+   "ocr": 0
+  },
   "LFHS-365": {
    "status": "ok",
    "medium": "Hindi",
    "pages": 96,
    "chunks": 111,
+   "ocr": 0
+  },
+  "LFHS-417": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 4,
+   "chunks": 7,
+   "ocr": 0
+  },
+  "LFHS-427": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 4,
+   "chunks": 11,
+   "ocr": 0
+  },
+  "LFHS-491": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 10,
+   "chunks": 18,
    "ocr": 0
   },
   "LFHS-008": {
@@ -1473,6 +2236,13 @@
    "medium": "English",
    "pages": 88,
    "chunks": 177,
+   "ocr": 0
+  },
+  "LFHS-470": {
+   "status": "no_text",
+   "medium": "English",
+   "pages": 8,
+   "chunks": 0,
    "ocr": 0
   },
   "LFHS-363": {
@@ -1500,7 +2270,7 @@
    "status": "ok",
    "medium": "English",
    "pages": 96,
-   "chunks": 0,
+   "chunks": 133,
    "ocr": 0
   },
   "LFHS-017": {
@@ -1521,8 +2291,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 4,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 15,
+   "ocr": 3
   },
   "LFHS-041": {
    "status": "ok",
@@ -1556,15 +2326,15 @@
    "status": "ok",
    "medium": "English",
    "pages": 4,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 12,
+   "ocr": 4
   },
   "LFHS-072": {
    "status": "ok",
    "medium": "English",
    "pages": 4,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 7,
+   "ocr": 4
   },
   "LFHS-077": {
    "status": "ok",
@@ -1587,6 +2357,34 @@
    "chunks": 5,
    "ocr": 0
   },
+  "LFHS-478": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 4,
+   "ocr": 0
+  },
+  "LFHS-479": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 7,
+   "ocr": 0
+  },
+  "LFHS-480": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 1,
+   "chunks": 1,
+   "ocr": 0
+  },
+  "LFHS-481": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 1,
+   "chunks": 1,
+   "ocr": 0
+  },
   "LFHS-004": {
    "status": "ok",
    "medium": "English",
@@ -1598,7 +2396,7 @@
    "status": "ok",
    "medium": "English",
    "pages": 152,
-   "chunks": 0,
+   "chunks": 254,
    "ocr": 0
   },
   "LFHS-014": {
@@ -1633,8 +2431,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 7,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 26,
+   "ocr": 7
   },
   "LFHS-033": {
    "status": "ok",
@@ -1682,8 +2480,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 5,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 12,
+   "ocr": 5
   },
   "LFHS-068": {
    "status": "ok",
@@ -1696,15 +2494,15 @@
    "status": "ok",
    "medium": "English",
    "pages": 8,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 31,
+   "ocr": 8
   },
   "LFHS-073": {
    "status": "ok",
    "medium": "English",
    "pages": 7,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 18,
+   "ocr": 7
   },
   "LFHS-075": {
    "status": "ok",
@@ -1732,6 +2530,55 @@
    "medium": "English",
    "pages": 3,
    "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-482": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 33,
+   "chunks": 122,
+   "ocr": 0
+  },
+  "LFHS-483": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 23,
+   "ocr": 0
+  },
+  "LFHS-484": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 15,
+   "chunks": 54,
+   "ocr": 0
+  },
+  "LFHS-485": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 5,
+   "chunks": 5,
+   "ocr": 0
+  },
+  "LFHS-486": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 5,
+   "ocr": 0
+  },
+  "LFHS-487": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 5,
+   "chunks": 8,
+   "ocr": 0
+  },
+  "LFHS-488": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 6,
    "ocr": 0
   },
   "LFHS-012": {
@@ -1766,8 +2613,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 4,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 5,
+   "ocr": 4
   },
   "LFHS-043": {
    "status": "ok",
@@ -1780,8 +2627,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 2,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 6,
+   "ocr": 2
   },
   "LFHS-050": {
    "status": "ok",
@@ -1871,15 +2718,15 @@
    "status": "ok",
    "medium": "English",
    "pages": 2,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 4,
+   "ocr": 2
   },
   "LFHS-074": {
    "status": "ok",
    "medium": "English",
    "pages": 2,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 5,
+   "ocr": 2
   },
   "LFHS-080": {
    "status": "ok",
@@ -1889,21 +2736,21 @@
    "ocr": 0
   },
   "LFHS-083": {
-   "status": "ok",
+   "status": "no_text",
    "medium": "English",
    "pages": 35,
    "chunks": 0,
    "ocr": 0
   },
   "LFHS-084": {
-   "status": "ok",
+   "status": "no_text",
    "medium": "English",
    "pages": 74,
    "chunks": 0,
-   "ocr": 0
+   "ocr": 60
   },
   "LFHS-085": {
-   "status": "ok",
+   "status": "no_text",
    "medium": "English",
    "pages": 6,
    "chunks": 0,
@@ -1914,6 +2761,20 @@
    "medium": "English",
    "pages": 2,
    "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-489": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 9,
+   "chunks": 33,
+   "ocr": 0
+  },
+  "LFHS-490": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 3,
+   "chunks": 5,
    "ocr": 0
   },
   "LFHS-087": {
@@ -1948,15 +2809,15 @@
    "status": "ok",
    "medium": "English",
    "pages": 7,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 12,
+   "ocr": 7
   },
   "LFHS-118": {
    "status": "ok",
    "medium": "English",
    "pages": 4,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 7,
+   "ocr": 4
   },
   "LFHS-126": {
    "status": "ok",
@@ -1969,8 +2830,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 7,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 15,
+   "ocr": 7
   },
   "LFHS-140": {
    "status": "ok",
@@ -1983,8 +2844,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 6,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 17,
+   "ocr": 6
   },
   "LFHS-194": {
    "status": "ok",
@@ -1997,7 +2858,14 @@
    "status": "ok",
    "medium": "English",
    "pages": 6,
-   "chunks": 0,
+   "chunks": 16,
+   "ocr": 6
+  },
+  "LFHS-497": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 13,
+   "chunks": 51,
    "ocr": 0
   },
   "LFHS-090": {
@@ -2039,8 +2907,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 7,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 14,
+   "ocr": 7
   },
   "LFHS-134": {
    "status": "ok",
@@ -2102,8 +2970,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 7,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 13,
+   "ocr": 7
   },
   "LFHS-189": {
    "status": "ok",
@@ -2116,8 +2984,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 7,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 17,
+   "ocr": 7
   },
   "LFHS-201": {
    "status": "ok",
@@ -2138,6 +3006,27 @@
    "medium": "English",
    "pages": 28,
    "chunks": 48,
+   "ocr": 0
+  },
+  "LFHS-505": {
+   "status": "no_text",
+   "medium": "English",
+   "pages": 6,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-506": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 3,
+   "chunks": 13,
+   "ocr": 0
+  },
+  "LFHS-507": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 22,
+   "chunks": 93,
    "ocr": 0
   },
   "LFHS-092": {
@@ -2172,8 +3061,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 4,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 8,
+   "ocr": 4
   },
   "LFHS-136": {
    "status": "ok",
@@ -2186,8 +3075,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 5,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 12,
+   "ocr": 5
   },
   "LFHS-153": {
    "status": "ok",
@@ -2221,43 +3110,43 @@
    "status": "ok",
    "medium": "English",
    "pages": 3,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 15,
+   "ocr": 3
   },
   "LFHS-191": {
    "status": "ok",
    "medium": "English",
    "pages": 4,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 18,
+   "ocr": 4
   },
   "LFHS-207": {
-   "status": "ok",
+   "status": "no_text",
    "medium": "English",
    "pages": 4,
    "chunks": 0,
-   "ocr": 0
+   "ocr": 4
   },
   "LFHS-208": {
    "status": "ok",
    "medium": "English",
    "pages": 2,
    "chunks": 0,
-   "ocr": 0
+   "ocr": 2
   },
   "LFHS-209": {
-   "status": "ok",
+   "status": "no_text",
    "medium": "English",
    "pages": 4,
    "chunks": 0,
-   "ocr": 0
+   "ocr": 3
   },
   "LFHS-210": {
    "status": "ok",
    "medium": "English",
    "pages": 2,
    "chunks": 0,
-   "ocr": 0
+   "ocr": 2
   },
   "LFHS-094": {
    "status": "ok",
@@ -2298,8 +3187,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 6,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 30,
+   "ocr": 6
   },
   "LFHS-138": {
    "status": "ok",
@@ -2361,8 +3250,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 6,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 26,
+   "ocr": 6
   },
   "LFHS-192": {
    "status": "ok",
@@ -2375,14 +3264,42 @@
    "status": "ok",
    "medium": "English",
    "pages": 8,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 34,
+   "ocr": 8
   },
   "LFHS-211": {
-   "status": "ok",
+   "status": "no_text",
    "medium": "English",
    "pages": 7,
    "chunks": 0,
+   "ocr": 7
+  },
+  "LFHS-438": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 13,
+   "chunks": 26,
+   "ocr": 0
+  },
+  "LFHS-499": {
+   "status": "no_text",
+   "medium": "English",
+   "pages": 41,
+   "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-500": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 42,
+   "chunks": 120,
+   "ocr": 0
+  },
+  "LFHS-501": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 5,
+   "chunks": 19,
    "ocr": 0
   },
   "LFHS-369": {
@@ -2391,6 +3308,118 @@
    "pages": 96,
    "chunks": 123,
    "ocr": 87
+  },
+  "LFHS-420": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 3,
+   "chunks": 7,
+   "ocr": 0
+  },
+  "LFHS-429": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 10,
+   "chunks": 17,
+   "ocr": 2
+  },
+  "LFHS-430": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 3,
+   "chunks": 4,
+   "ocr": 0
+  },
+  "LFHS-431": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 8,
+   "chunks": 11,
+   "ocr": 1
+  },
+  "LFHS-432": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 3,
+   "chunks": 4,
+   "ocr": 0
+  },
+  "LFHS-441": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 4,
+   "chunks": 9,
+   "ocr": 0
+  },
+  "LFHS-444": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 3,
+   "chunks": 6,
+   "ocr": 0
+  },
+  "LFHS-445": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 4,
+   "chunks": 8,
+   "ocr": 4
+  },
+  "LFHS-456": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 8,
+   "chunks": 11,
+   "ocr": 0
+  },
+  "LFHS-457": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 1,
+   "chunks": 1,
+   "ocr": 1
+  },
+  "LFHS-458": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 9,
+   "chunks": 12,
+   "ocr": 0
+  },
+  "LFHS-508": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 4,
+   "chunks": 7,
+   "ocr": 0
+  },
+  "LFHS-509": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 5,
+   "chunks": 9,
+   "ocr": 0
+  },
+  "LFHS-510": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 5,
+   "chunks": 16,
+   "ocr": 0
+  },
+  "LFHS-511": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 3,
+   "chunks": 8,
+   "ocr": 0
+  },
+  "LFHS-512": {
+   "status": "ok",
+   "medium": "Hindi",
+   "pages": 3,
+   "chunks": 8,
+   "ocr": 0
   },
   "LFHS-096": {
    "status": "ok",
@@ -2404,6 +3433,13 @@
    "medium": "English",
    "pages": 80,
    "chunks": 166,
+   "ocr": 0
+  },
+  "LFHS-498": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 12,
    "ocr": 0
   },
   "LFHS-367": {
@@ -2438,7 +3474,7 @@
    "status": "ok",
    "medium": "English",
    "pages": 104,
-   "chunks": 0,
+   "chunks": 186,
    "ocr": 0
   },
   "LFHS-109": {
@@ -2466,8 +3502,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 5,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 15,
+   "ocr": 5
   },
   "LFHS-142": {
    "status": "ok",
@@ -2480,8 +3516,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 6,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 13,
+   "ocr": 6
   },
   "LFHS-162": {
    "status": "ok",
@@ -2508,8 +3544,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 6,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 14,
+   "ocr": 6
   },
   "LFHS-196": {
    "status": "ok",
@@ -2522,8 +3558,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 7,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 12,
+   "ocr": 7
   },
   "LFHS-204": {
    "status": "ok",
@@ -2533,10 +3569,31 @@
    "ocr": 0
   },
   "LFHS-212": {
-   "status": "ok",
+   "status": "no_text",
    "medium": "English",
    "pages": 5,
    "chunks": 0,
+   "ocr": 0
+  },
+  "LFHS-502": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 7,
+   "ocr": 0
+  },
+  "LFHS-503": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 4,
+   "chunks": 3,
+   "ocr": 0
+  },
+  "LFHS-504": {
+   "status": "ok",
+   "medium": "English",
+   "pages": 2,
+   "chunks": 2,
    "ocr": 0
   },
   "LFHS-100": {
@@ -2578,8 +3635,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 4,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 16,
+   "ocr": 4
   },
   "LFHS-144": {
    "status": "ok",
@@ -2592,8 +3649,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 4,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 14,
+   "ocr": 4
   },
   "LFHS-164": {
    "status": "ok",
@@ -2606,29 +3663,29 @@
    "status": "ok",
    "medium": "English",
    "pages": 4,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 12,
+   "ocr": 4
   },
   "LFHS-166": {
    "status": "ok",
    "medium": "English",
    "pages": 2,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 7,
+   "ocr": 2
   },
   "LFHS-167": {
    "status": "ok",
    "medium": "English",
    "pages": 3,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 10,
+   "ocr": 3
   },
   "LFHS-168": {
    "status": "ok",
    "medium": "English",
    "pages": 3,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 7,
+   "ocr": 3
   },
   "LFHS-185": {
    "status": "ok",
@@ -2641,15 +3698,15 @@
    "status": "ok",
    "medium": "English",
    "pages": 4,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 10,
+   "ocr": 4
   },
   "LFHS-198": {
    "status": "ok",
    "medium": "English",
    "pages": 4,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 20,
+   "ocr": 4
   },
   "LFHS-205": {
    "status": "ok",
@@ -2711,8 +3768,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 8,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 12,
+   "ocr": 7
   },
   "LFHS-146": {
    "status": "ok",
@@ -2725,8 +3782,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 6,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 11,
+   "ocr": 4
   },
   "LFHS-169": {
    "status": "ok",
@@ -2802,8 +3859,8 @@
    "status": "ok",
    "medium": "English",
    "pages": 4,
-   "chunks": 0,
-   "ocr": 0
+   "chunks": 8,
+   "ocr": 4
   },
   "LFHS-199": {
    "status": "ok",
@@ -2827,14 +3884,14 @@
    "ocr": 0
   },
   "LFHS-213": {
-   "status": "ok",
+   "status": "no_text",
    "medium": "English",
    "pages": 10,
    "chunks": 0,
    "ocr": 0
   },
   "LFHS-214": {
-   "status": "ok",
+   "status": "no_text",
    "medium": "English",
    "pages": 19,
    "chunks": 0,
@@ -2843,8 +3900,8 @@
  },
  "totals": {
   "shards": 29,
-  "resources": 373,
-  "chunks": 17300,
-  "chars": 9347140
+  "resources": 524,
+  "chunks": 23512,
+  "chars": 12953231
  }
 }
