@@ -1300,12 +1300,46 @@ body.is-offline .offline-banner { display: block; }
 }
 
 
-/* Desktop Question Papers Filter visibility & defaults */
+/* Desktop / PC Specific Enhancements */
 .mobile-paper-filters { display: none !important; }
 .desktop-paper-filters { display: flex; }
+#showMoreChaptersBtn { display: none; }
+.rc-chapter.rc-ch-more { display: flex; }
+.sub-more-toggle { display: none !important; }
+#notesInfoToggleBtn { display: none !important; }
 
+@media (min-width: 769px) {
+  /* Individually scrollable left sidebar menu on PC */
+  .sidebar {
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .sidebar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .sidebar::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 999px;
+  }
 
-
+  /* Unclamped summary text without More/Less toggle on PC */
+  .sub-more-toggle {
+    display: none !important;
+  }
+  #notesInfoToggleBtn {
+    display: none !important;
+  }
+  #notesPageSub {
+    display: block !important;
+    -webkit-line-clamp: unset !important;
+    overflow: visible !important;
+    max-height: none !important;
+  }
+}
 
 
 @media (max-width: 768px) {
@@ -1332,13 +1366,7 @@ body.is-offline .offline-banner { display: block; }
 
 
 
-/* Desktop defaults for Phase 4 controls */
-#showMoreChaptersBtn { display: none; }
-.rc-chapter.rc-ch-more { display: flex; }
 
-/* Desktop defaults for Phase 2 controls */
-.sub-more-toggle { display: none; }
-#notesInfoToggleBtn { display: none; }
 
   /* ===== Phase 1: Shared Base for Buttons and Chips (Mobile Touch & Centering) ===== */
   .btn,
