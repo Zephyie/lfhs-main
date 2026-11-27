@@ -125,7 +125,7 @@
     var now = Date.now(); taps = taps.filter(function (t) { return now - t < CFG.tapWindow; }); taps.push(now);
     if (taps.length >= CFG.cornerTaps) { taps = []; unlock('runner'); }
   }
-  var PSEL = '[data-profile],#profile,#profile-btn,#profileBtn,#btn-profile,.profile-btn,.profile-button,[aria-label*="rofile" i],[title*="rofile" i],[id*="rofile" i],[class*="rofile" i],[href*="rofile" i]';
+  var PSEL = '[data-profile],#accountBtn,#profile,#profile-btn,#profileBtn,#btn-profile,.profile-btn,.profile-button,[aria-label*="rofile" i],[title*="rofile" i],[id*="rofile" i],[class*="rofile" i],[href*="rofile" i]';
   function coarse() { try { return window.matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window; } catch (e) { return false; } }
   function profileEl(t) {
     if (!t || !t.closest) return null; var el = null;
