@@ -84,9 +84,12 @@ export default async function handler(req, res) {
     }
 
     credentialCache.set(ip, { payload, expiresAt: now + 5 * 60_000 });
-    if (requestWindows.size > 1000) {
+    if (requestWindows.size > 1000 || credentialCache.size > 1000) {
       for (const [key, value] of requestWindows) {
         if (now - value.startedAt >= WINDOW_MS) requestWindows.delete(key);
+      }
+      for (const [key, value] of credentialCache) {
+        if (value.expiresAt <= now) credentialCache.delete(key);
       }
     }
     return respond(res, 200, payload);
