@@ -8,7 +8,7 @@
   var CFG = Object.assign({
     src: 'hall-runner.html', hash: '#hallrunner', konami: true, corner: 'br', cornerSize: 56, cornerTaps: 6, tapWindow: 2600, word: 'runner',
     shooterSrc: 'vanguard.html', shooterHash: '#vanguard', shooterWord: 'shooter', shooterSeq: true,
-    profile: '', profileTaps: 5, profileWindow: 3000, profileAnyDevice: true,
+    profile: '', profileTaps: 5, profileWindow: 3000, profileAnyDevice: false,
     popMs: 15000, hint: true
   }, window.LFHS_EGG || {});
   var KONAMI = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
