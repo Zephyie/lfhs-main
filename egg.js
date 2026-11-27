@@ -1,7 +1,7 @@
 /* LFHS easter egg loader (Hall Runner + VANGUARD).
    Drop-in and zero cost: nothing else loads until a secret is found.
    Hall Runner (a book pops up): Konami code, the word "runner", 6 quick taps in the bottom-right corner, or the link #hallrunner
-   VANGUARD (a gun pops up): the word "shooter" or W W S S A D A D Enter on desktop, 5 quick taps on the profile button on phones, or #vanguard */
+   VANGUARD (a gun pops up): the word "shooter" or W W S S A D A D Enter on desktop, 5 quick taps in the bottom-left corner, or #vanguard */
 (function () {
   'use strict';
   if (window.LFHSEgg) return;
@@ -21,7 +21,7 @@
     book: '<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 14c-6-4-15-5-24-3v36c9-2 18-1 24 3 6-4 15-5 24-3V11c-9-2-18-1-24 3z" fill="#fef3c7" stroke="#b45309" stroke-width="2.4" stroke-linejoin="round"/><path d="M32 14v36" stroke="#b45309" stroke-width="2.4"/><path d="M13 20c5-1 10 0 15 2M13 27c5-1 10 0 15 2M13 34c5-1 10 0 15 2M51 20c-5-1-10 0-15 2M51 27c-5-1-10 0-15 2M51 34c-5-1-10 0-15 2" fill="none" stroke="#d97706" stroke-width="1.8" stroke-linecap="round" opacity=".75"/></svg>',
     gun: '<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M6 20h44l4 3v9H33l-5 21c-.4 1.7-1.700 2.500-3.300 2.500h-4.200c-1.900 0-3.100-1.500-2.700-3.300L22 32h-4l-3 4H6z" fill="#e2e8f0" stroke="#0f172a" stroke-width="2.4" stroke-linejoin="round"/><rect x="10" y="22.5" width="30" height="3" rx="1.2" fill="#0f172a" opacity=".35"/><path d="M26 32c0 5 3 7 8 7" fill="none" stroke="#0f172a" stroke-width="2.2" stroke-linecap="round"/><circle cx="50" cy="26.500" r="1.700" fill="#f59e0b"/></svg>'
   };
-  var ov = null, ovId = '', pushed = false, ki = 0, wi = 0, typed = '', taps = [], ptaps = [], styled = false, prevOv = '', pop = null, popT = 0;
+  var ov = null, ovId = '', pushed = false, ki = 0, wi = 0, typed = '', taps = [], vtaps = [], ptaps = [], styled = false, prevOv = '', pop = null, popT = 0;
   var FONT = '-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",system-ui,sans-serif';
 
   function css() {
@@ -118,11 +118,29 @@
     }
   }
   function onPtr(e) {
-    if (ov || e.button > 0) return; var win = e.view || window, w = win.innerWidth, h = win.innerHeight, s = CFG.cornerSize, c = CFG.corner;
+    if (ov || e.button > 0) return;
+    var win = e.view || window, w = win.innerWidth, h = win.innerHeight, s = CFG.cornerSize, c = CFG.corner;
     if (e.target && e.target.closest && e.target.closest('.lfhs-egg-pop')) return;
-    var inX = c.charAt(1) === 'r' ? e.clientX > w - s : e.clientX < s, inY = c.charAt(0) === 'b' ? e.clientY > h - s : e.clientY < s;
+
+    // VANGUARD: five quick taps in the bottom-left corner.
+    var inVanguardCorner = e.clientX < s && e.clientY > h - s;
+    if (inVanguardCorner) {
+      taps = [];
+      var vNow = Date.now();
+      vtaps = vtaps.filter(function (t) { return vNow - t < CFG.tapWindow; });
+      vtaps.push(vNow);
+      if (vtaps.length >= 5) { vtaps = []; unlock('vanguard'); }
+      return;
+    }
+    vtaps = [];
+
+    // Hall Runner keeps its existing bottom-right corner trigger.
+    var inX = c.charAt(1) === 'r' ? e.clientX > w - s : e.clientX < s;
+    var inY = c.charAt(0) === 'b' ? e.clientY > h - s : e.clientY < s;
     if (!(inX && inY)) { taps = []; return; }
-    var now = Date.now(); taps = taps.filter(function (t) { return now - t < CFG.tapWindow; }); taps.push(now);
+    var now = Date.now();
+    taps = taps.filter(function (t) { return now - t < CFG.tapWindow; });
+    taps.push(now);
     if (taps.length >= CFG.cornerTaps) { taps = []; unlock('runner'); }
   }
   var PSEL = '[data-profile],#accountBtn,#profile,#profile-btn,#profileBtn,#btn-profile,.profile-btn,.profile-button,[aria-label*="rofile" i],[title*="rofile" i],[id*="rofile" i],[class*="rofile" i],[href*="rofile" i]';
@@ -152,7 +170,6 @@
     }
   }
   hook(window);
-  window.addEventListener('click', onClick, true);
   window.addEventListener('popstate', function () { if (ov) close(true); });
   window.addEventListener('hashchange', fromHash);
   window.addEventListener('message', function (e) {   // games ask to close: accepted only from the open overlay's own iframe
