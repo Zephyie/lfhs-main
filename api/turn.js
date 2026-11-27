@@ -73,7 +73,7 @@ export default async function handler(req, res) {
       iceServers: data.iceServers.map((server) => ({
         ...server,
         urls: Array.isArray(server.urls)
-          ? server.urls.filter((url) => !/:53(?:\\?|$)/.test(url))
+          ? server.urls.filter((url) => !url.includes(":53?") && !url.endsWith(":53") => !/:53(?:\\?|$)/.test(url))
           : server.urls,
       })).filter((server) => Array.isArray(server.urls) ? server.urls.length > 0 : !!server.urls),
     };
